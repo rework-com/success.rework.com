@@ -1,0 +1,15 @@
+# Internal-only — do NOT publish
+knowledge/
+docs/
+archive/
+sample-professional-products/
+CLAUDE.md
+logo Rework.jpg
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+.claude/

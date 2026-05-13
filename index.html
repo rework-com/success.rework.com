@@ -1,0 +1,2710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Implementation Services — Rework</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0A0F1E;--blue:#3B82F6;--blue-glow:rgba(59,130,246,0.25);--blue-neon:#60A5FA;--green:#10B981;--green-glow:rgba(16,185,129,0.2);--green-neon:#34D399;--purple:#8B5CF6;--purple-glow:rgba(139,92,246,0.2);--purple-neon:#A78BFA;--orange:#F59E0B;--orange-light:rgba(245,158,11,0.12);--orange-border:rgba(245,158,11,0.4);--cyan:#22D3EE;--g50:#F8FAFC;--g100:#F1F5F9;--g200:#E2E8F0;--g300:#CBD5E1;--g400:#94A3B8;--g500:#64748B;--g600:#475569;--g700:#334155;--g800:#1E293B;--g900:#0F172A;--white:#FFF;--radius:12px;--radius-lg:16px;--grid:rgba(148,163,184,0.07)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:9px;font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--white);text-decoration:none;letter-spacing:-.3px}
+.nav-logo-img{width:32px;height:32px;display:block;flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-link{color:var(--g400);font-size:13px;font-weight:500;text-decoration:none;transition:color .2s}
+.nav-link:hover{color:var(--white)}
+.nav-cta{padding:9px 20px;background:linear-gradient(135deg,var(--blue),var(--purple));color:var(--white);border-radius:9px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;white-space:nowrap;box-shadow:0 2px 12px rgba(59,130,246,0.35)}
+.nav-cta:hover{background:linear-gradient(135deg,var(--blue-neon),var(--purple));box-shadow:0 6px 20px rgba(59,130,246,0.55);transform:translateY(-1px)}
+
+/* HERO */
+.hero{background:var(--navy);padding:28px 24px 32px;text-align:center;position:relative;overflow:hidden;z-index:1;min-height:20vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.06) 1px,transparent 1px);background-size:48px 48px}
+.hero::after{content:'';position:absolute;top:-40%;left:-10%;width:120%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(59,130,246,0.2) 0%,transparent 55%),radial-gradient(ellipse at 75% 30%,rgba(139,92,246,0.14) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(34,211,238,0.08) 0%,transparent 40%)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.25);border-radius:100px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--blue-neon);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;position:relative;z-index:1}
+.hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:42px;font-weight:800;color:var(--white);line-height:1.12;margin-bottom:12px;position:relative;z-index:1;letter-spacing:-0.8px}
+.hero h1 .accent{background:linear-gradient(135deg,var(--blue-neon),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:13.5px;color:var(--g400);max-width:900px;white-space:nowrap;margin:0 auto 18px;position:relative;z-index:1;line-height:1.65}
+@media(max-width:860px){.hero-sub{white-space:normal;max-width:540px}}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:12px;position:relative;z-index:1;flex-wrap:wrap}
+.btn-primary{padding:14px 30px;background:linear-gradient(135deg,var(--blue),var(--purple));color:var(--white);border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;transition:all .25s;box-shadow:0 6px 24px rgba(59,130,246,0.45);display:inline-block;letter-spacing:0.1px}
+.btn-primary:hover{box-shadow:0 12px 36px rgba(59,130,246,0.6);transform:translateY(-3px);background:linear-gradient(135deg,var(--blue-neon),var(--purple))}
+.btn-ghost{padding:11px 24px;background:rgba(255,255,255,0.06);color:var(--g300);border:1px solid rgba(255,255,255,0.14);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;display:inline-block}
+.btn-ghost:hover{background:rgba(255,255,255,0.1);color:var(--white)}
+.hero-stats{display:flex;align-items:center;justify-content:center;gap:40px;margin-top:56px;position:relative;z-index:1;flex-wrap:wrap}
+.hero-stat-value{font-family:'Plus Jakarta Sans',sans-serif;font-size:30px;font-weight:800;color:var(--white)}
+.hero-stat-label{font-size:12px;color:var(--g500);font-weight:500;margin-top:2px}
+.hero-stat-div{width:1px;height:40px;background:rgba(255,255,255,0.1)}
+
+/* SECTIONS */
+.section{padding:60px 24px;position:relative;z-index:1}
+.section-inner{max-width:1140px;margin:0 auto}
+.section-label{display:inline-block;font-size:12px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
+.section-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:800;color:var(--navy);margin-bottom:10px;line-height:1.15;letter-spacing:-0.5px}
+.section-sub{font-size:16px;color:var(--g700);max-width:600px;line-height:1.65}
+
+/* HOW IT WORKS */
+#how-it-works{background:var(--white)}
+.phases-wrap{margin-top:60px;position:relative}
+.phases-track{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;position:relative}
+.phases-line{position:absolute;top:56px;left:4%;right:4%;height:2px;background:linear-gradient(90deg,var(--green),var(--blue),var(--purple));z-index:0}
+.phase{padding:32px 14px 22px;background:var(--white);border:1px solid var(--g200);border-radius:14px;text-align:center;position:relative;z-index:1;transition:all .25s;overflow:hidden}
+.phase::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;z-index:2}
+.phase:nth-child(1)::before{background:linear-gradient(90deg,var(--green),var(--green-neon))}
+.phase:nth-child(2)::before{background:linear-gradient(90deg,var(--green),var(--blue))}
+.phase:nth-child(3)::before{background:linear-gradient(90deg,var(--blue),var(--blue-neon))}
+.phase:nth-child(4)::before{background:linear-gradient(90deg,var(--blue),var(--purple))}
+.phase:nth-child(5)::before{background:linear-gradient(90deg,var(--purple),var(--purple-neon))}
+.phase:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.2)}
+.phase-dot{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--white)}
+.phase:nth-child(1) .phase-dot{background:var(--green);box-shadow:0 0 24px var(--green-glow)}
+.phase:nth-child(2) .phase-dot{background:linear-gradient(135deg,var(--green),var(--blue));box-shadow:0 0 20px var(--blue-glow)}
+.phase:nth-child(3) .phase-dot{background:var(--blue);box-shadow:0 0 24px var(--blue-glow)}
+.phase:nth-child(4) .phase-dot{background:linear-gradient(135deg,var(--blue),var(--purple));box-shadow:0 0 20px var(--purple-glow)}
+.phase:nth-child(5) .phase-dot{background:var(--purple);box-shadow:0 0 24px var(--purple-glow)}
+.phase-duration{font-size:10px;font-weight:700;color:var(--g400);letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px}
+.phase-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:var(--g900);margin-bottom:8px}
+.phase-desc{font-size:12.5px;color:var(--g500);line-height:1.6}
+
+.phase-gate{display:inline-flex;align-items:center;gap:4px;margin-top:10px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:100px;padding:3px 10px;font-size:10px;font-weight:600;color:var(--blue)}
+
+/* QUIZ TWO-COLUMN */
+#quiz{background:linear-gradient(180deg,var(--g50) 0%,var(--white) 100%);padding:48px 24px}
+.quiz-layout{display:grid;grid-template-columns:1fr 425px;gap:24px;margin-top:28px;align-items:start}
+.finder-product-pill{display:inline-block;padding:4px 12px;background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(34,211,238,0.06));border:1px solid rgba(59,130,246,0.3);border-radius:100px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;color:var(--blue);letter-spacing:0.3px;text-transform:uppercase;vertical-align:middle;white-space:nowrap}
+.finder-titlewrap{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.quiz-left{display:flex;flex-direction:column;gap:7px}
+.quiz-right{position:sticky;top:68px}
+.q-card{background:var(--white);border:1.5px solid var(--g200);border-radius:11px;padding:12px 16px;transition:all .2s}
+.q-card.answered{border-color:rgba(59,130,246,0.25)}
+.q-num{display:none}
+.q-question{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:var(--g900);line-height:1.35;margin-bottom:0}
+.q-hint{font-size:11.5px;color:var(--g400);margin-bottom:8px;margin-top:4px}
+.q-opts-c{display:flex;flex-direction:column;gap:5px}
+.q-opt-c{border:1.5px solid var(--g200);border-radius:8px;padding:7px 12px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:9px}
+.q-opt-c:hover{border-color:var(--blue);background:rgba(59,130,246,0.02)}
+.q-opt-c.selected{border-color:var(--blue);background:rgba(59,130,246,0.05);box-shadow:0 0 0 2px var(--blue-glow)}
+.q-dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--g300);flex-shrink:0;margin-top:2px;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.q-opt-c.selected .q-dot{border-color:var(--blue);background:var(--blue)}
+.q-dot-inner{width:4px;height:4px;border-radius:50%;background:var(--white);opacity:0;transition:opacity .15s}
+.q-opt-c.selected .q-dot-inner{opacity:1}
+.q-opt-text{flex:1}
+.q-opt-label{font-size:12.5px;font-weight:600;color:var(--g800);line-height:1.35}
+.q-opt-sub{font-size:11px;color:var(--g500);margin-top:1px;line-height:1.4}
+.q-grp-hdr{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--g500);margin:8px 0 4px;display:flex;align-items:center;gap:6px}
+.q-grp-tag{padding:1px 6px;border-radius:4px;font-size:9.5px}
+.q-grp-tag.organic{background:var(--g100);color:var(--g500)}
+.q-grp-tag.digital{background:rgba(59,130,246,0.1);color:var(--blue)}
+.q-chk-c{border:1.5px solid var(--g200);border-radius:7px;padding:6px 11px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.q-chk-c:hover{border-color:var(--blue);background:rgba(59,130,246,0.02)}
+.q-chk-c.checked{border-color:var(--blue);background:rgba(59,130,246,0.05)}
+.q-chkbox{width:14px;height:14px;border-radius:3px;border:2px solid var(--g300);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.q-chk-c.checked .q-chkbox{border-color:var(--blue);background:var(--blue)}
+.q-chk-icon{display:none;stroke:white;fill:none;stroke-width:3}
+.q-chk-c.checked .q-chk-icon{display:block}
+.q-chk-c span{font-size:12px;font-weight:500;color:var(--g700)}
+
+/* QUIZ COLLAPSE */
+.q-card-hdr{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:default}
+.q-card.answered .q-card-hdr{cursor:pointer}
+.q-card.answered .q-card-hdr:hover .q-question{color:var(--blue)}
+.q-collapse-chevron{width:13px;height:13px;stroke:var(--g300);fill:none;stroke-width:2.5;flex-shrink:0;transition:transform .22s;display:none}
+.q-card.answered .q-collapse-chevron{display:block}
+.q-card.collapsed .q-collapse-chevron{transform:rotate(-90deg)}
+.q-card.collapsed{padding:8px 14px;cursor:pointer}
+.q-card.collapsed .q-question{font-size:13px;font-weight:700}
+.q-card-body{margin-top:10px}
+.q-card.collapsed .q-card-body{display:none}
+.q-selected-preview{display:none;font-size:11.5px;font-weight:600;color:var(--blue);margin-top:3px}
+.q-card.collapsed.answered .q-selected-preview{display:block}
+.q-chk-done{width:100%;padding:7px 14px;background:var(--blue);color:white;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px;opacity:0;pointer-events:none;transition:opacity .2s}
+.q-chk-done.enabled{opacity:1;pointer-events:auto}
+
+/* RESULT PANEL */
+.quiz-result-panel{background:var(--white);border:1.5px solid var(--g200);border-radius:16px;overflow:hidden}
+.qrp-placeholder{padding:44px 28px;text-align:center}
+.qrp-ph-icon{font-size:36px;margin-bottom:12px}
+.qrp-ph-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:var(--g800);margin-bottom:8px}
+.qrp-ph-sub{font-size:13px;color:var(--g400);line-height:1.6}
+.qrp-progress{height:3px;background:var(--g100)}
+.qrp-progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));transition:width .4s cubic-bezier(.4,0,.2,1)}
+.qrp-body{padding:22px 26px}
+.qrp-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px}
+.qrp-badge.launchpad{background:rgba(16,185,129,0.12);color:var(--green);border:1px solid rgba(16,185,129,0.3)}
+.qrp-badge.accelerator{background:rgba(59,130,246,0.12);color:var(--blue);border:1px solid rgba(59,130,246,0.3)}
+.qrp-badge.transform{background:rgba(139,92,246,0.12);color:var(--purple);border:1px solid rgba(139,92,246,0.3)}
+.qrp-headline{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--g900);line-height:1.3;margin-bottom:7px}
+.qrp-body-txt{font-size:12.5px;color:var(--g600);line-height:1.65;margin-bottom:10px}
+.qrp-triggers{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.qrp-trigger{font-size:12px;color:var(--g600);display:flex;align-items:flex-start;gap:6px}
+.qrp-trigger-arrow{color:var(--blue);font-weight:700;flex-shrink:0}
+.qrp-gate-note{background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);border-radius:9px;padding:9px 12px;font-size:11.5px;color:var(--g700);line-height:1.5;margin-bottom:10px}
+.qrp-gate-note strong{color:var(--blue);font-weight:700}
+.qrp-leads-note{background:var(--orange-light);border:1px solid var(--orange-border);border-radius:10px;padding:11px 13px;font-size:12px;color:var(--g700);display:flex;gap:8px;margin-bottom:14px}
+.qrp-leads-note strong{color:#B45309}
+.qrp-pkg{border-radius:12px;padding:16px 18px;margin-bottom:12px}
+.qrp-pkg.launchpad{background:linear-gradient(135deg,rgba(16,185,129,0.07),rgba(34,211,238,0.03));border:1.5px solid rgba(16,185,129,0.3)}
+.qrp-pkg.accelerator{background:linear-gradient(135deg,rgba(59,130,246,0.07),rgba(34,211,238,0.03));border:1.5px solid rgba(59,130,246,0.3)}
+.qrp-pkg.transform{background:linear-gradient(135deg,rgba(139,92,246,0.07),rgba(59,130,246,0.03));border:1.5px solid rgba(139,92,246,0.3)}
+.qrp-pkg-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:3px}
+.qrp-pkg-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:800}
+.qrp-pkg-name.launchpad{color:var(--green)}.qrp-pkg-name.accelerator{color:var(--blue)}.qrp-pkg-name.transform{color:var(--purple)}
+.qrp-pkg-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--g900)}
+.qrp-pkg-note{font-size:10px;color:var(--g400)}
+.qrp-pkg-tag{font-size:11.5px;color:var(--g500);margin-bottom:12px}
+.qrp-stats{display:flex;gap:18px;margin-bottom:12px}
+.qrp-stat-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800}
+.qrp-stat-num.launchpad{color:var(--green)}.qrp-stat-num.accelerator{color:var(--blue)}.qrp-stat-num.transform{color:var(--purple)}
+.qrp-stat-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--g500)}
+.qrp-actions{display:flex;gap:7px}
+.qrp-btn-main{flex:1;padding:10px 12px;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;color:var(--white);transition:all .2s}
+.qrp-btn-main.launchpad{background:var(--green)}.qrp-btn-main.accelerator{background:var(--blue)}.qrp-btn-main.transform{background:var(--purple)}
+.qrp-btn-sec{padding:10px 13px;border:1.5px solid var(--g200);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;color:var(--g600);background:var(--white);transition:all .2s;white-space:nowrap}
+.qrp-btn-sec:hover{border-color:var(--blue);color:var(--blue)}
+.qrp-answered-count{font-size:11px;color:var(--g400);text-align:center;margin-top:10px;padding-bottom:4px}
+
+/* PACKAGES */
+#packages{background:var(--g50);padding-top:36px}
+.pkg-tabs{display:flex;gap:6px;margin:28px 0 32px}
+.pkg-tab{padding:10px 22px;border:1.5px solid var(--g200);background:var(--white);color:var(--g500);border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;transition:all .2s;text-align:left}
+.pkg-tab.active{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.pkg-tab-sub{font-size:11px;font-weight:400;display:block;margin-top:1px;opacity:.7}
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:20px}
+.pkg-card{background:var(--white);border:2px solid var(--g200);border-radius:var(--radius-lg);padding:28px 24px;position:relative;transition:all .3s;cursor:pointer}
+.pkg-card:hover{transform:translateY(-3px)}
+.pkg-card[data-tier="launch"]:hover{box-shadow:0 0 24px var(--green-glow);border-color:rgba(16,185,129,0.3)}
+.pkg-card[data-tier="accel"]:hover{box-shadow:0 0 24px var(--blue-glow);border-color:rgba(59,130,246,0.3)}
+.pkg-card[data-tier="transform"]:hover{box-shadow:0 0 24px var(--purple-glow);border-color:rgba(139,92,246,0.3)}
+.pkg-card[data-tier="launch"].selected{border-color:var(--green);box-shadow:0 0 0 3px var(--green-glow),0 0 24px var(--green-glow)}
+.pkg-card[data-tier="accel"].selected{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-glow),0 0 24px var(--blue-glow)}
+.pkg-card[data-tier="transform"].selected{border-color:var(--purple);box-shadow:0 0 0 3px var(--purple-glow),0 0 24px var(--purple-glow)}
+.card-check{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.5);transition:all .25s}
+.pkg-card[data-tier="launch"] .card-check{background:var(--green)}.pkg-card[data-tier="accel"] .card-check{background:var(--blue)}.pkg-card[data-tier="transform"] .card-check{background:var(--purple)}
+.pkg-card.selected .card-check{opacity:1;transform:scale(1)}
+.pkg-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px}
+.pkg-tagline{font-size:13px;color:var(--g500);margin-bottom:16px;min-height:36px}
+.pkg-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:36px;font-weight:800;margin-bottom:2px}
+.pkg-price-note{font-size:12px;color:var(--g400);margin-bottom:20px}
+.hl-bar{border-radius:10px;padding:16px;margin-bottom:20px;display:flex;gap:2px;position:relative;overflow:hidden}
+.hl-bar::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.15) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.15) 1px,transparent 1px);background-size:20px 20px;opacity:.3}
+.hl-item{flex:1;text-align:center;position:relative;z-index:1}
+.hl-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800}
+.hl-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;opacity:.8}
+.pkg-card[data-tier="launch"] .pkg-name,.pkg-card[data-tier="launch"] .pkg-price{color:var(--green)}
+.pkg-card[data-tier="launch"] .hl-bar{background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(34,211,238,0.08))}
+.pkg-card[data-tier="launch"] .hl-num,.pkg-card[data-tier="launch"] .hl-lbl{color:var(--green)}
+.pkg-card[data-tier="accel"] .pkg-name,.pkg-card[data-tier="accel"] .pkg-price{color:var(--blue)}
+.pkg-card[data-tier="accel"] .hl-bar{background:linear-gradient(135deg,rgba(59,130,246,0.12),rgba(34,211,238,0.06))}
+.pkg-card[data-tier="accel"] .hl-num,.pkg-card[data-tier="accel"] .hl-lbl{color:var(--blue)}
+.pkg-card[data-tier="transform"] .pkg-name,.pkg-card[data-tier="transform"] .pkg-price{color:var(--purple)}
+.pkg-card[data-tier="transform"] .hl-bar{background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(59,130,246,0.06))}
+.pkg-card[data-tier="transform"] .hl-num,.pkg-card[data-tier="transform"] .hl-lbl{color:var(--purple)}
+.select-btn{width:100%;padding:12px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;border:2px solid var(--g200);background:var(--white);color:var(--g700);margin-bottom:24px}
+.select-btn:hover{background:var(--g50)}
+.pkg-card[data-tier="launch"].selected .select-btn{background:var(--green);color:var(--white);border-color:var(--green)}
+.pkg-card[data-tier="accel"].selected .select-btn{background:var(--blue);color:var(--white);border-color:var(--blue)}
+.pkg-card[data-tier="transform"].selected .select-btn{background:var(--purple);color:var(--white);border-color:var(--purple)}
+.feat-list{list-style:none}
+.feat-list li{padding:8px 0;border-bottom:1px solid var(--g100);font-size:13px;color:var(--g600);display:flex;align-items:flex-start;gap:10px}
+.feat-list li:last-child{border-bottom:none}
+.f-icon{flex-shrink:0;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.f-icon svg{width:11px;height:11px;stroke-width:3;fill:none}
+.pkg-card[data-tier="launch"] .f-icon{background:rgba(16,185,129,0.1)}.pkg-card[data-tier="launch"] .f-icon svg{stroke:var(--green)}
+.pkg-card[data-tier="accel"] .f-icon{background:rgba(59,130,246,0.1)}.pkg-card[data-tier="accel"] .f-icon svg{stroke:var(--blue)}
+.pkg-card[data-tier="transform"] .f-icon{background:rgba(139,92,246,0.1)}.pkg-card[data-tier="transform"] .f-icon svg{stroke:var(--purple)}
+.fb{font-weight:700;color:var(--g800)}
+.tip{border-bottom:1px dashed var(--g400);cursor:help;position:relative}
+.tip-box{display:none;position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);background:var(--g900);color:var(--white);padding:12px 16px;border-radius:10px;font-size:12px;line-height:1.6;width:260px;z-index:100;box-shadow:0 20px 40px rgba(0,0,0,0.15);border:1px solid rgba(59,130,246,0.2);font-weight:400}
+.tip-box::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:7px solid transparent;border-top-color:var(--g900)}
+.tip:hover .tip-box{display:block}
+.leads-note{background:var(--orange-light);border:1px solid var(--orange-border);border-radius:var(--radius);padding:16px 20px;font-size:13px;color:var(--g700);display:flex;align-items:flex-start;gap:10px}
+.leads-note strong{color:#B45309;font-weight:700}
+
+/* Tabs row with right-side CTA */
+.pkg-tabs-row{display:flex;justify-content:space-between;align-items:center;gap:24px;margin:28px 0 32px;flex-wrap:wrap}
+.pkg-tabs-row .pkg-tabs{margin:0}
+.pkg-finder-pill{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;background:var(--white);border:1.5px solid rgba(59,130,246,0.4);border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;text-decoration:none}
+.pkg-finder-pill:hover{border-color:var(--blue);background:linear-gradient(135deg,rgba(59,130,246,0.06),rgba(34,211,238,0.03));transform:translateY(-1px);box-shadow:0 4px 14px rgba(59,130,246,0.2)}
+.pkg-finder-pill-prompt{font-size:12.5px;color:var(--g500);font-weight:500}
+.pkg-finder-pill-action{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:800;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:0.2px}
+
+/* COMPACT CARDS (default view) */
+.compact-cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:8px}
+.compact-card{background:var(--white);border:1.5px solid var(--g200);border-radius:14px;padding:22px 20px;position:relative;transition:all .25s;cursor:pointer;overflow:hidden;display:flex;flex-direction:column}
+.compact-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;z-index:2}
+.compact-card[data-tier="launch"]::before{background:linear-gradient(90deg,var(--green),var(--green-neon))}
+.compact-card[data-tier="accel"]::before{background:linear-gradient(90deg,var(--blue),var(--blue-neon))}
+.compact-card[data-tier="transform"]::before{background:linear-gradient(90deg,var(--purple),var(--purple-neon))}
+.compact-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.2)}
+.compact-card[data-tier="launch"].selected{border-color:var(--green);box-shadow:0 0 0 3px var(--green-glow),0 0 24px var(--green-glow)}
+.compact-card[data-tier="accel"].selected{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-glow),0 0 24px var(--blue-glow)}
+.compact-card[data-tier="transform"].selected{border-color:var(--purple);box-shadow:0 0 0 3px var(--purple-glow),0 0 24px var(--purple-glow)}
+.compact-card-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;margin-bottom:6px;line-height:1.1;letter-spacing:-0.3px}
+.compact-card[data-tier="launch"] .compact-card-name{color:var(--green)}
+.compact-card[data-tier="accel"] .compact-card-name{color:var(--blue)}
+.compact-card[data-tier="transform"] .compact-card-name{color:var(--purple)}
+.compact-card-audience{font-size:12px;color:var(--g500);font-weight:600;margin-bottom:8px}
+.compact-card-tagline{font-size:12.5px;color:var(--g500);font-style:italic;line-height:1.5;margin-bottom:16px;min-height:38px}
+.compact-card-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:38px;font-weight:800;color:var(--g900);margin-bottom:2px;line-height:1.05;letter-spacing:-0.8px}
+.compact-card-price-prefix{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--g500);margin-right:3px;letter-spacing:0;vertical-align:baseline}
+.compact-card[data-tier="launch"] .compact-card-price{color:var(--green)}
+.compact-card[data-tier="accel"] .compact-card-price{color:var(--blue)}
+.compact-card[data-tier="transform"] .compact-card-price{color:var(--purple)}
+.compact-card-price-note{font-size:11px;color:var(--g400);margin-bottom:14px}
+.compact-card-cta{display:block;width:100%;padding:10px;border:1.5px solid var(--g200);background:var(--white);color:var(--g700);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;border-radius:9px;cursor:pointer;transition:all .2s;text-align:center;margin-bottom:18px}
+.compact-card:hover .compact-card-cta{border-color:var(--g400)}
+.compact-card[data-tier="launch"].selected .compact-card-cta{background:var(--green);border-color:var(--green);color:var(--white)}
+.compact-card[data-tier="accel"].selected .compact-card-cta{background:var(--blue);border-color:var(--blue);color:var(--white)}
+.compact-card[data-tier="transform"].selected .compact-card-cta{background:var(--purple);border-color:var(--purple);color:var(--white)}
+.compact-card-features{list-style:none;padding:0;margin:0;border-top:1px solid var(--g100);padding-top:14px;flex:1}
+.compact-card-features li{font-size:12.5px;color:var(--g600);line-height:1.55;padding:6px 0 6px 18px;position:relative}
+.compact-card-features li::before{content:'';position:absolute;left:0;top:12px;width:6px;height:6px;border-radius:50%}
+.compact-card[data-tier="launch"] .compact-card-features li::before{background:var(--green)}
+.compact-card[data-tier="accel"] .compact-card-features li::before{background:var(--blue)}
+.compact-card[data-tier="transform"] .compact-card-features li::before{background:var(--purple)}
+.compact-card-features li strong{color:var(--g900);font-weight:700}
+
+/* "See full comparison" toggle */
+.full-comparison-toggle{text-align:center;margin:16px 0 8px}
+.full-comparison-btn{padding:11px 22px;background:linear-gradient(135deg,rgba(59,130,246,0.06),rgba(34,211,238,0.03));border:1.5px solid rgba(59,130,246,0.3);border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:var(--blue);display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+.full-comparison-btn:hover{background:linear-gradient(135deg,rgba(59,130,246,0.12),rgba(34,211,238,0.06));border-color:var(--blue);transform:translateY(-1px);box-shadow:0 4px 14px rgba(59,130,246,0.18)}
+.full-comparison-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;transition:transform .25s}
+.full-comparison-btn.expanded svg{transform:rotate(180deg)}
+.full-comparison-wrap{display:none;margin-top:18px}
+.full-comparison-wrap.open{display:block;animation:fadeUp .3s ease}
+@media(max-width:860px){
+  .compact-cards-grid{grid-template-columns:1fr;max-width:420px;margin:0 auto 8px}
+}
+
+/* COMPARISON TABLE */
+.cmp-wrap{background:var(--white);border:1.5px solid var(--g200);border-radius:16px;overflow:hidden;margin-top:8px}
+.cmp-headerrow{display:grid;grid-template-columns:220px 1fr 1fr 1fr;background:var(--g50);border-bottom:2px solid var(--g200)}
+.cmp-corner{padding:18px}
+.cmp-tier{padding:24px 18px 22px;text-align:center;border-left:1px solid var(--g200);cursor:pointer;transition:all .25s;background:var(--white);position:relative}
+.cmp-tier::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;z-index:2}
+.cmp-tier[data-tier="launch"]{background:linear-gradient(180deg,rgba(16,185,129,0.08),rgba(16,185,129,0.01))}
+.cmp-tier[data-tier="accel"]{background:linear-gradient(180deg,rgba(59,130,246,0.08),rgba(59,130,246,0.01))}
+.cmp-tier[data-tier="transform"]{background:linear-gradient(180deg,rgba(139,92,246,0.08),rgba(139,92,246,0.01))}
+.cmp-tier[data-tier="launch"]::before{background:linear-gradient(90deg,var(--green),var(--green-neon))}
+.cmp-tier[data-tier="accel"]::before{background:linear-gradient(90deg,var(--blue),var(--blue-neon))}
+.cmp-tier[data-tier="transform"]::before{background:linear-gradient(90deg,var(--purple),var(--purple-neon))}
+.cmp-tier[data-tier="launch"]:hover{background:linear-gradient(180deg,rgba(16,185,129,0.18),rgba(16,185,129,0.04));box-shadow:inset 0 -2px 0 var(--green)}
+.cmp-tier[data-tier="accel"]:hover{background:linear-gradient(180deg,rgba(59,130,246,0.18),rgba(59,130,246,0.04));box-shadow:inset 0 -2px 0 var(--blue)}
+.cmp-tier[data-tier="transform"]:hover{background:linear-gradient(180deg,rgba(139,92,246,0.18),rgba(139,92,246,0.04));box-shadow:inset 0 -2px 0 var(--purple)}
+/* Column hover highlight via :has() */
+.cmp-wrap:has(.cmp-tier[data-tier="launch"]:hover) .cmp-row > .cmp-cell:nth-child(2):not(.cmp-merged){background:linear-gradient(135deg,rgba(16,185,129,0.16),rgba(34,211,238,0.06))}
+.cmp-wrap:has(.cmp-tier[data-tier="accel"]:hover) .cmp-row > .cmp-cell:nth-child(3):not(.cmp-merged){background:linear-gradient(135deg,rgba(59,130,246,0.16),rgba(34,211,238,0.06))}
+.cmp-wrap:has(.cmp-tier[data-tier="transform"]:hover) .cmp-row > .cmp-cell:nth-child(4):not(.cmp-merged){background:linear-gradient(135deg,rgba(139,92,246,0.16),rgba(59,130,246,0.06))}
+.cmp-tier-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--g900);margin-bottom:4px}
+.cmp-tier[data-tier="launch"] .cmp-tier-name{color:var(--green)}
+.cmp-tier[data-tier="accel"] .cmp-tier-name{color:var(--blue)}
+.cmp-tier[data-tier="transform"] .cmp-tier-name{color:var(--purple)}
+.cmp-tier-fit{font-size:12.5px;color:var(--g500);margin-bottom:14px;font-style:italic;line-height:1.5;min-height:56px;padding:0 4px}
+.cmp-tier-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--g900);margin-bottom:14px;line-height:1.1}
+.cmp-tier[data-tier="launch"] .cmp-tier-price{color:var(--green)}
+.cmp-tier[data-tier="accel"] .cmp-tier-price{color:var(--blue)}
+.cmp-tier[data-tier="transform"] .cmp-tier-price{color:var(--purple)}
+.cmp-tier-price sup{font-size:11px;color:var(--g400);font-weight:600;margin-left:2px;top:-6px;position:relative}
+.cmp-tier-cta{display:inline-block;padding:8px 22px;border:1.5px solid var(--g300);border-radius:8px;font-size:13px;font-weight:600;color:var(--g700);transition:all .2s}
+.cmp-tier:hover .cmp-tier-cta{border-color:var(--g500);color:var(--g900)}
+.cmp-tier.selected{background:var(--g50)}
+.cmp-tier[data-tier="launch"].selected{box-shadow:inset 0 -3px 0 var(--green)}
+.cmp-tier[data-tier="accel"].selected{box-shadow:inset 0 -3px 0 var(--blue)}
+.cmp-tier[data-tier="transform"].selected{box-shadow:inset 0 -3px 0 var(--purple)}
+.cmp-tier[data-tier="launch"].selected .cmp-tier-cta{background:var(--green);border-color:var(--green);color:var(--white)}
+.cmp-tier[data-tier="accel"].selected .cmp-tier-cta{background:var(--blue);border-color:var(--blue);color:var(--white)}
+.cmp-tier[data-tier="transform"].selected .cmp-tier-cta{background:var(--purple);border-color:var(--purple);color:var(--white)}
+.cmp-grp{padding:10px 22px;background:linear-gradient(135deg,rgba(59,130,246,0.08),rgba(34,211,238,0.05));border-top:1px solid rgba(59,130,246,0.18);border-bottom:1px solid rgba(59,130,246,0.18);position:relative;display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+.cmp-grp::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--blue),var(--cyan))}
+.cmp-grp-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:800;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:1.4px;text-transform:uppercase;display:inline-block;flex-shrink:0}
+.cmp-grp-sub{font-size:11.5px;color:var(--g600);font-weight:500;text-transform:none;letter-spacing:normal;margin-top:0;text-align:right}
+.cmp-row.cmp-glance .cmp-cell{font-weight:700;color:var(--g800);font-size:14px;padding:14px 16px}
+.cmp-row.cmp-glance .cmp-cell strong{font-size:17px}
+.cmp-row.cmp-glance .cmp-cell:nth-child(2){background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(34,211,238,0.06));color:var(--green)}
+.cmp-row.cmp-glance .cmp-cell:nth-child(3){background:linear-gradient(135deg,rgba(59,130,246,0.12),rgba(34,211,238,0.06));color:var(--blue)}
+.cmp-row.cmp-glance .cmp-cell:nth-child(4){background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(59,130,246,0.06));color:var(--purple)}
+.cmp-row.cmp-hidden{display:none}
+.cmp-row.cmp-hidden.cmp-show{display:grid}
+.cmp-toggle{padding:11px 20px;background:var(--white);text-align:center;font-size:12.5px;color:var(--blue);font-weight:600;cursor:pointer;border-top:1px solid var(--g100);transition:background .2s;user-select:none}
+.cmp-toggle:hover{background:rgba(59,130,246,0.04)}
+.cmp-toggle .cmp-toggle-icon{display:inline-block;vertical-align:middle;margin-left:6px;transition:transform .25s}
+.cmp-toggle.expanded .cmp-toggle-icon{transform:rotate(180deg)}
+.cmp-row{display:grid;grid-template-columns:220px 1fr 1fr 1fr;border-top:1px solid var(--g100);transition:background .15s}
+.cmp-row:hover{background:var(--g50)}
+.cmp-lbl{padding:16px 20px;font-size:13px;font-weight:700;color:var(--g900);line-height:1.4;background:var(--g50);border-right:1.5px solid var(--g200)}
+.cmp-cell{padding:16px;font-size:13px;color:var(--g600);line-height:1.55;border-left:1px solid var(--g100);background:var(--white)}
+.cmp-cell strong{color:var(--g900);font-weight:700}
+.cmp-cell.cmp-empty{color:var(--g300);font-weight:600;text-align:center}
+.cmp-cell.cmp-merged{grid-column:span 3;text-align:center;background:linear-gradient(180deg,rgba(59,130,246,0.05),rgba(34,211,238,0.04));font-weight:500;color:var(--g700)}
+.cmp-footnote{padding:14px 20px;background:var(--g50);border-top:1px solid var(--g200);font-size:11.5px;color:var(--g500);line-height:1.6;margin:0}
+
+/* RISKS TABS (compact) */
+.risks-wrap{background:var(--white);border:1px solid var(--g200);border-radius:12px;padding:18px 22px 20px;margin-top:56px}
+.risks-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:var(--g900);margin-bottom:2px}
+.risks-sub{font-size:11.5px;color:var(--g500);line-height:1.55;margin-bottom:12px}
+.risks-tabs{display:flex;gap:0;margin-bottom:12px;border-bottom:1px solid var(--g200)}
+.risks-tab{padding:7px 16px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--g500);transition:all .2s;margin-bottom:-1px}
+.risks-tab:hover{color:var(--g800)}
+.risks-tab.active[data-tier="launch"]{color:var(--green);border-bottom-color:var(--green)}
+.risks-tab.active[data-tier="accel"]{color:var(--blue);border-bottom-color:var(--blue)}
+.risks-tab.active[data-tier="transform"]{color:var(--purple);border-bottom-color:var(--purple)}
+.risks-panel{display:none}
+.risks-panel.active{display:block;animation:fadeUp .3s ease}
+.risks-row{display:grid;grid-template-columns:1fr 1.7fr;gap:14px;padding:10px 0;border-bottom:1px solid var(--g100)}
+.risks-row:last-child{border-bottom:none}
+.risks-name{font-size:12.5px;font-weight:700;color:var(--g800);line-height:1.5}
+.risks-handle{font-size:12px;color:var(--g600);line-height:1.6}
+@media(max-width:860px){
+  .cmp-wrap{overflow-x:auto}
+  .cmp-headerrow,.cmp-row{min-width:780px}
+  .risks-row{grid-template-columns:1fr;gap:6px;padding:14px 0}
+}
+
+/* PROFESSIONAL SERVICES */
+#pro-services{background:var(--white)}
+.ps-tabs{display:flex;gap:10px;margin:36px 0 0;flex-wrap:wrap}
+.ps-tab{padding:10px 18px;border:1.5px solid var(--g200);background:var(--g50);color:var(--g600);border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;transition:all .2s;display:flex;align-items:center;gap:8px}
+.ps-tab:hover{border-color:var(--blue);color:var(--blue);background:rgba(59,130,246,0.03)}
+.ps-tab.active{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.ps-panel{display:none;margin-top:28px;animation:fadeUp .3s ease}
+.ps-panel.active{display:grid;grid-template-columns:1fr 1.35fr;gap:28px;align-items:start}
+.ps-left{}
+.ps-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:20px}
+.ps-emoji{font-size:44px;line-height:1}
+.ps-meta{}
+.ps-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--g900);margin-bottom:4px}
+.ps-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--blue)}
+.ps-tag-only{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;background:var(--orange-light);color:var(--orange);margin-top:4px}
+.ps-tagline{font-size:14px;color:var(--g600);line-height:1.65;margin-bottom:20px}
+.ps-deliverables{list-style:none;display:flex;flex-direction:column;gap:0}
+.ps-deliverables li{font-size:13.5px;color:var(--g600);display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--g100)}
+.ps-deliverables li:last-child{border-bottom:none}
+.ps-bullet{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:8px}
+.ps-deliverables li strong{color:var(--g800)}
+
+/* Case Study */
+.ps-case{background:var(--g50);border:1.5px solid var(--g200);border-radius:16px;padding:28px}
+.ps-case-eyebrow{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--g400);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.ps-case-eyebrow::before{content:'';display:inline-block;width:20px;height:2px;background:var(--blue);flex-shrink:0}
+.ps-case-image{aspect-ratio:16/9;background:linear-gradient(135deg,rgba(59,130,246,0.05),rgba(139,92,246,0.03));border:1.5px dashed rgba(59,130,246,0.3);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;margin:0 0 18px;overflow:hidden;position:relative}
+.ps-case-image::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.04) 1px,transparent 1px);background-size:18px 18px;opacity:0.6;pointer-events:none}
+.ps-case-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:9px}
+.ps-case-image-icon{font-size:30px;opacity:0.55;position:relative;z-index:1}
+.ps-case-image-label{font-size:11px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:1.2px;position:relative;z-index:1}
+.ps-case-image-sub{font-size:10.5px;color:var(--g400);position:relative;z-index:1;text-align:center;padding:0 16px}
+.ps-case-tags{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+.ps-case-tag{background:var(--g200);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--g600)}
+.ps-case-block{margin-bottom:14px}
+.ps-case-lbl{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--g400);margin-bottom:4px}
+.ps-case-txt{font-size:13px;color:var(--g700);line-height:1.65}
+.ps-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 16px}
+.ps-metric{text-align:center;background:linear-gradient(135deg,rgba(59,130,246,0.06),rgba(34,211,238,0.03));border-radius:10px;padding:14px 8px;border:1px solid rgba(59,130,246,0.18)}
+.ps-metric-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;line-height:1.1;letter-spacing:-0.3px}
+.ps-metric-lbl{font-size:10.5px;color:var(--g500);font-weight:600;line-height:1.3}
+.ps-case-image{cursor:zoom-in;transition:transform .2s}
+.ps-case-image:hover{transform:scale(1.005)}
+.ps-case-blocks{position:relative;max-height:120px;overflow:hidden;margin-top:14px;transition:max-height .4s ease}
+.ps-case-blocks::after{content:'';position:absolute;bottom:0;left:0;right:0;height:64px;background:linear-gradient(180deg,rgba(255,255,255,0) 0%,var(--white) 80%);pointer-events:none;transition:opacity .25s}
+.ps-case-blocks.open{max-height:1200px}
+.ps-case-blocks.open::after{opacity:0}
+.ps-case-toggle-btn{padding:8px 14px;background:var(--white);border:1.5px solid var(--g200);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:600;color:var(--blue);cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-top:8px;transition:all .2s}
+.ps-case-toggle-btn:hover{border-color:var(--blue);background:rgba(59,130,246,0.04)}
+.ps-case-toggle-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;transition:transform .22s}
+.ps-case-toggle-btn.expanded svg{transform:rotate(180deg)}
+
+/* FINDER MODAL */
+.finder-modal{position:fixed;inset:0;background:rgba(10,15,30,0.7);z-index:9998;display:none;align-items:flex-start;justify-content:center;padding:48px 24px;overflow-y:auto;backdrop-filter:blur(6px)}
+.finder-modal.open{display:flex;animation:fadeUp .25s ease}
+.finder-modal-content{background:var(--white);border-radius:16px;width:100%;max-width:1080px;position:relative;box-shadow:0 24px 80px rgba(0,0,0,0.35);margin:auto 0}
+.finder-modal-close{position:absolute;top:16px;right:18px;width:36px;height:36px;border-radius:50%;border:1px solid var(--g200);background:var(--white);color:var(--g600);font-size:22px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:10}
+.finder-modal-close:hover{background:var(--g50);color:var(--g900);transform:rotate(90deg)}
+.finder-modal #quiz{padding:32px 36px 28px;background:transparent}
+.finder-modal #quiz .section-inner{max-width:none}
+
+/* Inline finder CTA inside "At a glance" group header */
+.cmp-finder-cta-inline{background:var(--white);border:1.5px solid rgba(59,130,246,0.4);padding:6px 14px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;line-height:1.4;transition:all .2s;text-transform:none;letter-spacing:normal}
+.cmp-finder-cta-inline:hover{border-color:var(--blue);background:linear-gradient(135deg,rgba(59,130,246,0.06),rgba(34,211,238,0.03));transform:translateY(-1px);box-shadow:0 4px 14px rgba(59,130,246,0.2)}
+.cmp-finder-cta-prompt{font-size:11.5px;color:var(--g500);font-weight:500;text-transform:none;letter-spacing:normal}
+.cmp-finder-cta-action{font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;font-weight:800;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:0.2px}
+@media(max-width:860px){
+  .finder-modal{padding:0}
+  .finder-modal-content{max-width:100%;border-radius:0;min-height:100vh;margin:0}
+  .finder-modal #quiz{padding:24px 18px}
+}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;background:rgba(10,15,30,0.94);z-index:9999;display:none;align-items:center;justify-content:center;padding:60px 40px 40px;cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex;animation:fadeUp .25s ease}
+.lightbox-img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;box-shadow:0 12px 60px rgba(0,0,0,0.5)}
+.lightbox-close{position:fixed;top:24px;right:32px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.08);color:var(--white);font-size:26px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(8px)}
+.lightbox-close:hover{background:rgba(255,255,255,0.18);border-color:rgba(255,255,255,0.3);transform:rotate(90deg)}
+
+/* ADOPTION COMMITMENT */
+#adoption{background:var(--white)}
+.adoption-bignum{font-family:'Plus Jakarta Sans',sans-serif;font-size:96px;font-weight:800;line-height:1;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:12px 0 16px;letter-spacing:-3px}
+.adoption-headline{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--g900);line-height:1.25;margin-bottom:10px}
+.adoption-sub{font-size:15px;color:var(--g500);line-height:1.6}
+.adoption-block{max-width:780px;margin:44px auto 0}
+.adoption-block-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--g900);margin-bottom:6px}
+.adoption-block-sub{font-size:13.5px;color:var(--g500);line-height:1.6;margin-bottom:14px}
+.adoption-actives{width:100%;border-collapse:collapse;margin-top:10px}
+.adoption-actives th{text-align:left;padding:14px 16px 14px 0;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:800;color:var(--g900);width:120px;vertical-align:top;border-bottom:1px solid var(--g100);white-space:nowrap}
+.adoption-actives td{padding:14px 0;font-size:13px;color:var(--g600);line-height:1.65;border-bottom:1px solid var(--g100)}
+.adoption-actives tr:last-child th,.adoption-actives tr:last-child td{border-bottom:none}
+.adoption-rem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:10px}
+.adoption-rem-card{background:var(--g50);border:1.5px solid var(--g200);border-radius:14px;padding:22px 20px;border-top-width:3px;border-top-style:solid}
+.adoption-rem-card[data-tier="launch"]{border-top-color:var(--green)}
+.adoption-rem-card[data-tier="accel"]{border-top-color:var(--blue)}
+.adoption-rem-card[data-tier="transform"]{border-top-color:var(--purple)}
+.adoption-rem-tier{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:12px}
+.adoption-rem-card[data-tier="launch"] .adoption-rem-tier{color:var(--green)}
+.adoption-rem-card[data-tier="accel"] .adoption-rem-tier{color:var(--blue)}
+.adoption-rem-card[data-tier="transform"] .adoption-rem-tier{color:var(--purple)}
+.adoption-rem-card ul{list-style:none;padding:0;margin:0}
+.adoption-rem-card li{font-size:13px;color:var(--g600);line-height:1.6;padding:6px 0 6px 20px;position:relative}
+.adoption-rem-card li:before{content:'✓';position:absolute;left:0;color:var(--green);font-weight:700}
+@media(max-width:760px){.adoption-rem-grid{grid-template-columns:1fr}.adoption-bignum{font-size:72px;letter-spacing:-2px}.adoption-headline{font-size:22px}.adoption-actives th{width:100px;font-size:12px}.adoption-actives td{font-size:12.5px}}
+
+/* ADD-ONS */
+#addons{background:var(--white)}
+.addons-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+.addon-card{background:var(--g50);border:1.5px solid var(--g200);border-radius:16px;padding:28px}
+.addon-hdr{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.addon-emoji{font-size:22px;line-height:1}
+.addon-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--g900)}
+.addon-sub{font-size:13.5px;color:var(--g600);line-height:1.65;margin-bottom:20px}
+.addon-opt{background:var(--white);border-radius:10px;padding:14px 16px;margin-bottom:10px;border-left:3px solid var(--g200)}
+.addon-opt.green{border-left-color:var(--green)}
+.addon-opt.blue{border-left-color:var(--blue)}
+.addon-opt-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:4px}
+.addon-opt-name{font-weight:700;color:var(--g900);font-size:14px}
+.addon-opt-price{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px}
+.addon-opt-price.free{color:var(--green)}
+.addon-opt-price.paid{color:var(--blue)}
+.addon-opt-desc{font-size:13px;color:var(--g600);line-height:1.6}
+.addon-price-block{background:var(--white);border-radius:10px;padding:18px 20px;margin-bottom:14px;border-left:3px solid var(--blue)}
+.addon-price-big{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:800;color:var(--g900);line-height:1.1}
+.addon-price-big small{font-size:14px;color:var(--g500);font-weight:500}
+.addon-price-note{font-size:12px;color:var(--g500);margin-top:4px;margin-bottom:14px}
+.addon-price-desc{font-size:13px;color:var(--g600);line-height:1.6}
+.addon-finep{font-size:11px;color:var(--g400);line-height:1.5}
+@media(max-width:760px){.addons-grid{grid-template-columns:1fr}}
+
+/* FAQ */
+#faq{background:var(--g50)}
+.faq-list{max-width:720px;margin-top:24px}
+.faq-item{border-bottom:1px solid var(--g200)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:13px 0;cursor:pointer;font-size:15px;font-weight:600;color:var(--g800);gap:16px;user-select:none;transition:color .2s}
+.faq-q:hover{color:var(--blue)}
+.faq-chevron{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.5;flex-shrink:0;transition:transform .25s}
+.faq-item.open .faq-chevron{transform:rotate(180deg)}
+.faq-item.open .faq-q{color:var(--blue)}
+.faq-a{display:none;padding-bottom:14px;font-size:14px;color:var(--g600);line-height:1.7}
+.faq-item.open .faq-a{display:block;animation:fadeUp .2s ease}
+
+/* CTA FOOTER */
+#cta{background:var(--navy);padding:60px 24px;text-align:center;position:relative;overflow:hidden;z-index:1}
+#cta::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(59,130,246,0.15) 0%,transparent 55%),radial-gradient(ellipse at 70% 50%,rgba(139,92,246,0.1) 0%,transparent 50%)}
+.cta-inner{position:relative;z-index:1}
+.cta-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:38px;font-weight:800;color:var(--white);margin-bottom:12px;line-height:1.15}
+.cta-sub{font-size:16px;color:var(--g400);max-width:460px;margin:0 auto 36px;line-height:1.65}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+
+/* SUMMARY BAR */
+.summary-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.96);backdrop-filter:blur(12px);border-top:1px solid var(--g200);padding:16px 24px;display:flex;align-items:center;justify-content:center;gap:40px;z-index:50;box-shadow:0 -4px 20px rgba(0,0,0,0.07);transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.summary-bar.visible{transform:translateY(0)}
+.sum-items{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sum-chip{background:var(--g100);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:500;color:var(--g600);display:flex;align-items:center;gap:6px}
+.chip-price{font-weight:700;color:var(--blue)}
+.sum-total{display:flex;align-items:center;gap:12px}
+.sum-label{font-size:13px;color:var(--g500)}
+.sum-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--navy)}
+.sum-cta{padding:12px 28px;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;color:var(--white);background:linear-gradient(135deg,var(--blue),var(--purple));box-shadow:0 4px 15px rgba(59,130,246,0.3);transition:all .2s}
+.sum-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(59,130,246,0.4)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── BATCH 3 — POLISH ─── */
+
+/* Stronger card hovers — bigger lift, tier-tinted glow, more depth */
+.compact-card{transition:transform .28s cubic-bezier(.16,1,.3,1),box-shadow .28s cubic-bezier(.16,1,.3,1),border-color .25s}
+.compact-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(15,23,42,0.10),0 4px 12px rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.35)}
+.compact-card[data-tier="launch"]:hover{box-shadow:0 16px 40px rgba(15,23,42,0.08),0 4px 16px rgba(16,185,129,0.22);border-color:rgba(16,185,129,0.45)}
+.compact-card[data-tier="accel"]:hover{box-shadow:0 16px 40px rgba(15,23,42,0.08),0 4px 16px rgba(59,130,246,0.25);border-color:rgba(59,130,246,0.45)}
+.compact-card[data-tier="transform"]:hover{box-shadow:0 16px 40px rgba(15,23,42,0.08),0 4px 16px rgba(139,92,246,0.25);border-color:rgba(139,92,246,0.45)}
+
+.phase{transition:transform .28s cubic-bezier(.16,1,.3,1),box-shadow .28s cubic-bezier(.16,1,.3,1),border-color .25s}
+.phase:hover{transform:translateY(-5px);box-shadow:0 14px 32px rgba(15,23,42,0.08),0 4px 12px rgba(59,130,246,0.15);border-color:rgba(59,130,246,0.35)}
+
+.addon-card{transition:transform .28s cubic-bezier(.16,1,.3,1),box-shadow .28s cubic-bezier(.16,1,.3,1),border-color .25s}
+.addon-card:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(15,23,42,0.08),0 4px 14px rgba(59,130,246,0.12);border-color:rgba(59,130,246,0.3)}
+.addon-card:hover .addon-emoji{transform:scale(1.18) rotate(-4deg)}
+.addon-emoji{transition:transform .35s cubic-bezier(.34,1.56,.64,1);transform-origin:center;display:inline-block}
+
+.ps-case{transition:transform .28s cubic-bezier(.16,1,.3,1),box-shadow .28s cubic-bezier(.16,1,.3,1),border-color .25s}
+.ps-case:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(15,23,42,0.08),0 4px 14px rgba(59,130,246,0.10);border-color:rgba(59,130,246,0.3)}
+
+/* Animated gradients — slow flow on hero accent + gradient text */
+@keyframes gradientFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+.hero h1 .accent{background:linear-gradient(135deg,var(--blue-neon),var(--cyan),var(--purple-neon,#a78bfa),var(--blue-neon));background-size:300% 300%;animation:gradientFlow 8s ease-in-out infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* Animated tier top-border on compact cards (subtle shimmer flow) */
+.compact-card[data-tier="launch"]::before,
+.compact-card[data-tier="accel"]::before,
+.compact-card[data-tier="transform"]::before{background-size:200% 100%;transition:background-position .5s}
+.compact-card[data-tier="launch"]:hover::before{background:linear-gradient(90deg,var(--green),var(--green-neon),var(--green));background-size:200% 100%;animation:gradientFlow 2.2s ease-in-out infinite}
+.compact-card[data-tier="accel"]:hover::before{background:linear-gradient(90deg,var(--blue),var(--blue-neon),var(--cyan),var(--blue));background-size:200% 100%;animation:gradientFlow 2.2s ease-in-out infinite}
+.compact-card[data-tier="transform"]:hover::before{background:linear-gradient(90deg,var(--purple),var(--purple-neon),var(--blue),var(--purple));background-size:200% 100%;animation:gradientFlow 2.2s ease-in-out infinite}
+
+/* Primary CTA — shine sweep on hover */
+.btn-primary{position:relative;overflow:hidden}
+.btn-primary::after{content:'';position:absolute;top:0;left:-75%;width:50%;height:100%;background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,0.28) 50%,transparent 100%);transform:skewX(-20deg);transition:left .6s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.btn-primary:hover::after{left:125%}
+.nav-cta{position:relative;overflow:hidden}
+.nav-cta::after{content:'';position:absolute;top:0;left:-75%;width:50%;height:100%;background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,0.25) 50%,transparent 100%);transform:skewX(-20deg);transition:left .55s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.nav-cta:hover::after{left:125%}
+
+/* Case image — subtle glow on hover only (no scale) */
+.ps-case-image{transition:box-shadow .25s}
+.ps-case-image:hover{transform:none;box-shadow:0 8px 24px rgba(59,130,246,0.12)}
+
+/* Section title gradient accent on the bottom-bar (when present) */
+.section-title{transition:transform .3s cubic-bezier(.16,1,.3,1)}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce){
+  .hero h1 .accent,
+  .compact-card:hover::before{animation:none !important}
+  .btn-primary::after,.nav-cta::after{display:none}
+  *{transition-duration:.01ms !important}
+}
+
+@media(max-width:1000px){
+  .cards-grid{grid-template-columns:1fr;max-width:420px;margin:0 auto 20px}
+  .phases-track{grid-template-columns:1fr 1fr;gap:24px}.phases-line{display:none}
+  .ps-panel.active{grid-template-columns:1fr}
+  .hero h1{font-size:26px}
+  .quiz-layout{grid-template-columns:1fr}
+  .quiz-right{position:static}
+}
+@media(max-width:640px){
+  .hero h1{font-size:22px}
+  .hero-stats{gap:20px}
+  .hero-stat-div{display:none}
+  .phases-track{grid-template-columns:1fr}
+  .summary-bar{flex-direction:column;gap:12px;padding:14px 16px}
+  nav .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://rework.com" class="nav-logo"><img src="assets/rework_logo.svg" alt="Rework" class="nav-logo-img">Rework</a>
+  <div class="nav-links">
+    <a href="#packages" class="nav-link">Implementation Package</a>
+    <a href="#quiz" class="nav-link" onclick="jumpToFinder(event)">Find my package</a>
+    <a href="#how-it-works" class="nav-link">How it works</a>
+    <a href="#pro-services" class="nav-link">Professional Services</a>
+    <a href="https://rework.com" class="nav-cta">Talk to us →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Go live on Rework.<br><span class="accent">Done right, from day one.</span></h1>
+  <p class="hero-sub">Expert-led setup that configures your pipeline, trains your team, and drives adoption — not just access.</p>
+  <div class="hero-actions">
+    <a href="#quiz" class="btn-primary" onclick="jumpToFinder(event)">Find my package →</a>
+    <a href="#packages" class="btn-ghost">View all packages</a>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="section" id="packages">
+  <div class="section-inner">
+    <div class="section-title" style="margin-bottom:20px">Implementation Packages</div>
+    <div class="pkg-tabs-row">
+      <div class="pkg-tabs">
+        <button class="pkg-tab active" onclick="switchPkg('sales',this)">Sales Ops<span class="pkg-tab-sub">The modern Growth OS</span></button>
+        <button class="pkg-tab" onclick="switchPkg('lead',this)">Lead Ops<span class="pkg-tab-sub">The modern Lead OS</span></button>
+        <button class="pkg-tab" onclick="switchPkg('work',this)">Work Ops<span class="pkg-tab-sub">The modern Work OS</span></button>
+        <button class="pkg-tab" onclick="switchPkg('people',this)">People Ops<span class="pkg-tab-sub">The modern People OS</span></button>
+      </div>
+      <button class="pkg-finder-pill" id="pkgFinderPill" onclick="openFinderModal()" aria-label="Open package finder">
+        <span class="pkg-finder-pill-prompt">Not sure?</span>
+        <span class="pkg-finder-pill-action">Find my package →</span>
+      </button>
+    </div>
+
+    <!-- SALES OPS -->
+    <div id="pkg-sales">
+      <div class="compact-cards-grid">
+        <div class="compact-card" data-tier="launch" data-product="sales" data-price="500" data-name="Sales Ops · Launchpad" onclick="toggleCard(this)">
+          <div class="compact-card-name">Launchpad</div>
+          <div class="compact-card-audience">Best for 1–10 sales teams</div>
+          <div class="compact-card-tagline">Get your sales team started on Rework in weeks, not months.</div>
+          <div class="compact-card-price"><span class="compact-card-price-prefix">from</span> $500</div>
+          <div class="compact-card-price-note">One-time implementation fee</div>
+          <div class="compact-card-cta">Select</div>
+          <ul class="compact-card-features">
+            <li><strong>3 working sessions</strong> in <strong>3–5 weeks</strong></li>
+            <li>1 customized sales pipeline</li>
+            <li>Meta Ads + 1 lead channel connected</li>
+            <li>Self-service data migration (templates + guide)</li>
+            <li>Basic automations: assignment, follow-up, SLA</li>
+            <li>1 group training workshop (90 min, online)</li>
+            <li>Standard Help Center + email support</li>
+            <li>Quarterly active-usage report</li>
+          </ul>
+        </div>
+        <div class="compact-card" data-tier="accel" data-product="sales" data-price="1500" data-name="Sales Ops · Accelerator" onclick="toggleCard(this)">
+          <div class="compact-card-name">Accelerator</div>
+          <div class="compact-card-audience">Best for 10–50 sales teams</div>
+          <div class="compact-card-tagline">Build a sales machine with tailored processes and hands-on support.</div>
+          <div class="compact-card-price"><span class="compact-card-price-prefix">from</span> $1,500</div>
+          <div class="compact-card-price-note">One-time implementation fee</div>
+          <div class="compact-card-cta">Select</div>
+          <ul class="compact-card-features">
+            <li><strong>6–8 working sessions</strong> in <strong>4–8 weeks</strong></li>
+            <li><strong>Customized pipelines</strong> tailored to your process</li>
+            <li>Multi-channel lead routing (Meta Ads + chat channels)</li>
+            <li><strong>Rework-handled</strong> data migration with validation</li>
+            <li>Tailored automations + escalation rules</li>
+            <li>Pipeline visibility dashboard</li>
+            <li>Role-based training (admin · manager · rep)</li>
+            <li>30 days group chat + 1 review call after go-live</li>
+            <li>Quarterly active-usage report + health check</li>
+          </ul>
+        </div>
+        <div class="compact-card" data-tier="transform" data-product="sales" data-price="3000" data-name="Sales Ops · Transform" onclick="toggleCard(this)">
+          <div class="compact-card-name">Transform</div>
+          <div class="compact-card-audience">Best for 50+ sales orgs across teams or regions</div>
+          <div class="compact-card-tagline">Redesign how your sales organization operates — from lead to revenue.</div>
+          <div class="compact-card-price"><span class="compact-card-price-prefix">from</span> $3,000</div>
+          <div class="compact-card-price-note">Custom scoped · One-time fee</div>
+          <div class="compact-card-cta">Select</div>
+          <ul class="compact-card-features">
+            <li><strong>10–15 working sessions</strong> in <strong>8–12 weeks</strong></li>
+            <li>Multiple sales pipelines designed from scratch</li>
+            <li>All channels connected with advanced multi-team routing</li>
+            <li>Multi-source data migration + deduplication</li>
+            <li>Advanced automations + approval flows</li>
+            <li>Custom dashboards + scheduled reports</li>
+            <li>Full training plan + train-the-trainer + SOP videos</li>
+            <li><strong>Dedicated Onboarding Manager</strong> (named CSM, 4hr SLA)</li>
+            <li>60 days CS engagement + monthly review calls</li>
+            <li>Quarterly active-usage report + adoption monitoring</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="full-comparison-toggle">
+        <button class="full-comparison-btn" onclick="toggleFullComparison(this)">
+          <span class="full-comparison-btn-text">See full comparison</span>
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+
+      <div class="full-comparison-wrap">
+      <div class="cmp-wrap">
+        <!-- Header row: tier names + tagline + price + CTA -->
+        <div class="cmp-headerrow">
+          <div class="cmp-corner"></div>
+          <div class="cmp-tier" data-tier="launch" data-product="sales" data-price="500" data-name="Sales Ops · Launchpad" onclick="toggleCard(this)">
+            <div class="cmp-tier-name">Launchpad</div>
+            <div class="cmp-tier-fit">Get your sales team started on Rework in weeks, not months.</div>
+            <div class="cmp-tier-price">from $500</div>
+            <div class="cmp-tier-cta">Select</div>
+          </div>
+          <div class="cmp-tier" data-tier="accel" data-product="sales" data-price="1500" data-name="Sales Ops · Accelerator" onclick="toggleCard(this)">
+            <div class="cmp-tier-name">Accelerator</div>
+            <div class="cmp-tier-fit">Build a sales machine with tailored processes and hands-on support.</div>
+            <div class="cmp-tier-price">from $1,500</div>
+            <div class="cmp-tier-cta">Select</div>
+          </div>
+          <div class="cmp-tier" data-tier="transform" data-product="sales" data-price="3000" data-name="Sales Ops · Transform" onclick="toggleCard(this)">
+            <div class="cmp-tier-name">Transform</div>
+            <div class="cmp-tier-fit">Redesign how your sales organization operates — from lead to revenue.</div>
+            <div class="cmp-tier-price">from $3,000</div>
+            <div class="cmp-tier-cta">Select</div>
+          </div>
+        </div>
+
+        <!-- AT A GLANCE group -->
+        <div class="cmp-grp">
+          <div class="cmp-grp-title">At a glance</div>
+          <button class="cmp-finder-cta-inline" onclick="openFinderModal()" aria-label="Open package finder">
+            <span class="cmp-finder-cta-prompt">Not sure?</span>
+            <span class="cmp-finder-cta-action">Find my package →</span>
+          </button>
+        </div>
+        <div class="cmp-row cmp-glance">
+          <div class="cmp-lbl">Best for</div>
+          <div class="cmp-cell"><strong>1–10</strong> sales team</div>
+          <div class="cmp-cell"><strong>10–50</strong> sales team</div>
+          <div class="cmp-cell"><strong>50+</strong> sales team</div>
+        </div>
+        <div class="cmp-row cmp-glance">
+          <div class="cmp-lbl">Timeline</div>
+          <div class="cmp-cell"><strong>3–5</strong> weeks</div>
+          <div class="cmp-cell"><strong>4–8</strong> weeks</div>
+          <div class="cmp-cell"><strong>8–12</strong> weeks</div>
+        </div>
+        <div class="cmp-row cmp-glance">
+          <div class="cmp-lbl">Working sessions</div>
+          <div class="cmp-cell"><strong>3</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(2 setup + 1 training workshop)</span></div>
+          <div class="cmp-cell"><strong>6–8</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(1 survey + 2–3 setup + 2–3 training workshops)</span></div>
+          <div class="cmp-cell"><strong>10–15</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(2 survey + 4–6 setup + 4–6 training workshops + 1–2 reviews)</span></div>
+        </div>
+
+        <!-- ACTIVATION group -->
+        <div class="cmp-grp">
+          <div class="cmp-grp-title">Activation</div>
+          <div class="cmp-grp-sub">Getting your system configured and live</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Your Rework team</div>
+          <div class="cmp-cell">1 Customer Success Specialist</div>
+          <div class="cmp-cell">1 Customer Success Specialist</div>
+          <div class="cmp-cell"><strong>Customer Success Manager + Customer Success Associate</strong></div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Sales pipelines configured</div>
+          <div class="cmp-cell"><strong>1</strong> <span style="color:var(--g500)">(from template)</span></div>
+          <div class="cmp-cell"><strong>1–2</strong> <span style="color:var(--g500)">(customized to your process)</span></div>
+          <div class="cmp-cell"><strong>3+</strong> <span style="color:var(--g500)">(designed from scratch by segment / region / product line)</span></div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Training</div>
+          <div class="cmp-cell"><strong>1 group workshop</strong> <span style="color:var(--g500)">(90 min, online)</span></div>
+          <div class="cmp-cell"><strong>2–3 role-based workshops</strong> <span style="color:var(--g500)">(admin · manager · rep)</span></div>
+          <div class="cmp-cell"><strong>Full training plan</strong> <span style="color:var(--g500)">(+ train-the-trainer)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="activation">
+          <div class="cmp-lbl">Lead channels connected</div>
+          <div class="cmp-cell"><strong>2</strong> <span style="color:var(--g500)">(Meta Ads + 1 other)</span></div>
+          <div class="cmp-cell"><strong>3–4</strong> <span style="color:var(--g500)">(Meta Ads + 2–3 with routing rules)</span></div>
+          <div class="cmp-cell"><strong>All channels</strong> <span style="color:var(--g500)">(advanced multi-team distribution)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="activation">
+          <div class="cmp-lbl">Process discovery & design</div>
+          <div class="cmp-cell">1 kickoff call to capture your current flow</div>
+          <div class="cmp-cell">1–2 consulting sessions to map and redesign your process</div>
+          <div class="cmp-cell">Deep-dive workshop · AS-IS → TO-BE map · stakeholder interviews</div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="activation">
+          <div class="cmp-lbl">Data migration</div>
+          <div class="cmp-cell"><strong>Self-service</strong> <span style="color:var(--g500)">(CSV templates + guide)</span></div>
+          <div class="cmp-cell"><strong>Full CS-handled</strong> <span style="color:var(--g500)">(mapping + cleaning + importing + validating)</span></div>
+          <div class="cmp-cell"><strong>Multi-source migration</strong> <span style="color:var(--g500)">(deduplication + historical cleanup)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="activation">
+          <div class="cmp-lbl">Automations</div>
+          <div class="cmp-cell"><strong>Basic</strong> <span style="color:var(--g500)">(assignment, follow-up, SLA)</span></div>
+          <div class="cmp-cell"><strong>Tailored</strong> <span style="color:var(--g500)">(routing logic + escalation rules)</span></div>
+          <div class="cmp-cell"><strong>Advanced — 10+</strong> <span style="color:var(--g500)">(including approval flows)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="activation">
+          <div class="cmp-lbl">Dashboards</div>
+          <div class="cmp-cell cmp-empty">—</div>
+          <div class="cmp-cell"><strong>1</strong> <span style="color:var(--g500)">(basic, pipeline visibility)</span></div>
+          <div class="cmp-cell"><strong>2–3 custom</strong> <span style="color:var(--g500)">(per stakeholder + scheduled reports)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="activation">
+          <div class="cmp-lbl">Documentation</div>
+          <div class="cmp-cell">Standard Help Center access</div>
+          <div class="cmp-cell">Custom user guide tailored to your workflows</div>
+          <div class="cmp-cell">Custom SOP + recorded video walkthroughs</div>
+        </div>
+        <div class="cmp-toggle" data-grp="activation" data-expand-label="Show all 9 services" onclick="toggleCmpGroup(this)">
+          <span class="cmp-toggle-text">Show all 9 services</span>
+          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+
+        <!-- ADOPTION group -->
+        <div class="cmp-grp">
+          <div class="cmp-grp-title">Adoption</div>
+          <div class="cmp-grp-sub">Making sure your team actually uses it</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Customer Health Check<br><span style="font-weight:500;color:var(--g500);font-size:11.5px">Our delivery commitment</span></div>
+          <div class="cmp-cell cmp-merged"><strong>Quarterly active-usage report sent to your team.</strong><br><span style="font-size:12px;color:var(--g500)">If daily-active rate drops below the healthy threshold (50% of named users active on a typical business day), we book a review call to identify what's blocking adoption — at no extra cost.</span></div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Communication</div>
+          <div class="cmp-cell">Email + scheduled sessions</div>
+          <div class="cmp-cell">Sessions + WhatsApp/Viber group chat</div>
+          <div class="cmp-cell">Sessions + dedicated channel, 4hr response</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Post-launch support window</div>
+          <div class="cmp-cell">Support portal + email</div>
+          <div class="cmp-cell"><strong>30 days</strong> group chat + email</div>
+          <div class="cmp-cell"><strong>60 days</strong> dedicated CS engagement</div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="adoption">
+          <div class="cmp-lbl">Review calls</div>
+          <div class="cmp-cell cmp-empty">—</div>
+          <div class="cmp-cell">1 review call at Day 30</div>
+          <div class="cmp-cell">2 review calls (Day 30, Day 60) + 1 optimization session (Day 90)</div>
+        </div>
+        <div class="cmp-toggle" data-grp="adoption" data-expand-label="Show all 4 commitments" onclick="toggleCmpGroup(this)">
+          <span class="cmp-toggle-text">Show all 4 commitments</span>
+          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      </div>
+
+    </div>
+
+    <!-- LEAD OPS -->
+    <div id="pkg-lead" style="display:none">
+      <div class="compact-cards-grid">
+        <div class="compact-card" data-tier="launch" data-product="lead" data-price="300" data-name="Lead Ops · Launchpad" onclick="toggleCard(this)">
+          <div class="compact-card-name">Launchpad</div>
+          <div class="compact-card-audience">Best for 1–5 users</div>
+          <div class="compact-card-tagline">Get chat channels live and capture leads in days, not weeks.</div>
+          <div class="compact-card-price"><span class="compact-card-price-prefix">from</span> $300</div>
+          <div class="compact-card-price-note">One-time implementation fee</div>
+          <div class="compact-card-cta">Select</div>
+          <ul class="compact-card-features">
+            <li><strong>3 working sessions</strong> in <strong>2–4 weeks</strong></li>
+            <li>2 chat channels connected (e.g. WhatsApp + Messenger)</li>
+            <li>Basic AI qualification flow (Hot / Warm / Cold)</li>
+            <li>Basic CRM field sync</li>
+            <li>Round-robin conversation routing</li>
+            <li>2 broadcast templates (Meta-approved)</li>
+            <li>1 group training workshop (90 min)</li>
+            <li>Standard Help Center + email support</li>
+            <li>Quarterly active-usage report</li>
+          </ul>
+        </div>
+        <div class="compact-card" data-tier="accel" data-product="lead" data-price="1000" data-name="Lead Ops · Accelerator" onclick="toggleCard(this)">
+          <div class="compact-card-name">Accelerator</div>
+          <div class="compact-card-audience">Best for 5–20 users</div>
+          <div class="compact-card-tagline">Build a multi-channel lead funnel with AI qualification.</div>
+          <div class="compact-card-price"><span class="compact-card-price-prefix">from</span> $1,000</div>
+          <div class="compact-card-price-note">One-time implementation fee</div>
+          <div class="compact-card-cta">Select</div>
+          <ul class="compact-card-features">
+            <li><strong>5–7 working sessions</strong> in <strong>4–6 weeks</strong></li>
+            <li>4 chat channels with routing rules</li>
+            <li><strong>Tailored AI qualification</strong> per channel</li>
+            <li>Rework-handled CRM mapping + validation</li>
+            <li>Smart conversation routing (by source / qualification)</li>
+            <li>5 broadcast templates + opt-in management</li>
+            <li>Role-based training (admin · agent)</li>
+            <li>30 days group chat + 1 review call</li>
+            <li>Quarterly active-usage report + health check</li>
+          </ul>
+        </div>
+        <div class="compact-card" data-tier="transform" data-product="lead" data-price="2000" data-name="Lead Ops · Transform" onclick="toggleCard(this)">
+          <div class="compact-card-name">Transform</div>
+          <div class="compact-card-audience">Best for 20+ users across teams or regions</div>
+          <div class="compact-card-tagline">Operate omnichannel chat at scale across teams and regions.</div>
+          <div class="compact-card-price">Custom</div>
+          <div class="compact-card-price-note">Pricing on request · Contact us</div>
+          <div class="compact-card-cta">Contact us</div>
+          <ul class="compact-card-features">
+            <li><strong>8–12 working sessions</strong> in <strong>6–10 weeks</strong></li>
+            <li>All chat channels + advanced multi-team distribution</li>
+            <li>Advanced AI flows (by product line / region)</li>
+            <li>Multi-source CRM integration + history</li>
+            <li>Advanced routing with escalation rules</li>
+            <li>Unlimited templates + Meta pre-approval support</li>
+            <li>Full training plan + train-the-trainer</li>
+            <li><strong>Dedicated Onboarding Manager</strong></li>
+            <li>60 days CS engagement + monthly reviews</li>
+            <li>Quarterly active-usage report + adoption monitoring</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="full-comparison-toggle">
+        <button class="full-comparison-btn" onclick="toggleFullComparison(this)">
+          <span class="full-comparison-btn-text">See full comparison</span>
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+
+      <div class="full-comparison-wrap">
+      <div class="cmp-wrap">
+        <div class="cmp-headerrow">
+          <div class="cmp-corner"></div>
+          <div class="cmp-tier" data-tier="launch" data-product="lead" data-price="300" data-name="Lead Ops · Launchpad" onclick="toggleCard(this)">
+            <div class="cmp-tier-name">Launchpad</div>
+            <div class="cmp-tier-fit">Get chat channels live and capture leads in days, not weeks.</div>
+            <div class="cmp-tier-price">from $300</div>
+            <div class="cmp-tier-cta">Select</div>
+          </div>
+          <div class="cmp-tier" data-tier="accel" data-product="lead" data-price="1000" data-name="Lead Ops · Accelerator" onclick="toggleCard(this)">
+            <div class="cmp-tier-name">Accelerator</div>
+            <div class="cmp-tier-fit">Build a multi-channel lead funnel with AI qualification.</div>
+            <div class="cmp-tier-price">from $1,000</div>
+            <div class="cmp-tier-cta">Select</div>
+          </div>
+          <div class="cmp-tier" data-tier="transform" data-product="lead" data-price="2000" data-name="Lead Ops · Transform" onclick="toggleCard(this)">
+            <div class="cmp-tier-name">Transform</div>
+            <div class="cmp-tier-fit">Operate omnichannel chat at scale across teams and regions.</div>
+            <div class="cmp-tier-price">Custom</div>
+            <div class="cmp-tier-cta">Contact us</div>
+          </div>
+        </div>
+
+        <div class="cmp-grp">
+          <div class="cmp-grp-title">At a glance</div>
+        </div>
+        <div class="cmp-row cmp-glance">
+          <div class="cmp-lbl">Best for</div>
+          <div class="cmp-cell"><strong>1–5</strong> users</div>
+          <div class="cmp-cell"><strong>5–20</strong> users</div>
+          <div class="cmp-cell"><strong>20+</strong> users</div>
+        </div>
+        <div class="cmp-row cmp-glance">
+          <div class="cmp-lbl">Timeline</div>
+          <div class="cmp-cell"><strong>2–4</strong> weeks</div>
+          <div class="cmp-cell"><strong>4–6</strong> weeks</div>
+          <div class="cmp-cell"><strong>6–10</strong> weeks</div>
+        </div>
+        <div class="cmp-row cmp-glance">
+          <div class="cmp-lbl">Working sessions</div>
+          <div class="cmp-cell"><strong>3</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(1 setup + 1 AI training + 1 user training)</span></div>
+          <div class="cmp-cell"><strong>5–7</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(1 discovery + 2 setup + 1 AI training + 1–2 user training)</span></div>
+          <div class="cmp-cell"><strong>8–12</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(2 discovery + 3–4 setup + 2 AI training + 1–2 user training + 1–2 reviews)</span></div>
+        </div>
+
+        <div class="cmp-grp">
+          <div class="cmp-grp-title">Activation</div>
+          <div class="cmp-grp-sub">Getting your chat channels and AI live</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Your Rework team</div>
+          <div class="cmp-cell">1 Customer Success Specialist</div>
+          <div class="cmp-cell">1 Customer Success Specialist</div>
+          <div class="cmp-cell"><strong>Customer Success Manager + Customer Success Associate</strong></div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Chat channels connected</div>
+          <div class="cmp-cell"><strong>1–2</strong> <span style="color:var(--g500)">(e.g. WhatsApp + Meta Messenger)</span></div>
+          <div class="cmp-cell"><strong>3–4</strong> <span style="color:var(--g500)">(WhatsApp + Meta + IG + Telegram, with routing)</span></div>
+          <div class="cmp-cell"><strong>All channels</strong> <span style="color:var(--g500)">(+ TikTok + advanced multi-team distribution)</span></div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">AI qualification</div>
+          <div class="cmp-cell"><strong>Basic flow</strong> <span style="color:var(--g500)">(Hot / Warm / Cold tagging)</span></div>
+          <div class="cmp-cell"><strong>Tailored flows</strong> <span style="color:var(--g500)">(per channel + custom qualification logic)</span></div>
+          <div class="cmp-cell"><strong>Advanced multi-flow</strong> <span style="color:var(--g500)">(by product line / region + escalation rules)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="lead-activation">
+          <div class="cmp-lbl">CRM integration (Lead → Sales Ops)</div>
+          <div class="cmp-cell"><strong>Basic field sync</strong> <span style="color:var(--g500)">(name, contact, source tag)</span></div>
+          <div class="cmp-cell"><strong>CS-handled mapping</strong> <span style="color:var(--g500)">(full lead-to-deal field mapping + validation)</span></div>
+          <div class="cmp-cell"><strong>Multi-source integration</strong> <span style="color:var(--g500)">(deduplication + historical conversations + custom routing)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="lead-activation">
+          <div class="cmp-lbl">Conversation flow design</div>
+          <div class="cmp-cell">1 kickoff call to capture lead qualification logic</div>
+          <div class="cmp-cell">1–2 discovery sessions to map conversation scenarios</div>
+          <div class="cmp-cell">Deep-dive workshop · multi-channel scenario design · escalation playbook</div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="lead-activation">
+          <div class="cmp-lbl">Broadcast & template messages</div>
+          <div class="cmp-cell"><strong>1–2 templates</strong> <span style="color:var(--g500)">(Meta-approved, basic broadcast)</span></div>
+          <div class="cmp-cell"><strong>3–5 templates</strong> <span style="color:var(--g500)">(per channel + opt-in management)</span></div>
+          <div class="cmp-cell"><strong>Unlimited</strong> <span style="color:var(--g500)">(+ Meta pre-approval ownership + compliant lists)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="lead-activation">
+          <div class="cmp-lbl">Conversation routing</div>
+          <div class="cmp-cell"><strong>Basic</strong> <span style="color:var(--g500)">(round-robin assignment)</span></div>
+          <div class="cmp-cell"><strong>Tailored rules</strong> <span style="color:var(--g500)">(by channel, source, qualification)</span></div>
+          <div class="cmp-cell"><strong>Advanced multi-team</strong> <span style="color:var(--g500)">(by segment / region / language)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="lead-activation">
+          <div class="cmp-lbl">Documentation</div>
+          <div class="cmp-cell">Standard Help Center access</div>
+          <div class="cmp-cell">Custom user guide tailored to your flows</div>
+          <div class="cmp-cell">Custom SOP + recorded video walkthroughs</div>
+        </div>
+        <div class="cmp-toggle" data-grp="lead-activation" data-expand-label="Show all 8 services" onclick="toggleCmpGroup(this)">
+          <span class="cmp-toggle-text">Show all 8 services</span>
+          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+
+        <div class="cmp-grp">
+          <div class="cmp-grp-title">Adoption</div>
+          <div class="cmp-grp-sub">Making sure your team actually uses it</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Customer Health Check<br><span style="font-weight:500;color:var(--g500);font-size:11.5px">Our delivery commitment</span></div>
+          <div class="cmp-cell cmp-merged"><strong>Quarterly active-usage report sent to your team.</strong><br><span style="font-size:12px;color:var(--g500)">If daily-active rate drops below the healthy threshold (50% of named users active on a typical business day), we book a review call to identify what's blocking adoption — at no extra cost.</span></div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Communication</div>
+          <div class="cmp-cell">Email + scheduled sessions</div>
+          <div class="cmp-cell">Sessions + WhatsApp/Viber group chat</div>
+          <div class="cmp-cell">Sessions + dedicated channel, 4hr response</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Post-launch support window</div>
+          <div class="cmp-cell">Support portal + email</div>
+          <div class="cmp-cell"><strong>30 days</strong> group chat + email</div>
+          <div class="cmp-cell"><strong>60 days</strong> dedicated CS engagement</div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="lead-adoption">
+          <div class="cmp-lbl">Review calls</div>
+          <div class="cmp-cell cmp-empty">—</div>
+          <div class="cmp-cell">1 review call at Day 30</div>
+          <div class="cmp-cell">2 review calls (Day 30, Day 60) + 1 optimization session (Day 90)</div>
+        </div>
+        <div class="cmp-toggle" data-grp="lead-adoption" data-expand-label="Show all 4 commitments" onclick="toggleCmpGroup(this)">
+          <span class="cmp-toggle-text">Show all 4 commitments</span>
+          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <!-- WORK OPS -->
+    <div id="pkg-work" style="display:none">
+      <div class="compact-cards-grid">
+        <div class="compact-card" data-tier="launch" data-product="work" data-price="500" data-name="Work Ops · Launchpad" onclick="toggleCard(this)">
+          <div class="compact-card-name">Launchpad</div>
+          <div class="compact-card-audience">Best for 1–20 employees</div>
+          <div class="compact-card-tagline">Digitize your first workflows and get your team aligned.</div>
+          <div class="compact-card-price"><span class="compact-card-price-prefix">from</span> $500</div>
+          <div class="compact-card-price-note">One-time implementation fee</div>
+          <div class="compact-card-cta">Select</div>
+          <ul class="compact-card-features">
+            <li><strong>3 working sessions</strong> in <strong>3–5 weeks</strong></li>
+            <li>3 workflows configured (basic, single department)</li>
+            <li>2 intake forms (basic web forms)</li>
+            <li>Basic single-step approval flows</li>
+            <li>Self-service data migration</li>
+            <li>1 group training workshop (90 min)</li>
+            <li>Basic permissions (per workflow)</li>
+            <li>Standard Help Center + email support</li>
+            <li>Quarterly active-usage report</li>
+          </ul>
+        </div>
+        <div class="compact-card" data-tier="accel" data-product="work" data-price="1500" data-name="Work Ops · Accelerator" onclick="toggleCard(this)">
+          <div class="compact-card-name">Accelerator</div>
+          <div class="compact-card-audience">Best for 20–100 employees</div>
+          <div class="compact-card-tagline">Streamline operations across departments with structured workflows.</div>
+          <div class="compact-card-price"><span class="compact-card-price-prefix">from</span> $1,500</div>
+          <div class="compact-card-price-note">One-time implementation fee</div>
+          <div class="compact-card-cta">Select</div>
+          <ul class="compact-card-features">
+            <li><strong>6–8 working sessions</strong> in <strong>4–8 weeks</strong></li>
+            <li>8 workflows across departments + automations</li>
+            <li>5 intake forms with custom fields & validation</li>
+            <li><strong>Multi-level approval flows</strong> + routing rules</li>
+            <li>Rework-handled data migration with validation</li>
+            <li>Role-based training (admin · manager · user)</li>
+            <li>Custom roles (department-based visibility)</li>
+            <li>30 days group chat + 1 review call</li>
+            <li>Quarterly active-usage report + health check</li>
+          </ul>
+        </div>
+        <div class="compact-card" data-tier="transform" data-product="work" data-price="3000" data-name="Work Ops · Transform" onclick="toggleCard(this)">
+          <div class="compact-card-name">Transform</div>
+          <div class="compact-card-audience">Best for 100+ employees</div>
+          <div class="compact-card-tagline">Redesign your operating system — standardize, automate, and scale.</div>
+          <div class="compact-card-price"><span class="compact-card-price-prefix">from</span> $3,000</div>
+          <div class="compact-card-price-note">Custom scoped · One-time fee</div>
+          <div class="compact-card-cta">Select</div>
+          <ul class="compact-card-features">
+            <li><strong>10–15 working sessions</strong> in <strong>8–12 weeks</strong></li>
+            <li>Multiple workflows with advanced logic & custom objects</li>
+            <li>Intake forms with role-specific + conditional fields</li>
+            <li>Complex approval chains + parallel approvals</li>
+            <li>Multi-source migration + deduplication</li>
+            <li>Full training plan + train-the-trainer + SOP videos</li>
+            <li>Multi-team permissions matrix + SSO</li>
+            <li><strong>Dedicated Onboarding Manager</strong> (named CSM, 4hr SLA)</li>
+            <li>60 days CS engagement + monthly reviews</li>
+            <li>Quarterly active-usage report + adoption monitoring</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="full-comparison-toggle">
+        <button class="full-comparison-btn" onclick="toggleFullComparison(this)">
+          <span class="full-comparison-btn-text">See full comparison</span>
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+
+      <div class="full-comparison-wrap">
+      <div class="cmp-wrap">
+        <div class="cmp-headerrow">
+          <div class="cmp-corner"></div>
+          <div class="cmp-tier" data-tier="launch" data-product="work" data-price="500" data-name="Work Ops · Launchpad" onclick="toggleCard(this)">
+            <div class="cmp-tier-name">Launchpad</div>
+            <div class="cmp-tier-fit">Digitize your first workflows and get your team aligned.</div>
+            <div class="cmp-tier-price">from $500</div>
+            <div class="cmp-tier-cta">Select</div>
+          </div>
+          <div class="cmp-tier" data-tier="accel" data-product="work" data-price="1500" data-name="Work Ops · Accelerator" onclick="toggleCard(this)">
+            <div class="cmp-tier-name">Accelerator</div>
+            <div class="cmp-tier-fit">Streamline operations across departments with structured workflows.</div>
+            <div class="cmp-tier-price">from $1,500</div>
+            <div class="cmp-tier-cta">Select</div>
+          </div>
+          <div class="cmp-tier" data-tier="transform" data-product="work" data-price="3000" data-name="Work Ops · Transform" onclick="toggleCard(this)">
+            <div class="cmp-tier-name">Transform</div>
+            <div class="cmp-tier-fit">Redesign your operating system — standardize, automate, and scale.</div>
+            <div class="cmp-tier-price">from $3,000</div>
+            <div class="cmp-tier-cta">Select</div>
+          </div>
+        </div>
+
+        <div class="cmp-grp">
+          <div class="cmp-grp-title">At a glance</div>
+        </div>
+        <div class="cmp-row cmp-glance">
+          <div class="cmp-lbl">Best for</div>
+          <div class="cmp-cell"><strong>1–20</strong> employees</div>
+          <div class="cmp-cell"><strong>20–100</strong> employees</div>
+          <div class="cmp-cell"><strong>100+</strong> employees</div>
+        </div>
+        <div class="cmp-row cmp-glance">
+          <div class="cmp-lbl">Timeline</div>
+          <div class="cmp-cell"><strong>3–5</strong> weeks</div>
+          <div class="cmp-cell"><strong>4–8</strong> weeks</div>
+          <div class="cmp-cell"><strong>8–12</strong> weeks</div>
+        </div>
+        <div class="cmp-row cmp-glance">
+          <div class="cmp-lbl">Working sessions</div>
+          <div class="cmp-cell"><strong>3</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(2 setup + 1 training workshop)</span></div>
+          <div class="cmp-cell"><strong>6–8</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(1 process workshop + 2–3 setup + 2–3 training workshops)</span></div>
+          <div class="cmp-cell"><strong>10–15</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(2 process workshops + 4–6 setup + 4–6 training workshops + 1–2 reviews)</span></div>
+        </div>
+
+        <div class="cmp-grp">
+          <div class="cmp-grp-title">Activation</div>
+          <div class="cmp-grp-sub">Getting your workflows configured and live</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Your Rework team</div>
+          <div class="cmp-cell">1 Customer Success Specialist</div>
+          <div class="cmp-cell">1 Customer Success Specialist</div>
+          <div class="cmp-cell"><strong>Customer Success Manager + Customer Success Associate</strong></div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Workflows configured</div>
+          <div class="cmp-cell"><strong>1–3</strong> <span style="color:var(--g500)">(basic, single department)</span></div>
+          <div class="cmp-cell"><strong>4–8</strong> <span style="color:var(--g500)">(cross-department + automations)</span></div>
+          <div class="cmp-cell"><strong>8+</strong> <span style="color:var(--g500)">(advanced, multi-team, complex logic)</span></div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Training</div>
+          <div class="cmp-cell"><strong>1 group workshop</strong> <span style="color:var(--g500)">(90 min, online)</span></div>
+          <div class="cmp-cell"><strong>2–3 role-based workshops</strong> <span style="color:var(--g500)">(admin · manager · end-user)</span></div>
+          <div class="cmp-cell"><strong>Full training plan</strong> <span style="color:var(--g500)">(+ train-the-trainer)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="work-activation">
+          <div class="cmp-lbl">Intake forms</div>
+          <div class="cmp-cell"><strong>1–2</strong> <span style="color:var(--g500)">(basic web forms)</span></div>
+          <div class="cmp-cell"><strong>3–5</strong> <span style="color:var(--g500)">(custom fields + validation)</span></div>
+          <div class="cmp-cell"><strong>Multiple</strong> <span style="color:var(--g500)">(role-specific + conditional logic)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="work-activation">
+          <div class="cmp-lbl">Process consulting & design</div>
+          <div class="cmp-cell">1 kickoff call to map your current process</div>
+          <div class="cmp-cell">1–2 process workshops · AS-IS → TO-BE for each workflow</div>
+          <div class="cmp-cell">Deep-dive audit · cross-department mapping · SLA design</div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="work-activation">
+          <div class="cmp-lbl">Approval flows</div>
+          <div class="cmp-cell"><strong>Basic</strong> <span style="color:var(--g500)">(single-step approval)</span></div>
+          <div class="cmp-cell"><strong>Multi-level</strong> <span style="color:var(--g500)">(routing + escalation rules)</span></div>
+          <div class="cmp-cell"><strong>Complex chains</strong> <span style="color:var(--g500)">(conditional routing + parallel approvals)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="work-activation">
+          <div class="cmp-lbl">Data migration</div>
+          <div class="cmp-cell"><strong>Self-service</strong> <span style="color:var(--g500)">(CSV templates + guide)</span></div>
+          <div class="cmp-cell"><strong>Full CS-handled</strong> <span style="color:var(--g500)">(mapping + cleaning + importing + validating)</span></div>
+          <div class="cmp-cell"><strong>Multi-source migration</strong> <span style="color:var(--g500)">(deduplication + historical cleanup)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="work-activation">
+          <div class="cmp-lbl">Permissions & access control</div>
+          <div class="cmp-cell"><strong>Basic roles</strong> <span style="color:var(--g500)">(per workflow)</span></div>
+          <div class="cmp-cell"><strong>Custom roles</strong> <span style="color:var(--g500)">(department-based + visibility rules)</span></div>
+          <div class="cmp-cell"><strong>Multi-team matrix</strong> <span style="color:var(--g500)">(SSO + custom permission policies)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="work-activation">
+          <div class="cmp-lbl">Documentation</div>
+          <div class="cmp-cell">Standard Help Center access</div>
+          <div class="cmp-cell">Custom user guide tailored to your workflows</div>
+          <div class="cmp-cell">Custom SOP + recorded video walkthroughs</div>
+        </div>
+        <div class="cmp-toggle" data-grp="work-activation" data-expand-label="Show all 9 services" onclick="toggleCmpGroup(this)">
+          <span class="cmp-toggle-text">Show all 9 services</span>
+          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+
+        <div class="cmp-grp">
+          <div class="cmp-grp-title">Adoption</div>
+          <div class="cmp-grp-sub">Making sure your team actually uses it</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Customer Health Check<br><span style="font-weight:500;color:var(--g500);font-size:11.5px">Our delivery commitment</span></div>
+          <div class="cmp-cell cmp-merged"><strong>Quarterly active-usage report sent to your team.</strong><br><span style="font-size:12px;color:var(--g500)">If daily-active rate drops below the healthy threshold (50% of named users active on a typical business day), we book a review call to identify what's blocking adoption — at no extra cost.</span></div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Communication</div>
+          <div class="cmp-cell">Email + scheduled sessions</div>
+          <div class="cmp-cell">Sessions + WhatsApp/Viber group chat</div>
+          <div class="cmp-cell">Sessions + dedicated channel, 4hr response</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Post-launch support window</div>
+          <div class="cmp-cell">Support portal + email</div>
+          <div class="cmp-cell"><strong>30 days</strong> group chat + email</div>
+          <div class="cmp-cell"><strong>60 days</strong> dedicated CS engagement</div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="work-adoption">
+          <div class="cmp-lbl">Review calls</div>
+          <div class="cmp-cell cmp-empty">—</div>
+          <div class="cmp-cell">1 review call at Day 30</div>
+          <div class="cmp-cell">2 review calls (Day 30, Day 60) + 1 optimization session (Day 90)</div>
+        </div>
+        <div class="cmp-toggle" data-grp="work-adoption" data-expand-label="Show all 4 commitments" onclick="toggleCmpGroup(this)">
+          <span class="cmp-toggle-text">Show all 4 commitments</span>
+          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <!-- PEOPLE OPS -->
+    <div id="pkg-people" style="display:none">
+      <div class="compact-cards-grid">
+        <div class="compact-card" data-tier="launch" data-product="people" data-price="500" data-name="People Ops · Launchpad" onclick="toggleCard(this)">
+          <div class="compact-card-name">Launchpad</div>
+          <div class="compact-card-audience">Best for 1–20 employees</div>
+          <div class="compact-card-tagline">Get HR essentials running on Rework — fast and clean.</div>
+          <div class="compact-card-price"><span class="compact-card-price-prefix">from</span> $500</div>
+          <div class="compact-card-price-note">One-time implementation fee</div>
+          <div class="compact-card-cta">Select</div>
+          <ul class="compact-card-features">
+            <li><strong>3 working sessions</strong> in <strong>3–5 weeks</strong></li>
+            <li>HRIS + Time-off + Employee Contracts</li>
+            <li>Standard document templates</li>
+            <li>Basic time-off + leave approval flow</li>
+            <li>Self-service employee data migration</li>
+            <li>1 group training workshop (90 min)</li>
+            <li>Basic roles (HR · manager · employee)</li>
+            <li>Standard Help Center + email support</li>
+            <li>Quarterly active-usage report</li>
+          </ul>
+        </div>
+        <div class="compact-card" data-tier="accel" data-product="people" data-price="1500" data-name="People Ops · Accelerator" onclick="toggleCard(this)">
+          <div class="compact-card-name">Accelerator</div>
+          <div class="compact-card-audience">Best for 20–100 employees</div>
+          <div class="compact-card-tagline">Connect the full people lifecycle — hiring, onboarding, and beyond.</div>
+          <div class="compact-card-price"><span class="compact-card-price-prefix">from</span> $1,500</div>
+          <div class="compact-card-price-note">One-time implementation fee</div>
+          <div class="compact-card-cta">Select</div>
+          <ul class="compact-card-features">
+            <li><strong>6–8 working sessions</strong> in <strong>4–8 weeks</strong></li>
+            <li><strong>HRIS + Timesheet + Time-off + Contracts + Offers</strong></li>
+            <li>Customized branded templates with e-sign</li>
+            <li>Multi-level approval routing (manager → HR → finance)</li>
+            <li>Rework-handled employee data migration</li>
+            <li>Role-based training (HR · manager · employee)</li>
+            <li>Custom roles with sensitive-data rules</li>
+            <li>30 days group chat + 1 review call</li>
+            <li>Quarterly active-usage report + health check</li>
+          </ul>
+        </div>
+        <div class="compact-card" data-tier="transform" data-product="people" data-price="3000" data-name="People Ops · Transform" onclick="toggleCard(this)">
+          <div class="compact-card-name">Transform</div>
+          <div class="compact-card-audience">Best for 100+ employees, multi-country teams</div>
+          <div class="compact-card-tagline">HR operating system for the whole organization — built for scale.</div>
+          <div class="compact-card-price"><span class="compact-card-price-prefix">from</span> $3,000</div>
+          <div class="compact-card-price-note">Custom scoped · One-time fee</div>
+          <div class="compact-card-cta">Select</div>
+          <ul class="compact-card-features">
+            <li><strong>10–15 working sessions</strong> in <strong>8–12 weeks</strong></li>
+            <li>Full Core HR + Hiring + Performance lifecycle</li>
+            <li>Multi-country template library + compliance review</li>
+            <li>Complex approval chains across entities</li>
+            <li>Multi-source migration (prior HRIS + payroll + manual)</li>
+            <li>Full training plan + train-the-trainer for HRBPs</li>
+            <li>Permission matrix + audit trail for sensitive fields</li>
+            <li><strong>Dedicated Onboarding Manager</strong> (named CSM, 4hr SLA)</li>
+            <li>60 days CS engagement + monthly reviews</li>
+            <li>Quarterly active-usage report + adoption monitoring</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="full-comparison-toggle">
+        <button class="full-comparison-btn" onclick="toggleFullComparison(this)">
+          <span class="full-comparison-btn-text">See full comparison</span>
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+
+      <div class="full-comparison-wrap">
+      <div class="cmp-wrap">
+        <div class="cmp-headerrow">
+          <div class="cmp-corner"></div>
+          <div class="cmp-tier" data-tier="launch" data-product="people" data-price="500" data-name="People Ops · Launchpad" onclick="toggleCard(this)">
+            <div class="cmp-tier-name">Launchpad</div>
+            <div class="cmp-tier-fit">Get HR essentials running on Rework — fast and clean.</div>
+            <div class="cmp-tier-price">from $500</div>
+            <div class="cmp-tier-cta">Select</div>
+          </div>
+          <div class="cmp-tier" data-tier="accel" data-product="people" data-price="1500" data-name="People Ops · Accelerator" onclick="toggleCard(this)">
+            <div class="cmp-tier-name">Accelerator</div>
+            <div class="cmp-tier-fit">Connect the full people lifecycle — hiring, onboarding, and beyond.</div>
+            <div class="cmp-tier-price">from $1,500</div>
+            <div class="cmp-tier-cta">Select</div>
+          </div>
+          <div class="cmp-tier" data-tier="transform" data-product="people" data-price="3000" data-name="People Ops · Transform" onclick="toggleCard(this)">
+            <div class="cmp-tier-name">Transform</div>
+            <div class="cmp-tier-fit">HR operating system for the whole organization — built for scale.</div>
+            <div class="cmp-tier-price">from $3,000</div>
+            <div class="cmp-tier-cta">Select</div>
+          </div>
+        </div>
+
+        <div class="cmp-grp">
+          <div class="cmp-grp-title">At a glance</div>
+        </div>
+        <div class="cmp-row cmp-glance">
+          <div class="cmp-lbl">Best for</div>
+          <div class="cmp-cell"><strong>1–20</strong> employees</div>
+          <div class="cmp-cell"><strong>20–100</strong> employees</div>
+          <div class="cmp-cell"><strong>100+</strong> employees</div>
+        </div>
+        <div class="cmp-row cmp-glance">
+          <div class="cmp-lbl">Timeline</div>
+          <div class="cmp-cell"><strong>3–5</strong> weeks</div>
+          <div class="cmp-cell"><strong>4–8</strong> weeks</div>
+          <div class="cmp-cell"><strong>8–12</strong> weeks</div>
+        </div>
+        <div class="cmp-row cmp-glance">
+          <div class="cmp-lbl">Working sessions</div>
+          <div class="cmp-cell"><strong>3</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(2 setup + 1 training workshop)</span></div>
+          <div class="cmp-cell"><strong>6–8</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(1 HR workshop + 2–3 setup + 2–3 training workshops)</span></div>
+          <div class="cmp-cell"><strong>10–15</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(2 HR workshops + 4–6 setup + 4–6 training workshops + 1–2 reviews)</span></div>
+        </div>
+
+        <div class="cmp-grp">
+          <div class="cmp-grp-title">Activation</div>
+          <div class="cmp-grp-sub">Getting your HR modules configured and live</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Your Rework team</div>
+          <div class="cmp-cell">1 Customer Success Specialist</div>
+          <div class="cmp-cell">1 Customer Success Specialist</div>
+          <div class="cmp-cell"><strong>Customer Success Manager + Customer Success Associate</strong></div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">HR modules digitized</div>
+          <div class="cmp-cell"><strong>HRIS + 1–2 modules</strong> <span style="color:var(--g500)">(time-off, basic contracts)</span></div>
+          <div class="cmp-cell"><strong>HRIS + Timesheet + Time-off + Contracts + Offers</strong></div>
+          <div class="cmp-cell"><strong>Full Core HR + Hiring + Performance</strong> <span style="color:var(--g500)">(end-to-end lifecycle)</span></div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Training</div>
+          <div class="cmp-cell"><strong>1 group workshop</strong> <span style="color:var(--g500)">(90 min, online)</span></div>
+          <div class="cmp-cell"><strong>2–3 role-based workshops</strong> <span style="color:var(--g500)">(HR · manager · employee)</span></div>
+          <div class="cmp-cell"><strong>Full training plan</strong> <span style="color:var(--g500)">(+ train-the-trainer)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="people-activation">
+          <div class="cmp-lbl">Document templates & e-sign</div>
+          <div class="cmp-cell"><strong>Standard templates</strong> <span style="color:var(--g500)">(contracts, offers, basic letters)</span></div>
+          <div class="cmp-cell"><strong>Customized templates</strong> <span style="color:var(--g500)">(branded + role-specific + e-sign)</span></div>
+          <div class="cmp-cell"><strong>Full template library</strong> <span style="color:var(--g500)">(multi-country compliance + version control)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="people-activation">
+          <div class="cmp-lbl">Process consulting & design</div>
+          <div class="cmp-cell">1 kickoff call to capture HR processes</div>
+          <div class="cmp-cell">1–2 HR workshops · AS-IS → TO-BE for hiring & lifecycle</div>
+          <div class="cmp-cell">Deep-dive audit · multi-country/policy mapping · compliance review</div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="people-activation">
+          <div class="cmp-lbl">Approval flows (time-off, leave, offers)</div>
+          <div class="cmp-cell"><strong>Basic</strong> <span style="color:var(--g500)">(single-manager approval)</span></div>
+          <div class="cmp-cell"><strong>Multi-level routing</strong> <span style="color:var(--g500)">(manager → HR → finance)</span></div>
+          <div class="cmp-cell"><strong>Complex chains</strong> <span style="color:var(--g500)">(country-specific + escalation + delegation rules)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="people-activation">
+          <div class="cmp-lbl">Employee data migration</div>
+          <div class="cmp-cell"><strong>Self-service</strong> <span style="color:var(--g500)">(CSV templates + guide)</span></div>
+          <div class="cmp-cell"><strong>Full CS-handled</strong> <span style="color:var(--g500)">(mapping + cleaning + importing + validating)</span></div>
+          <div class="cmp-cell"><strong>Multi-source migration</strong> <span style="color:var(--g500)">(prior HRIS + history + entitlements)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="people-activation">
+          <div class="cmp-lbl">Permissions & access control</div>
+          <div class="cmp-cell"><strong>Basic roles</strong> <span style="color:var(--g500)">(HR · manager · employee)</span></div>
+          <div class="cmp-cell"><strong>Custom roles</strong> <span style="color:var(--g500)">(department-based + sensitive data rules)</span></div>
+          <div class="cmp-cell"><strong>Multi-team matrix</strong> <span style="color:var(--g500)">(SSO + country/entity-specific policies)</span></div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="people-activation">
+          <div class="cmp-lbl">Documentation</div>
+          <div class="cmp-cell">Standard Help Center access</div>
+          <div class="cmp-cell">Custom user guide tailored to your HR flows</div>
+          <div class="cmp-cell">Custom SOP + recorded video walkthroughs</div>
+        </div>
+        <div class="cmp-toggle" data-grp="people-activation" data-expand-label="Show all 9 services" onclick="toggleCmpGroup(this)">
+          <span class="cmp-toggle-text">Show all 9 services</span>
+          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+
+        <div class="cmp-grp">
+          <div class="cmp-grp-title">Adoption</div>
+          <div class="cmp-grp-sub">Making sure your team actually uses it</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Customer Health Check<br><span style="font-weight:500;color:var(--g500);font-size:11.5px">Our delivery commitment</span></div>
+          <div class="cmp-cell cmp-merged"><strong>Quarterly active-usage report sent to your team.</strong><br><span style="font-size:12px;color:var(--g500)">If daily-active rate drops below the healthy threshold (50% of named users active on a typical business day), we book a review call to identify what's blocking adoption — at no extra cost.</span></div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Communication</div>
+          <div class="cmp-cell">Email + scheduled sessions</div>
+          <div class="cmp-cell">Sessions + WhatsApp/Viber group chat</div>
+          <div class="cmp-cell">Sessions + dedicated channel, 4hr response</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Post-launch support window</div>
+          <div class="cmp-cell">Support portal + email</div>
+          <div class="cmp-cell"><strong>30 days</strong> group chat + email</div>
+          <div class="cmp-cell"><strong>60 days</strong> dedicated CS engagement</div>
+        </div>
+        <div class="cmp-row cmp-hidden" data-grp="people-adoption">
+          <div class="cmp-lbl">Review calls</div>
+          <div class="cmp-cell cmp-empty">—</div>
+          <div class="cmp-cell">1 review call at Day 30</div>
+          <div class="cmp-cell">2 review calls (Day 30, Day 60) + 1 optimization session (Day 90)</div>
+        </div>
+        <div class="cmp-toggle" data-grp="people-adoption" data-expand-label="Show all 4 commitments" onclick="toggleCmpGroup(this)">
+          <span class="cmp-toggle-text">Show all 4 commitments</span>
+          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works">
+  <div class="section-inner">
+    <div class="section-label">The Framework</div>
+    <div class="section-title">How implementation works</div>
+    <p class="section-sub">Every engagement follows our 5-phase Workflow Streamlining Framework — from discovery to continuous improvement.</p>
+    <div class="phases-wrap">
+      <div class="phases-line"></div>
+      <div class="phases-track">
+        <div class="phase">
+          <div class="phase-dot">1</div>
+          <div class="phase-duration">3–5 days</div>
+          <div class="phase-name">Design & Finetune</div>
+          <div class="phase-desc">Discover your current process, map it to a digital-ready workflow, get sign-off before we build anything.</div>
+        </div>
+        <div class="phase">
+          <div class="phase-dot">2</div>
+          <div class="phase-duration">3–5 days</div>
+          <div class="phase-name">Initial Build</div>
+          <div class="phase-desc">Configure your system end-to-end — pipelines, automations, integrations, permissions, data migration.</div>
+          <div class="phase-gate">✓ Pilot gate</div>
+        </div>
+        <div class="phase">
+          <div class="phase-dot">3</div>
+          <div class="phase-duration">3–10 days</div>
+          <div class="phase-name">Test & Refine</div>
+          <div class="phase-desc">Run a pilot with your Pioneer Team. Fix what needs fixing before rolling out to the full organization.</div>
+        </div>
+        <div class="phase">
+          <div class="phase-dot">4</div>
+          <div class="phase-duration">~5 days</div>
+          <div class="phase-name">Go Live</div>
+          <div class="phase-desc">Launch company-wide. Train every user. Provide guides and hands-on support through day one.</div>
+          <div class="phase-gate">✓ Readiness gate</div>
+        </div>
+        <div class="phase">
+          <div class="phase-dot">5</div>
+          <div class="phase-duration">Ongoing</div>
+          <div class="phase-name">Rework Master</div>
+          <div class="phase-desc">Build SOPs, optimize workflows, expand to new teams. Become self-sufficient with Rework as your backbone.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RISKS: shown for the currently-active product tab -->
+    <div class="risks-wrap" data-product="sales">
+      <div class="risks-title">Risks we anticipate · how we handle them</div>
+      <div class="risks-sub">Transparency about what can go wrong in your <strong>Sales Ops</strong> implementation — and what we own when it does. Switch product tab above to see the risks specific to that product.</div>
+      <div class="risks-tabs">
+        <button class="risks-tab active" data-tier="launch" onclick="switchRisks(this)">Launchpad</button>
+        <button class="risks-tab" data-tier="accel" onclick="switchRisks(this)">Accelerator</button>
+        <button class="risks-tab" data-tier="transform" onclick="switchRisks(this)">Transform</button>
+      </div>
+      <div class="risks-panel active" data-tier="launch">
+        <div class="risks-row">
+          <div class="risks-name">Pipeline design doesn't match how your team actually sells</div>
+          <div class="risks-handle">We start by reviewing how your team handles 5 recent deals — pipeline stages are confirmed before we build, not after.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Self-service data migration stalls on encoding, dates, or duplicates</div>
+          <div class="risks-handle">We provide validated templates plus a 30-min Q&A slot during setup. You import, we check for issues before go-live.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Low adoption after launch — team reverts to spreadsheets</div>
+          <div class="risks-handle">If activity falls below 70% by Month 3, you get 1 free targeted training session plus an adoption health-check report — at no extra cost.</div>
+        </div>
+      </div>
+      <div class="risks-panel" data-tier="accel">
+        <div class="risks-row">
+          <div class="risks-name">Process consulting reveals you don't have a formal sales process</div>
+          <div class="risks-handle">We use Rework's standard sales framework as the starting point, then customize from there. No judgment — this is common.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Data migration finds mismatches, duplicates, or missing fields</div>
+          <div class="risks-handle">CS-handled migration includes a deduplication and validation pass. We surface issues before go-live, not after.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Lead routing rules don't match how your reps actually share territory</div>
+          <div class="risks-handle">Pioneer Team pilot in Week 3–4 catches routing misfits before company-wide rollout. 1 free adjustment cycle included.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Role-based training creates inconsistency between admins, managers, and reps</div>
+          <div class="risks-handle">Workshops are sequenced (admins first, then managers, then reps) so each layer reinforces the next. Custom guide covers the same workflow from each role's view.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Low adoption after launch</div>
+          <div class="risks-handle">If activity falls below 70% by Month 3, you get 2 free targeted trainings plus adoption health-check plus a follow-up review at Day 60.</div>
+        </div>
+      </div>
+      <div class="risks-panel" data-tier="transform">
+        <div class="risks-row">
+          <div class="risks-name">Stakeholder misalignment across teams or regions</div>
+          <div class="risks-handle">P1 stakeholder interviews surface conflicts before configuration. Discovery Summary forces a single management sign-off before build begins.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Multi-source data migration finds incompatible field definitions</div>
+          <div class="risks-handle">Migration is sequenced — each source mapped and validated before merging. Deduplication catches conflicts. Issues surface at mid-point review, not at go-live.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Custom dashboard requirements drift during build</div>
+          <div class="risks-handle">Dashboard scope signed off upfront. Changes after sign-off go to a separate Dashboard & Analytics engagement.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Train-the-trainer underperforms when internal champions aren't given time</div>
+          <div class="risks-handle">Champions nominated with a written time commitment. We coach them through pilot. Escalation path defined if commitment isn't kept.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">50+ user adoption is uneven across teams or regions</div>
+          <div class="risks-handle">If activity falls below 70% by Month 3, full re-training plan for missing user groups plus adoption gap audit plus 30 extra days of dedicated CS engagement.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Executive expectations exceed what's in scope</div>
+          <div class="risks-handle">Dedicated Onboarding Manager owns the executive relationship. Scope changes go through a written change request — never absorbed silently.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="risks-wrap" data-product="lead" style="display:none">
+      <div class="risks-title">Risks we anticipate · how we handle them</div>
+      <div class="risks-sub">Transparency about what can go wrong in your <strong>Lead Ops</strong> implementation — and what we own when it does. Switch product tab above to see the risks specific to that product.</div>
+      <div class="risks-tabs">
+        <button class="risks-tab active" data-tier="launch" onclick="switchRisks(this)">Launchpad</button>
+        <button class="risks-tab" data-tier="accel" onclick="switchRisks(this)">Accelerator</button>
+        <button class="risks-tab" data-tier="transform" onclick="switchRisks(this)">Transform</button>
+      </div>
+      <div class="risks-panel active" data-tier="launch">
+        <div class="risks-row">
+          <div class="risks-name">WhatsApp Business API connection blocked by Meta misconfig</div>
+          <div class="risks-handle">No number migration needed — WA Coexistence keeps your existing number. Your Meta Business Manager PIC joins setup to grant access.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">AI chatbot misclassifies leads in the first weeks</div>
+          <div class="risks-handle">AI training is a joint effort — you provide real conversation samples and qualification logic, we configure and refine the flows accordingly.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Low adoption — team still manages chats outside Rework</div>
+          <div class="risks-handle">If activity falls below 70% by Month 3, you get 1 free targeted training session plus an adoption health-check report — at no extra cost.</div>
+        </div>
+      </div>
+      <div class="risks-panel" data-tier="accel">
+        <div class="risks-row">
+          <div class="risks-name">WhatsApp + multi-channel coexistence has Meta-side permission issues</div>
+          <div class="risks-handle">Your Meta PIC is involved before setup begins. We test each channel end-to-end before any real lead enters the system.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">AI flows need real conversation samples to be accurate at scale</div>
+          <div class="risks-handle">Joint training: you provide edge cases and qualification logic, we refine the flows. 1 free adjustment cycle included after first 2 weeks of live data.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">CRM ↔ Lead Ops field mappings cause duplicate or missing records</div>
+          <div class="risks-handle">CS-handled mapping with deduplication and validation. A dedicated PIC from your side reviews the field structure before go-live.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Broadcast and template messages stuck in Meta pre-approval (1–3 days, possible rejection)</div>
+          <div class="risks-handle">Templates are drafted and submitted together to maximize approval rate. We guide opt-in best practices and compliant broadcast lists.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Low adoption after launch</div>
+          <div class="risks-handle">If activity falls below 70% by Month 3, you get 2 free targeted trainings plus adoption health-check plus a follow-up review at Day 60.</div>
+        </div>
+      </div>
+      <div class="risks-panel" data-tier="transform">
+        <div class="risks-row">
+          <div class="risks-name">WhatsApp + multi-region coexistence with regulatory differences</div>
+          <div class="risks-handle">Region-by-region setup is sequenced with your Meta PIC. Compliance considerations (opt-in rules, data handling) are scoped per country before activation.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">AI multi-flow accuracy degrades across product lines or regions</div>
+          <div class="risks-handle">Each flow is trained separately with region/product-specific scenarios. We monitor accuracy during pilot and tune before scale rollout.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Multi-source CRM integration finds incompatible field definitions</div>
+          <div class="risks-handle">Migration is sequenced — each source mapped and validated before merging. Deduplication catches conflicts at mid-point review, not at go-live.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Compliant broadcast lists across regions (opt-in rules vary by country)</div>
+          <div class="risks-handle">Opt-in rules and template approval flows are documented per region. Lists are validated before any broadcast is sent.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Routing rules don't match how multi-team operations actually work</div>
+          <div class="risks-handle">Pioneer Team pilot across teams catches routing misfits before rollout. Routing logic signed off per region/team in Discovery Summary.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Adoption uneven across teams or regions</div>
+          <div class="risks-handle">If activity falls below 70% by Month 3, full re-training plan for missing user groups plus adoption gap audit plus 30 extra days of dedicated CS engagement.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="risks-wrap" data-product="work" style="display:none">
+      <div class="risks-title">Risks we anticipate · how we handle them</div>
+      <div class="risks-sub">Transparency about what can go wrong in your <strong>Work Ops</strong> implementation — and what we own when it does. Switch product tab above to see the risks specific to that product.</div>
+      <div class="risks-tabs">
+        <button class="risks-tab active" data-tier="launch" onclick="switchRisks(this)">Launchpad</button>
+        <button class="risks-tab" data-tier="accel" onclick="switchRisks(this)">Accelerator</button>
+        <button class="risks-tab" data-tier="transform" onclick="switchRisks(this)">Transform</button>
+      </div>
+      <div class="risks-panel active" data-tier="launch">
+        <div class="risks-row">
+          <div class="risks-name">Workflow design doesn't match real-world variations</div>
+          <div class="risks-handle">We start by reviewing how your team handles 5 recent process instances — workflow steps are confirmed before we build, not after.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Self-service migration fails on messy or inconsistent data</div>
+          <div class="risks-handle">We provide validated templates plus a 30-min Q&A slot during setup. You import, we check for issues before go-live.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Low adoption — team reverts to manual or email-based processes</div>
+          <div class="risks-handle">If activity falls below 70% by Month 3, you get 1 free targeted training session plus an adoption health-check report — at no extra cost.</div>
+        </div>
+      </div>
+      <div class="risks-panel" data-tier="accel">
+        <div class="risks-row">
+          <div class="risks-name">Process consulting reveals undocumented variations across teams</div>
+          <div class="risks-handle">We map the AS-IS first (including variations), then design a TO-BE that absorbs them. Sign-off from each department before build.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">CS-handled migration finds mismatches between source spreadsheets</div>
+          <div class="risks-handle">Deduplication and validation pass before import. Issues surface at mid-point review, not at go-live.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Approval flow design conflicts with internal politics</div>
+          <div class="risks-handle">Pioneer Team pilot tests the routing with real cases. 1 free adjustment cycle if politics change the rules after sign-off.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Cross-department handoffs unclear or contested</div>
+          <div class="risks-handle">Handoff points are documented in the TO-BE map and reviewed with both sides. Escalation path defined for ambiguous cases.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Low adoption after launch</div>
+          <div class="risks-handle">If activity falls below 70% by Month 3, you get 2 free targeted trainings plus adoption health-check plus a follow-up review at Day 60.</div>
+        </div>
+      </div>
+      <div class="risks-panel" data-tier="transform">
+        <div class="risks-row">
+          <div class="risks-name">Stakeholder misalignment across departments</div>
+          <div class="risks-handle">P1 stakeholder interviews surface conflicts before configuration. Discovery Summary forces a single management sign-off before build begins.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Multi-source migration with incompatible field definitions</div>
+          <div class="risks-handle">Migration is sequenced — each source mapped and validated before merging. Deduplication catches conflicts at mid-point review.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Complex approval chains create deadlocks or lost requests</div>
+          <div class="risks-handle">Escalation rules and timeouts are configured upfront. Pioneer Team pilot tests edge cases before company-wide rollout.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Permission matrix complexity (cross-team visibility rules)</div>
+          <div class="risks-handle">Permission model designed in P1 with explicit visibility rules per workflow. SSO and policy enforcement validated before go-live.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Train-the-trainer underperforms when champions aren't given time</div>
+          <div class="risks-handle">Champions nominated with a written time commitment. We coach them through pilot. Escalation path if commitment isn't kept.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Executive expectations exceed what's in scope</div>
+          <div class="risks-handle">Dedicated Onboarding Manager owns the executive relationship. Scope changes go through a written change request — never absorbed silently.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="risks-wrap" data-product="people" style="display:none">
+      <div class="risks-title">Risks we anticipate · how we handle them</div>
+      <div class="risks-sub">Transparency about what can go wrong in your <strong>People Ops</strong> implementation — and what we own when it does. Switch product tab above to see the risks specific to that product.</div>
+      <div class="risks-tabs">
+        <button class="risks-tab active" data-tier="launch" onclick="switchRisks(this)">Launchpad</button>
+        <button class="risks-tab" data-tier="accel" onclick="switchRisks(this)">Accelerator</button>
+        <button class="risks-tab" data-tier="transform" onclick="switchRisks(this)">Transform</button>
+      </div>
+      <div class="risks-panel active" data-tier="launch">
+        <div class="risks-row">
+          <div class="risks-name">HR data sensitivity — employees worried about who can see what</div>
+          <div class="risks-handle">Permission model defined upfront with HR and reviewed before any data is imported. Audit trail enabled by default on sensitive fields.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Basic time-off flow doesn't match company policy edge cases</div>
+          <div class="risks-handle">We capture your time-off policy in P1 (carry-over, half-days, special leave) and configure rules before go-live. Edge cases logged for refinement.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Low adoption — managers don't use the approval system</div>
+          <div class="risks-handle">If activity falls below 70% by Month 3, you get 1 free targeted training session plus an adoption health-check report — at no extra cost.</div>
+        </div>
+      </div>
+      <div class="risks-panel" data-tier="accel">
+        <div class="risks-row">
+          <div class="risks-name">Process consulting reveals undocumented HR practices</div>
+          <div class="risks-handle">We map the AS-IS first (including informal practices), then design a TO-BE that absorbs them. HR and key managers sign off before build.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Employee data migration accuracy (entitlements, balances, history)</div>
+          <div class="risks-handle">CS-handled migration includes validation against prior HRIS records. Reconciliation report shared before go-live.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Document template language or branding doesn't match company standards</div>
+          <div class="risks-handle">Templates are customized in P2 with your HR + brand team. E-sign workflow tested before any contract is sent.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Multi-level approval routing conflicts (HR vs Finance vs manager)</div>
+          <div class="risks-handle">Approval matrix designed in P1 with all stakeholders. Pioneer Team pilot tests edge cases. 1 free adjustment cycle included.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Low adoption after launch</div>
+          <div class="risks-handle">If activity falls below 70% by Month 3, you get 2 free targeted trainings plus adoption health-check plus a follow-up review at Day 60.</div>
+        </div>
+      </div>
+      <div class="risks-panel" data-tier="transform">
+        <div class="risks-row">
+          <div class="risks-name">Multi-country compliance — labor laws and HR policies differ</div>
+          <div class="risks-handle">Country-specific policies captured in P1. Compliance review with your legal/HR team before each country goes live.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Multi-source migration: prior HRIS + payroll + manual files</div>
+          <div class="risks-handle">Migration sequenced — each source mapped and validated before merging. Deduplication catches conflicts before go-live.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Complex approval chains across entities and countries</div>
+          <div class="risks-handle">Approval matrix designed per entity with escalation and delegation rules. Pioneer Team pilot tests cross-entity cases.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Sensitive data permissions need audit trail requirements</div>
+          <div class="risks-handle">Audit logging enabled for all sensitive fields. Permission model reviewed against your compliance requirements before go-live.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Train-the-trainer underperforms when HR business partners aren't given time</div>
+          <div class="risks-handle">HRBPs nominated with a written time commitment. We coach them through pilot. Escalation path if commitment isn't kept.</div>
+        </div>
+        <div class="risks-row">
+          <div class="risks-name">Executive scope creep (performance reviews, OKRs, engagement surveys)</div>
+          <div class="risks-handle">Dedicated Onboarding Manager owns the executive relationship. Scope changes go through a written change request — never absorbed silently.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROFESSIONAL SERVICES -->
+<section class="section" id="pro-services">
+  <div class="section-inner">
+    <div class="section-label">Professional Services</div>
+    <div class="section-title">Expand your setup anytime</div>
+    <p class="section-sub">Targeted engagements to go deeper — purchased alongside or after your core implementation.</p>
+    <div class="ps-tabs">
+      <button class="ps-tab active" onclick="switchPS('dashboard',this)"><span class="ps-tab-emoji">📈</span> Dashboard & Analytics</button>
+      <button class="ps-tab" onclick="switchPS('integration',this)"><span class="ps-tab-emoji">🔗</span> Integration</button>
+      <button class="ps-tab" onclick="switchPS('training',this)"><span class="ps-tab-emoji">🎓</span> Training & Adoption</button>
+      <button class="ps-tab" onclick="switchPS('consulting',this)"><span class="ps-tab-emoji">📊</span> Sales Consulting</button>
+      <button class="ps-tab" onclick="switchPS('ai',this)"><span class="ps-tab-emoji">🤖</span> AI Agents</button>
+    </div>
+
+    <div class="ps-panel" id="ps-integration">
+      <div class="ps-left">
+        <div class="ps-header"><div class="ps-emoji">🔗</div><div class="ps-meta"><div class="ps-name">Integration Pack</div><div class="ps-price">From $2,000</div></div></div>
+        <p class="ps-tagline">Connect Rework with your ERP, accounting back-end, HR system, or custom internal tools. Scoped per project, sitting alongside your core implementation.</p>
+        <ul class="ps-deliverables">
+          <li><div class="ps-bullet"></div><div><strong>Scoping & field mapping</strong> tailored to your system structure</div></li>
+          <li><div class="ps-bullet"></div><div><strong>Build, test, and validation</strong> cycle with your team</div></li>
+          <li><div class="ps-bullet"></div><div><strong>Documentation</strong> for your tech and ops teams</div></li>
+          <li><div class="ps-bullet"></div><div><strong>Typical timeline 2–6 weeks</strong>, separate from your core implementation project</div></li>
+        </ul>
+      </div>
+      <div class="ps-case">
+        <div class="ps-case-eyebrow">Case Study</div>
+        <div class="ps-case-image" onclick="openLightbox(this)">
+          <img src="assets/cases/integration-procurement-po.png" alt="Procurement to Purchase Order flow — Integration Pack deliverable">
+        </div>
+        <div class="ps-metrics">
+          <div class="ps-metric"><div class="ps-metric-val">3 hrs → 0</div><div class="ps-metric-lbl">daily PO entry</div></div>
+          <div class="ps-metric"><div class="ps-metric-val">100%</div><div class="ps-metric-lbl">automated PO creation</div></div>
+          <div class="ps-metric"><div class="ps-metric-val">0</div><div class="ps-metric-lbl">copy-paste errors</div></div>
+        </div>
+        <div class="ps-case-tags"><span class="ps-case-tag">Manufacturing</span><span class="ps-case-tag">Malaysia</span></div>
+        <div class="ps-case-blocks">
+          <div class="ps-case-block"><div class="ps-case-lbl">Challenge</div><div class="ps-case-txt">Procurement requests were managed in shared spreadsheets and email approvals. Once approved, the purchasing officer manually typed POs into the accounting system — item by item, supplier by supplier. ~3 hours per day on re-entry, with frequent copy-paste errors and missed line items at month-end reconciliation.</div></div>
+          <div class="ps-case-block"><div class="ps-case-lbl">Solution</div><div class="ps-case-txt">Connected Rework Work Ops with their accounting system via the Integration Pack. The flow now runs end-to-end inside Rework: requester submits a purchase request → purchasing officer reviews, confirms supplier, and approves → Rework automatically groups items by supplier and creates POs in the accounting system. No manual re-entry, no handoff documents.</div></div>
+          <div class="ps-case-block"><div class="ps-case-lbl">Result</div><div class="ps-case-txt">Eliminated 3 hours of daily PO entry. Zero copy-paste errors at month-end. POs are created the moment approval lands, so procurement and finance teams see the same real-time status — no more "did this get approved?" emails.</div></div>
+        </div>
+        <button class="ps-case-toggle-btn" onclick="toggleCaseStory(this)">
+          <span class="ps-case-toggle-text">Show more</span>
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="ps-panel" id="ps-training">
+      <div class="ps-left">
+        <div class="ps-header"><div class="ps-emoji">🎓</div><div class="ps-meta"><div class="ps-name">Training & Adoption Pack</div><div class="ps-price">From $500</div></div></div>
+        <p class="ps-tagline">Hired new team members? Expanding to a new department? This pack ensures everyone gets up to speed quickly — with hands-on workshops and a review of how your team is actually using Rework.</p>
+        <ul class="ps-deliverables">
+          <li><div class="ps-bullet"></div><div><strong>2–3 extra workshops</strong> — for new teams, new departments, or refresher training</div></li>
+          <li><div class="ps-bullet"></div><div><strong>Updated user guides</strong> reflecting any new workflows or processes added since go-live</div></li>
+          <li><div class="ps-bullet"></div><div><strong>Adoption health check</strong> — we review your usage data and recommend concrete improvements</div></li>
+          <li><div class="ps-bullet"></div><div><strong>1 follow-up call</strong> two weeks later to make sure adoption sticks</div></li>
+        </ul>
+      </div>
+      <div class="ps-case">
+        <div class="ps-case-eyebrow">Case Study</div>
+        <div class="ps-metrics">
+          <div class="ps-metric"><div class="ps-metric-val">90%+</div><div class="ps-metric-lbl">adoption rate</div></div>
+          <div class="ps-metric"><div class="ps-metric-val">2 weeks</div><div class="ps-metric-lbl">to full consistency</div></div>
+          <div class="ps-metric"><div class="ps-metric-val">8 reps</div><div class="ps-metric-lbl">onboarded</div></div>
+        </div>
+        <div class="ps-case-tags"><span class="ps-case-tag">F&B Chain</span><span class="ps-case-tag">Australia</span></div>
+        <div class="ps-case-blocks">
+          <div class="ps-case-block"><div class="ps-case-lbl">Challenge</div><div class="ps-case-txt">After a strong go-live, the company hired 8 new sales reps over 3 months. New reps were using the CRM inconsistently — skipping pipeline stages, not logging field visits, and bypassing the standard discovery questions. Manager weekly visibility into team activity dropped, and pipeline reporting became unreliable.</div></div>
+          <div class="ps-case-block"><div class="ps-case-lbl">Solution</div><div class="ps-case-txt">Ran a targeted onboarding workshop for the new reps focused on their company's specific configured workflow (not generic Rework features). Followed up with an adoption health check to identify gaps, plus a session for managers on how to use the activity dashboards to coach and follow up.</div></div>
+          <div class="ps-case-block"><div class="ps-case-lbl">Result</div><div class="ps-case-txt">CRM usage consistency across new reps reached 90%+ within 2 weeks. Manager visibility into team activity improved significantly. Pipeline reporting became reliable again, and the team standardized on the same discovery framework as established reps.</div></div>
+        </div>
+        <button class="ps-case-toggle-btn" onclick="toggleCaseStory(this)">
+          <span class="ps-case-toggle-text">Show more</span>
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="ps-panel" id="ps-consulting">
+      <div class="ps-left">
+        <div class="ps-header"><div class="ps-emoji">📊</div><div class="ps-meta"><div class="ps-name">Sales Pipeline Consulting</div><div class="ps-price">Pricing on request</div><div class="ps-tag-only">Sales Ops only</div></div></div>
+        <p class="ps-tagline">You've been using Rework CRM for a few months and have real data. Now it's time to optimize. We'll analyze your pipeline performance and redesign what's not working — so more leads turn into closed deals.</p>
+        <ul class="ps-deliverables">
+          <li><div class="ps-bullet"></div><div><strong>2–3 strategic consulting sessions</strong> with your dedicated CS team</div></li>
+          <li><div class="ps-bullet"></div><div><strong>Pipeline performance audit</strong> — conversion rates by stage, bottlenecks, SLA compliance</div></li>
+          <li><div class="ps-bullet"></div><div><strong>Process redesign</strong> — updated pipeline stages, rules, and automations based on findings</div></li>
+          <li><div class="ps-bullet"></div><div><strong>Implementation of all changes</strong> directly in your Rework system by our CS team</div></li>
+        </ul>
+      </div>
+      <div class="ps-case">
+        <div class="ps-case-eyebrow">Case Study</div>
+        <div class="ps-case-image" onclick="openLightbox(this)">
+          <img src="assets/cases/sales-consulting-revenue-motion.png" alt="Revenue Motion architecture — Sales Consulting deliverable">
+        </div>
+        <div class="ps-metrics">
+          <div class="ps-metric"><div class="ps-metric-val">8% → 35%</div><div class="ps-metric-lbl">lead conversion</div></div>
+          <div class="ps-metric"><div class="ps-metric-val">30 days</div><div class="ps-metric-lbl">avg sales cycle</div></div>
+          <div class="ps-metric"><div class="ps-metric-val">0 manual</div><div class="ps-metric-lbl">routing decisions</div></div>
+        </div>
+        <div class="ps-case-tags"><span class="ps-case-tag">B2B Services</span><span class="ps-case-tag">Malaysia</span></div>
+        <div class="ps-case-blocks">
+          <div class="ps-case-block"><div class="ps-case-lbl">Challenge</div><div class="ps-case-txt">A defined sales process existed on paper, but execution was inconsistent. Leads got returned without clear rules, routing was manual, marketing-to-sales handoff was lossy, and lead-to-win conversion stuck around <strong>8%</strong> with no clear bottleneck to point at.</div></div>
+          <div class="ps-case-block"><div class="ps-case-lbl">Solution</div><div class="ps-case-txt">3-session consulting engagement to redesign the <strong>Revenue Motion</strong> end-to-end. Built a unified architecture: lead capturing across channels with marketing-side ownership · smart lead routing with SLAs · lead return + recycling system (warm pool / cold pool) · performance-based routing prioritizing reps with best conversion · explicit marketing–sales alignment criteria · pipeline stages with clear gates (Information Collected → Appointment Set → Appointment Done → Closing → Win/Lost). All rules and SLAs were then implemented directly in Rework.</div></div>
+          <div class="ps-case-block"><div class="ps-case-lbl">Result</div><div class="ps-case-txt">Conversion lifted from <strong>8% to 35%</strong> within one quarter. Sales cycle stabilized at 30 days average. Marketing–sales finger-pointing stopped because routing rules and lead-return logic are now explicit, automated, and auditable.</div></div>
+        </div>
+        <button class="ps-case-toggle-btn" onclick="toggleCaseStory(this)">
+          <span class="ps-case-toggle-text">Show more</span>
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="ps-panel active" id="ps-dashboard">
+      <div class="ps-left">
+        <div class="ps-header"><div class="ps-emoji">📈</div><div class="ps-meta"><div class="ps-name">Dashboard & Analytics Pack</div><div class="ps-price">From $2,000</div></div></div>
+        <p class="ps-tagline">Stop guessing how your team is performing. We'll build custom dashboards that give managers real-time visibility — so decisions are based on data, not assumptions.</p>
+        <ul class="ps-deliverables">
+          <li><div class="ps-bullet"></div><div><strong>2–3 custom dashboards</strong> designed and built (e.g., sales performance, pipeline health, team KPIs)</div></li>
+          <li><div class="ps-bullet"></div><div><strong>KPI definitions</strong> — we help you decide what to track and configure the right metrics</div></li>
+          <li><div class="ps-bullet"></div><div><strong>Scheduled reports & automated alerts</strong> — the right data to the right people at the right time</div></li>
+          <li><div class="ps-bullet"></div><div><strong>1 training session</strong> on reading dashboards and making data-driven decisions</div></li>
+        </ul>
+      </div>
+      <div class="ps-case">
+        <div class="ps-case-eyebrow">Case Study</div>
+        <div class="ps-case-image" onclick="openLightbox(this)">
+          <img src="assets/cases/ceo-dashboard-travelpro.png" alt="CEO Dashboard — Travel Agency Malaysia">
+        </div>
+        <div class="ps-metrics">
+          <div class="ps-metric"><div class="ps-metric-val">6 hrs → 0</div><div class="ps-metric-lbl">weekly reporting</div></div>
+          <div class="ps-metric"><div class="ps-metric-val">Daily</div><div class="ps-metric-lbl">review cadence</div></div>
+          <div class="ps-metric"><div class="ps-metric-val">9 KPIs</div><div class="ps-metric-lbl">tracked live</div></div>
+        </div>
+        <div class="ps-case-tags"><span class="ps-case-tag">Travel Agency</span><span class="ps-case-tag">Malaysia</span></div>
+        <div class="ps-case-blocks">
+          <div class="ps-case-block"><div class="ps-case-lbl">Challenge</div><div class="ps-case-txt">The CEO ran weekly leadership reviews looking at sales, bookings, and customer numbers — but data came from 4 different sources (booking system, accounting software, marketing dashboards, and manual Excel). Compiling the view took 6+ hours every Friday, and by Monday morning the numbers were already stale.</div></div>
+          <div class="ps-case-block"><div class="ps-case-lbl">Solution</div><div class="ps-case-txt">Built a unified <strong>CEO Dashboard</strong> consolidating real-time data across the business: revenue, bookings, customers, channel performance (Website / Mobile / OTA / Walk-in), top destinations and tours, sales by market, and operations. KPI cards show month-over-month deltas at a glance. Automated alerts flag anomalies — high cancellation rates, peak-season approaching, price-spike on key routes — before they become problems.</div></div>
+          <div class="ps-case-block"><div class="ps-case-lbl">Result</div><div class="ps-case-txt">Weekly compilation eliminated. The CEO opens the dashboard daily and sees real-time numbers across all channels and markets. Decisions that used to wait for Monday morning now happen day-of.</div></div>
+        </div>
+        <button class="ps-case-toggle-btn" onclick="toggleCaseStory(this)">
+          <span class="ps-case-toggle-text">Show more</span>
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="ps-panel" id="ps-ai">
+      <div class="ps-left">
+        <div class="ps-header"><div class="ps-emoji">🤖</div><div class="ps-meta"><div class="ps-name">AI Agents Pack</div><div class="ps-price">Pricing on request</div></div></div>
+        <p class="ps-tagline">Ready to let AI handle the repetitive work? We'll deploy Rework's AI agents into your workflows — trained on your data, tested for accuracy, monitored for impact.</p>
+        <ul class="ps-deliverables">
+          <li><div class="ps-bullet"></div><div><strong>AI agent configuration & deployment</strong> based on Rework's current AI capabilities</div></li>
+          <li><div class="ps-bullet"></div><div><strong>Model training</strong> on your specific data, workflows, and business context</div></li>
+          <li><div class="ps-bullet"></div><div><strong>Testing & fine-tuning</strong> to ensure accuracy before full rollout to the team</div></li>
+          <li><div class="ps-bullet"></div><div><strong>Team training</strong> on how to work effectively alongside AI agents</div></li>
+          <li><div class="ps-bullet"></div><div><strong>30-day monitoring & adjustment</strong> — we watch, tweak, and optimize post-deployment</div></li>
+        </ul>
+      </div>
+      <div class="ps-case">
+        <div class="ps-case-eyebrow">Case Study</div>
+        <div class="ps-case-image" onclick="openLightbox(this)">
+          <img src="assets/cases/ai-agent-library.jpg" alt="AI Agent Library — custom agents for sales workflows">
+        </div>
+        <div class="ps-metrics">
+          <div class="ps-metric"><div class="ps-metric-val">9 agents</div><div class="ps-metric-lbl">deployed & maintained</div></div>
+          <div class="ps-metric"><div class="ps-metric-val">~1.5 hrs</div><div class="ps-metric-lbl">saved per deal</div></div>
+          <div class="ps-metric"><div class="ps-metric-val">100%</div><div class="ps-metric-lbl">discovery consistency</div></div>
+        </div>
+        <div class="ps-case-tags"><span class="ps-case-tag">B2B SaaS</span><span class="ps-case-tag">Philippines</span></div>
+        <div class="ps-case-blocks">
+          <div class="ps-case-block"><div class="ps-case-lbl">Challenge</div><div class="ps-case-txt">Sales reps repeatedly built discovery questions from scratch, researched prospects manually, drafted meeting summaries by hand, and assembled buyer-context notes deal by deal. ~1.5 hours per deal lost on admin and research — time that should have gone to selling.</div></div>
+          <div class="ps-case-block"><div class="ps-case-lbl">Solution</div><div class="ps-case-txt">Built a custom <strong>Agent Library</strong> in Rework — a curated set of AI agents the team uses daily, versioned and maintainable. Includes <strong>METDICC AI Agent</strong> (drafts qualification questions per opportunity), <strong>Prospector Master</strong> (researches prospects from public data), <strong>Meeting Summary Bot</strong> (auto-generates structured notes from call recordings), <strong>Business Model Canvas Expert</strong> (extracts buyer's business context), and a <strong>Research Assistant</strong>. Agents are owned by named team members so they keep improving over time.</div></div>
+          <div class="ps-case-block"><div class="ps-case-lbl">Result</div><div class="ps-case-txt">Sales reps reclaim ~1.5 hours per deal on admin and research. Discovery consistency improved across the team — junior reps now follow the same qualification framework as seniors via the METDICC agent. New hires ramp faster because the institutional knowledge is in the agents, not in heads.</div></div>
+        </div>
+        <button class="ps-case-toggle-btn" onclick="toggleCaseStory(this)">
+          <span class="ps-case-toggle-text">Show more</span>
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ADD-ONS -->
+<section class="section" id="addons">
+  <div class="section-inner">
+    <div class="section-label">Add-ons</div>
+    <div class="section-title">Start light, or go onsite</div>
+    <p class="section-sub">Optional add-ons that sit alongside any package — choose them when scoping with your CS team.</p>
+
+    <div class="addons-grid">
+
+      <!-- Pre-implementation Readiness -->
+      <div class="addon-card">
+        <div class="addon-hdr">
+          <span class="addon-emoji">🧭</span>
+          <div class="addon-title">Not sure where to start?</div>
+        </div>
+        <p class="addon-sub">For buyers exploring before committing to a tier. Two ways in — both deliver something tangible you can use either way.</p>
+
+        <div class="addon-opt green">
+          <div class="addon-opt-row">
+            <div class="addon-opt-name">Free 60-min Readiness Session</div>
+            <div class="addon-opt-price free">Free</div>
+          </div>
+          <div class="addon-opt-desc">We review your current processes, recommend the right tier, and send you a 2-page readiness report. No commitment.</div>
+        </div>
+
+        <div class="addon-opt blue">
+          <div class="addon-opt-row">
+            <div class="addon-opt-name">Process Mapping Workshop</div>
+            <div class="addon-opt-price paid">$299</div>
+          </div>
+          <div class="addon-opt-desc">Half-day deeper dive. You walk away with a process map for your team's use — whether or not you proceed with Rework. <strong>Credited toward implementation if you sign within 60 days.</strong></div>
+        </div>
+      </div>
+
+      <!-- Onsite Pack -->
+      <div class="addon-card">
+        <div class="addon-hdr">
+          <span class="addon-emoji">✈️</span>
+          <div class="addon-title">Onsite Delivery Pack</div>
+        </div>
+        <p class="addon-sub">Default delivery is online. Add hands-on, in-person delivery at your office — available across APAC.</p>
+
+        <div class="addon-price-block">
+          <div class="addon-price-big">$500<small> / day</small></div>
+          <div class="addon-price-note">2-day minimum · all-inclusive</div>
+          <div class="addon-price-desc">Price covers CSM time, economy flights, accommodation, and travel expenses.</div>
+        </div>
+
+        <div class="addon-finep">
+          Minimum 2-week scheduling notice. Cancellation within 7 days: travel costs invoiced.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="section-inner">
+    <div class="section-label">FAQ</div>
+    <div class="section-title">Common questions</div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What's the difference between the three packages?<svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="faq-a"><strong>Launchpad</strong> is for small teams getting started — standard configuration, self-service data migration, one group training workshop. <strong>Accelerator</strong> adds process consulting, Rework-handled migration with validation, role-based training, and 30 days of post-go-live group chat. <strong>Transform</strong> is a full redesign for complex orgs — multi-pipeline/multi-team configuration, custom dashboards, train-the-trainer, a <strong>dedicated Onboarding Manager</strong>, and 60 days of dedicated CS engagement. Use "Find my package" to get a tailored recommendation.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Who should we pick as our project lead (Rework Master)?<svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="faq-a">We strongly recommend nominating a single <strong>project lead</strong> on your side — we call this person your <strong>Rework Master</strong>. Ideally they:<br><br>· <strong>Understand your business</strong> — they know how your team actually works today<br>· <strong>Have decision-making authority</strong> — they can approve scope and resolve cross-team conflicts<br>· <strong>Are excited about new tech</strong> — they want to make Rework work, not resist change<br><br>During implementation, the Rework Master partners with our CS team to drive the project. After go-live, they become your <strong>internal expert</strong> — the person teammates ask when they have a Rework question. Without one, implementation still runs, but adoption is slower and decisions get bottlenecked.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What's the Customer Health Check?<svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="faq-a">After go-live, your CS team sends a <strong>quarterly active-usage report</strong> showing daily-active rate by team. If the rate drops below the healthy threshold (<strong>50% of named users active on a typical business day</strong>), we book a review call to identify what's blocking adoption — at no extra cost. Same commitment for every tier across every product.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How long does implementation actually take?<svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="faq-a">Timeline depends on product and tier. For <strong>Sales Ops, Work Ops, People Ops</strong>: Launchpad 3–5 weeks · Accelerator 4–8 weeks · Transform 8–12 weeks. <strong>Lead Ops</strong> is faster: Launchpad 2–4 weeks · Accelerator 4–6 weeks · Transform 6–10 weeks. Your CS team sets a clear timeline at kick-off and tracks it through go-live. Actual duration depends on your team's responsiveness, data complexity, and scope.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Can I add or change services after implementation?<svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="faq-a">Yes. Professional Services (Dashboard & Analytics, Integration, Training & Adoption, Sales Consulting, AI Agents) and Add-ons (Onsite Delivery, Pre-implementation Readiness) can be added at any point, before or after go-live. Upgrading your core package mid-implementation is possible but handled case-by-case with your CS team, since the scope needs to be re-aligned.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner">
+    <div class="section-label" style="color:var(--blue-neon)">Get Started</div>
+    <div class="cta-title">Ready to build it right?</div>
+    <p class="cta-sub">Talk to our team — we'll match you with the right package and get your implementation scoped in one call.</p>
+    <div class="cta-actions">
+      <a href="https://rework.com" class="btn-primary">Talk to us →</a>
+      <a href="#quiz" class="btn-ghost" onclick="jumpToFinder(event)">Retake the quiz</a>
+    </div>
+  </div>
+</section>
+
+<!-- SUMMARY BAR -->
+<div class="summary-bar" id="summaryBar">
+  <div class="sum-items" id="sumItems"></div>
+  <div class="sum-total">
+    <span class="sum-label">Total</span>
+    <span class="sum-price" id="sumPrice">$0</span>
+  </div>
+  <button class="sum-cta" onclick="window.open('https://rework.com','_blank')">Get started →</button>
+</div>
+<div style="height:80px"></div>
+
+<!-- FINDER MODAL (Package Finder quiz) -->
+<div class="finder-modal" id="finder-modal" onclick="closeFinderModal(event)">
+  <div class="finder-modal-content" onclick="event.stopPropagation()">
+    <button class="finder-modal-close" onclick="closeFinderModal(event)" aria-label="Close">×</button>
+    <section class="section" id="quiz">
+      <div class="section-inner">
+        <div style="max-width:760px">
+          <div class="section-label">Package Finder</div>
+          <div class="finder-titlewrap">
+            <div class="section-title" style="margin-bottom:0">Find your implementation package</div>
+            <span class="finder-product-pill">For Sales Ops</span>
+          </div>
+          <p class="section-sub">Answer the questions on the left — your recommendation updates live. Change any answer to see how it affects the result.</p>
+        </div>
+        <div class="quiz-layout">
+          <div class="quiz-left" id="quizLeft"></div>
+          <div class="quiz-right">
+            <div class="quiz-result-panel" id="quizResultPanel"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox(event)" aria-label="Close">×</button>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="" onclick="event.stopPropagation()">
+</div>
+
+<script>
+/* ─── QUIZ DATA ─── */
+const QUESTIONS = [
+  {
+    id:'team_size', type:'single',
+    q:'How many people are on your sales team?',
+    hint:'This sets your baseline package — other questions can push it up within the limit allowed by your team size.',
+    options:[
+      {label:'1–10 sales', tier:'launchpad'},
+      {label:'10–50 sales', tier:'accelerator'},
+      {label:'50+ sales', tier:'transform'},
+    ]
+  },
+  {
+    id:'lead_sources', type:'multi',
+    q:'Where do your leads come from?',
+    hint:'Select all that apply.',
+    groups:[
+      {label:'Organic / Direct', tagClass:'organic', tag:'Sales Ops handles these', type:'organic', options:['Events & exhibitions','Referrals from existing customers','Direct outreach (cold call, email, LinkedIn)','Walk-ins / existing customer base']},
+      {label:'Digital Channels', tagClass:'digital', tag:'+ Leads Ops recommended', type:'digital', options:['Meta Ads (Facebook / Instagram)','Landing pages','Web forms on website','WhatsApp','Other chat channels (Telegram, Messenger...)']}
+    ]
+  },
+  {
+    id:'process', type:'single',
+    q:"What's the current state of your sales process?",
+    options:[
+      {label:"We don't have a formal process", sub:"Reps work however they want — we need help building one from scratch", tier:'accelerator'},
+      {label:"We have a process in spreadsheets or people's heads", sub:"It exists, we just need to digitize what we already have", tier:'launchpad'},
+      {label:"We have a documented, complex process", sub:"Multi-stage, cross-team — needs deep configuration and redesign", tier:'transform'},
+    ]
+  },
+  {
+    id:'reporting', type:'single',
+    q:'Does your team regularly review sales numbers?',
+    options:[
+      {label:"Not really — no regular reporting habit yet", tier:'launchpad'},
+      {label:"We do it manually — someone compiles Excel weekly", tier:'accelerator'},
+      {label:"Yes — structured reviews, we need real-time dashboards", tier:'transform'},
+    ]
+  },
+  {
+    id:'admin', type:'single',
+    q:'Is there someone who can own system setup and management?',
+    options:[
+      {label:"No dedicated person — everyone is focused on selling", sub:"We need the CS team to handle most of the configuration", tier:'accelerator'},
+      {label:"Yes — someone can handle it part-time", sub:"Comfortable with tools, can follow CS guidance for setup", tier:'launchpad'},
+      {label:"Yes — dedicated Sales Ops or Admin person", sub:"They can own implementation and drive adoption internally", tier:'transform'},
+    ]
+  },
+  {
+    id:'migration', type:'single',
+    q:'Do you have existing data to bring into Rework?',
+    hint:'Contacts, deals, or activity history from spreadsheets or a previous CRM.',
+    options:[
+      {label:"No — starting completely fresh", tier:'launchpad'},
+      {label:"Yes — some data in spreadsheets, roughly organized", tier:'accelerator'},
+      {label:"Yes — large or messy dataset from multiple sources", tier:'transform'},
+    ]
+  }
+];
+
+const RESULTS = {
+  launchpad:{
+    tier:'launchpad', badge:'Launchpad',
+    headline:"You're set up to start clean and move fast.",
+    body:"Your process already exists, your team is small, your leads come through direct channels, and someone on your team can manage the system. Launchpad gets you properly configured without overengineering — in 3–5 weeks.",
+    price:'$500', sessions:'3', weeks:'3–5',
+    tagline:'Get your sales team started on Rework in weeks, not months.'
+  },
+  accelerator:{
+    tier:'accelerator', badge:'Accelerator',
+    headline:"You need more than just software setup — you need it built right.",
+    body:"Accelerator gives you the consulting, migration support, and role-based training to get your team running the right way from day one.",
+    price:'$1,500', sessions:'6–8', weeks:'4–8',
+    tagline:'Build a sales machine with tailored processes and hands-on support.'
+  },
+  transform:{
+    tier:'transform', badge:'Transform',
+    headline:"You're running a complex sales organization — it deserves a proper transformation.",
+    body:"Multiple pipelines, multiple channels, a team that needs structured training and clear SOPs. Transform gives you a dedicated Onboarding Manager, deep configuration, and full documentation to make sure your entire org operates on Rework — consistently.",
+    price:'$3,000 – $5,000', sessions:'10–15', weeks:'8–12',
+    tagline:'Redesign how your sales organization operates — from lead to revenue.'
+  }
+};
+
+const TRIGGER_MSGS = {
+  no_formal_process:"You don't have a formal process yet — our CS team will design it with you from scratch.",
+  no_admin:"You don't have a dedicated admin — our CS team handles the heavy lifting for you.",
+  digital_channels:"You're running digital lead channels that need proper routing and Leads Ops configuration."
+};
+
+/* ─── QUIZ STATE ─── */
+let qAnswers = {};
+let q2Digital = 0;
+let q2NeedsLeads = false;
+
+function initQuiz(){
+  qAnswers = {}; q2Digital = 0; q2NeedsLeads = false;
+  renderAllQuestions();
+  renderPlaceholder();
+}
+
+function renderAllQuestions(){
+  const left = document.getElementById('quizLeft');
+  if(!left) return;
+  left.innerHTML = QUESTIONS.map((q,i) => renderQuestionCard(q,i)).join('');
+}
+
+function renderQuestionCard(q, step){
+  const answered = !!qAnswers[q.id];
+  const isCollapsed = answered; // start collapsed if already answered
+  const classes = ['q-card', answered?'answered':'', isCollapsed?'collapsed':''].filter(Boolean).join(' ');
+
+  // Build preview label for collapsed state
+  let previewText = '';
+  if(answered){
+    if(q.type === 'single'){
+      previewText = q.options[qAnswers[q.id].index]?.label || '';
+    } else {
+      const count = Object.keys(qAnswers[q.id]?.checked||{}).length;
+      previewText = `${count} source${count!==1?'s':''} selected`;
+    }
+  }
+
+  let html = `<div class="${classes}" id="qcard-${q.id}" onclick="handleQuizCardClick(event,this)">
+    <div class="q-card-hdr" onclick="handleQuizCardClick(event,this)">
+      <div style="flex:1">
+        <div class="q-num">Question ${step+1} of ${QUESTIONS.length}</div>
+        <div class="q-question">${q.q}</div>
+      </div>
+      <svg class="q-collapse-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="q-selected-preview">✓ ${previewText}</div>
+    <div class="q-card-body">
+      ${q.hint?`<div class="q-hint">${q.hint}</div>`:''}
+  `;
+
+  if(q.type === 'single'){
+    html += `<div class="q-opts-c">`;
+    q.options.forEach((opt,i) => {
+      const sel = qAnswers[q.id]?.index === i ? 'selected' : '';
+      html += `<div class="q-opt-c ${sel}" onclick="qSelectLive(event,'${q.id}',${i},'${opt.tier}',this)">
+        <div class="q-dot"><div class="q-dot-inner"></div></div>
+        <div class="q-opt-text">
+          <div class="q-opt-label">${opt.label}</div>
+          ${opt.sub?`<div class="q-opt-sub">${opt.sub}</div>`:''}
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  } else {
+    const prevChecked = qAnswers[q.id]?.checked || {};
+    const anyChecked = Object.keys(prevChecked).length > 0;
+    q.groups.forEach(g => {
+      html += `<div class="q-grp-hdr">${g.label} <span class="q-grp-tag ${g.tagClass}">${g.tag}</span></div>`;
+      g.options.forEach((opt,i) => {
+        const key = g.type+'-'+i;
+        const chk = prevChecked[key] ? 'checked' : '';
+        html += `<div class="q-chk-c ${chk}" data-qid="${q.id}" data-gtype="${g.type}" data-key="${key}" onclick="qToggleLive(event,this)">
+          <div class="q-chkbox"><svg class="q-chk-icon" width="10" height="10" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span>${opt}</span>
+        </div>`;
+      });
+    });
+    html += `<button class="q-chk-done${anyChecked?' enabled':''}" id="qchkdone-${q.id}" onclick="confirmLeadSources(event,'${q.id}')">Done ✓</button>`;
+  }
+
+  html += `</div></div>`;
+  return html;
+}
+
+function handleQuizCardClick(e, el){
+  const card = el.closest ? el.closest('.q-card') : el;
+  if(!card) return;
+  if(card.classList.contains('collapsed')){
+    e.stopPropagation();
+    card.classList.remove('collapsed');
+  }
+}
+
+function qSelectLive(e, qid, idx, tier, el){
+  e.stopPropagation();
+  qAnswers[qid] = {tier, index:idx};
+  const card = el.closest('.q-card');
+  card.querySelectorAll('.q-opt-c').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  card.classList.add('answered');
+  // Update collapsed preview text
+  const prev = card.querySelector('.q-selected-preview');
+  if(prev) prev.textContent = '✓ ' + el.querySelector('.q-opt-label').textContent;
+  // Auto-collapse after brief pause
+  setTimeout(() => card.classList.add('collapsed'), 300);
+  renderResult();
+}
+
+function qToggleLive(e, el){
+  e.stopPropagation();
+  const qid = el.dataset.qid;
+  const key = el.dataset.key;
+  el.classList.toggle('checked');
+  if(!qAnswers[qid]) qAnswers[qid] = {checked:{}};
+  if(el.classList.contains('checked')){
+    qAnswers[qid].checked[key] = true;
+  } else {
+    delete qAnswers[qid].checked[key];
+  }
+  q2Digital = Object.keys(qAnswers[qid].checked).filter(k=>k.startsWith('digital')).length;
+  const anyChecked = Object.keys(qAnswers[qid].checked).length > 0;
+  q2NeedsLeads = q2Digital > 0;
+  if(anyChecked){
+    qAnswers[qid].tier = q2Digital === 0 ? 'launchpad' : q2Digital <= 2 ? 'accelerator' : 'transform';
+  } else {
+    delete qAnswers[qid];
+  }
+  const card = el.closest('.q-card');
+  card.classList.toggle('answered', card.querySelectorAll('.q-chk-c.checked').length > 0);
+  // Enable/disable Done button
+  const done = document.getElementById('qchkdone-'+qid);
+  if(done) done.classList.toggle('enabled', anyChecked);
+  renderResult();
+}
+
+function confirmLeadSources(e, qid){
+  e.stopPropagation();
+  const card = document.getElementById('qcard-'+qid);
+  if(!card || !qAnswers[qid]) return;
+  const count = Object.keys(qAnswers[qid]?.checked||{}).length;
+  const prev = card.querySelector('.q-selected-preview');
+  if(prev) prev.textContent = `✓ ${count} source${count!==1?'s':''} selected`;
+  setTimeout(() => card.classList.add('collapsed'), 200);
+}
+
+function calcResult(){
+  const idxToTier = ['', 'launchpad', 'accelerator', 'transform'];
+  const tierToIdx = {launchpad:1, accelerator:2, transform:3};
+
+  // ── PRIMARY GATE: team_size sets floor + ceiling
+  // 1–10 sales  → Launchpad floor, Accelerator ceiling
+  // 10–50 sales → Accelerator floor, Transform ceiling
+  // 50+ sales   → Transform floor, Transform ceiling
+  let floor = 1, ceiling = 3;
+  const teamAnswer = qAnswers.team_size;
+  if(teamAnswer && teamAnswer.tier){
+    if(teamAnswer.tier === 'launchpad'){ floor = 1; ceiling = 2; }
+    else if(teamAnswer.tier === 'accelerator'){ floor = 2; ceiling = 3; }
+    else if(teamAnswer.tier === 'transform'){ floor = 3; ceiling = 3; }
+  }
+
+  // ── COMPLEXITY MODIFIER: tally other answers
+  const scores = {launchpad:0, accelerator:0, transform:0};
+  const triggers = [];
+  QUESTIONS.forEach(q => {
+    if(q.id === 'team_size') return;
+    const a = qAnswers[q.id];
+    if(!a || !a.tier) return;
+    scores[a.tier]++;
+  });
+  if(qAnswers.process?.tier === 'accelerator') triggers.push('no_formal_process');
+  if(qAnswers.admin?.tier === 'accelerator') triggers.push('no_admin');
+  if(q2NeedsLeads) triggers.push('digital_channels');
+
+  // Complexity-suggested tier (majority of non-team votes)
+  let complexityIdx;
+  if(scores.transform >= scores.accelerator && scores.transform >= scores.launchpad && scores.transform > 0) complexityIdx = 3;
+  else if(scores.accelerator >= scores.launchpad && scores.accelerator > 0) complexityIdx = 2;
+  else complexityIdx = 1;
+
+  // Apply gate bounds: clamp complexity within [floor, ceiling]
+  let finalIdx = Math.max(floor, Math.min(ceiling, complexityIdx));
+
+  // ── SPECIAL CASE: Sales 1–10 stays Launchpad unless 3 specific "need-help"
+  // signals all line up — data to migrate + no formal process + no dedicated admin.
+  // Lead source count and reporting habits do NOT promote.
+  let smallTeamUpgrade = false;
+  if(teamAnswer && teamAnswer.tier === 'launchpad'){
+    const needsMigration = qAnswers.migration?.tier === 'accelerator' || qAnswers.migration?.tier === 'transform';
+    const noProcess = qAnswers.process?.tier === 'accelerator';
+    const noAdmin = qAnswers.admin?.tier === 'accelerator';
+    smallTeamUpgrade = needsMigration && noProcess && noAdmin;
+    finalIdx = smallTeamUpgrade ? 2 : 1;
+  }
+
+  const result = idxToTier[finalIdx];
+  const cappedByGate = complexityIdx > ceiling;
+  const upliftedByComplexity = finalIdx > floor;
+
+  return {
+    result, scores, triggers,
+    gate: {floor: idxToTier[floor], ceiling: idxToTier[ceiling]},
+    complexitySuggested: idxToTier[complexityIdx],
+    cappedByGate, upliftedByComplexity, smallTeamUpgrade,
+    isSmallTeam: teamAnswer?.tier === 'launchpad'
+  };
+}
+
+function renderResult(){
+  const panel = document.getElementById('quizResultPanel');
+  if(!panel) return;
+  const answeredCount = Object.keys(qAnswers).length;
+  if(answeredCount < 3){ renderPlaceholder(answeredCount); return; }
+  const pct = (answeredCount / QUESTIONS.length) * 100;
+  const {result, triggers, gate, complexitySuggested, cappedByGate, upliftedByComplexity, smallTeamUpgrade, isSmallTeam} = calcResult();
+  const r = RESULTS[result];
+  const accelTriggers = triggers.length > 0
+    ? `<div class="qrp-triggers">${triggers.map(t=>`<div class="qrp-trigger"><span class="qrp-trigger-arrow">→</span> ${TRIGGER_MSGS[t]}</div>`).join('')}</div>` : '';
+  // Gate-context note (only show after team_size answered)
+  let gateNote = '';
+  if(qAnswers.team_size){
+    const ceilingLabel = gate.ceiling.charAt(0).toUpperCase() + gate.ceiling.slice(1);
+    const floorLabel = gate.floor.charAt(0).toUpperCase() + gate.floor.slice(1);
+    if(isSmallTeam && smallTeamUpgrade){
+      // Sales 1–10: 3 "need help" signals all present → Accelerator
+      gateNote = `<div class="qrp-gate-note">Most <strong>1–10 sales teams</strong> fit Launchpad. Your combination of <strong>data to migrate + no formal process + no dedicated admin</strong> means Accelerator's hands-on support is worth the upgrade.</div>`;
+    } else if(isSmallTeam){
+      // Sales 1–10 default → Launchpad
+      gateNote = `<div class="qrp-gate-note">Most <strong>1–10 sales teams</strong> fit Launchpad — the package is designed for your size. We'd only suggest stepping up if you needed full process consulting + managed data migration + a hands-off setup.</div>`;
+    } else if(cappedByGate){
+      const suggestedLabel = complexitySuggested.charAt(0).toUpperCase() + complexitySuggested.slice(1);
+      gateNote = `<div class="qrp-gate-note">⚠️ Your other answers suggest <strong>${suggestedLabel}</strong>, but for your team size the largest fit is <strong>${ceilingLabel}</strong>. If you're expecting rapid growth, ask us about ${suggestedLabel}.</div>`;
+    } else if(upliftedByComplexity){
+      gateNote = `<div class="qrp-gate-note">Your team size starts you at <strong>${floorLabel}</strong>, but your complexity pushed the recommendation up to <strong>${r.badge}</strong>.</div>`;
+    } else {
+      gateNote = `<div class="qrp-gate-note">Your team size puts you in the <strong>${r.badge}</strong> range.</div>`;
+    }
+  }
+  const leadsNote = q2NeedsLeads
+    ? `<div class="qrp-leads-note">💡 <span>Pair with <strong>Leads Ops</strong> — channel setup included at no extra cost in Accelerator & Transform.</span></div>` : '';
+  panel.innerHTML = `
+    <div class="qrp-progress"><div class="qrp-progress-fill" style="width:${pct}%"></div></div>
+    <div class="qrp-body">
+      <div class="qrp-badge ${result}">✦ ${r.badge}</div>
+      <div class="qrp-headline">${r.headline}</div>
+      <div class="qrp-body-txt">${r.body}</div>
+      ${gateNote}
+      ${accelTriggers}
+      ${leadsNote}
+      <div class="qrp-pkg ${result}">
+        <div class="qrp-pkg-row">
+          <div>
+            <div class="qrp-pkg-name ${result}">${r.badge}</div>
+            <div class="qrp-pkg-tag">${r.tagline}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="qrp-pkg-price">${r.price}</div>
+            <div class="qrp-pkg-note">One-time fee</div>
+          </div>
+        </div>
+        <div class="qrp-stats">
+          <div><div class="qrp-stat-num ${result}">${r.sessions}</div><div class="qrp-stat-lbl">Sessions</div></div>
+          <div><div class="qrp-stat-num ${result}">${r.weeks}</div><div class="qrp-stat-lbl">Weeks</div></div>
+        </div>
+        <div class="qrp-actions">
+          <button class="qrp-btn-main ${result}" onclick="window.open('https://rework.com','_blank')">Get started →</button>
+          <button class="qrp-btn-sec" onclick="seeDetailsFromFinder()">See details</button>
+        </div>
+      </div>
+      <div class="qrp-answered-count">${answeredCount} of ${QUESTIONS.length} answered</div>
+    </div>`;
+}
+
+function renderPlaceholder(answered){
+  const panel = document.getElementById('quizResultPanel');
+  if(!panel) return;
+  answered = answered || 0;
+  const pct = (answered / QUESTIONS.length) * 100;
+  const needed = Math.max(0, 3 - answered);
+  const icon = answered === 0 ? '🎯' : '⏳';
+  const title = answered === 0 ? 'Your recommendation appears here' : `${answered} of 3 answered`;
+  const sub = answered === 0
+    ? 'Answer at least 3 questions on the left to see your recommended package.'
+    : `Answer ${needed} more question${needed!==1?'s':''} to unlock your recommendation.`;
+  panel.innerHTML = `
+    <div class="qrp-progress"><div class="qrp-progress-fill" style="width:${pct}%"></div></div>
+    <div class="qrp-placeholder">
+      <div class="qrp-ph-icon">${icon}</div>
+      <div class="qrp-ph-title">${title}</div>
+      <div class="qrp-ph-sub">${sub}</div>
+    </div>`;
+}
+
+/* ─── PACKAGES ─── */
+function switchPkg(product, btn){
+  document.querySelectorAll('.pkg-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  ['sales','lead','work','people'].forEach(p => {
+    const el = document.getElementById('pkg-'+p);
+    if(el) el.style.display = p === product ? 'block' : 'none';
+    const risks = document.querySelector(`.risks-wrap[data-product="${p}"]`);
+    if(risks) risks.style.display = p === product ? 'block' : 'none';
+  });
+  // Package Finder nav link + corner pill hidden on non-Sales tabs (quiz is Sales-only)
+  const findLink = document.querySelector('.nav-link[href="#quiz"]');
+  if(findLink) findLink.style.display = product === 'sales' ? '' : 'none';
+  const pkgPill = document.getElementById('pkgFinderPill');
+  if(pkgPill) pkgPill.style.display = product === 'sales' ? '' : 'none';
+  document.querySelectorAll('[data-product][data-tier]').forEach(c => {
+    if(c.dataset.product !== product) c.classList.remove('selected');
+  });
+  updateSummary();
+}
+
+// Package Finder is now in a modal — opens from Hero CTA, nav, footer, and Sales Ops corner CTA
+function openFinderModal(e){
+  if(e) e.preventDefault();
+  const salesTab = document.querySelector('.pkg-tab');
+  if(salesTab && !salesTab.classList.contains('active')){
+    switchPkg('sales', salesTab);
+  }
+  const modal = document.getElementById('finder-modal');
+  if(modal){
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+function closeFinderModal(e){
+  if(e) e.stopPropagation();
+  const modal = document.getElementById('finder-modal');
+  if(modal) modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+// Called from "See details" button in Package Finder result panel — close modal + scroll to packages section
+function seeDetailsFromFinder(){
+  closeFinderModal();
+  setTimeout(() => {
+    const pkgs = document.getElementById('packages');
+    if(pkgs) pkgs.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 120);
+}
+// Backwards-compat alias used by Hero/nav/footer CTAs
+function jumpToFinder(e){ openFinderModal(e); }
+
+function toggleCard(c){
+  const product = c.dataset.product;
+  const tier = c.dataset.tier;
+  const wasSelected = c.classList.contains('selected');
+  // Deselect all tiers in this product (both compact cards + table headers)
+  document.querySelectorAll(`[data-product="${product}"][data-tier]`).forEach(x=>x.classList.remove('selected'));
+  // Re-select matching tier across all instances if it wasn't selected before
+  if(!wasSelected){
+    document.querySelectorAll(`[data-product="${product}"][data-tier="${tier}"]`).forEach(x=>x.classList.add('selected'));
+  }
+  updateSummary();
+}
+
+function toggleFullComparison(btn){
+  // Find the wrap within the SAME pkg-{product} div as the button
+  const pkg = btn.closest('[id^="pkg-"]');
+  const wrap = pkg ? pkg.querySelector('.full-comparison-wrap') : null;
+  if(!wrap) return;
+  const willOpen = !wrap.classList.contains('open');
+  wrap.classList.toggle('open', willOpen);
+  btn.classList.toggle('expanded', willOpen);
+  btn.querySelector('.full-comparison-btn-text').textContent = willOpen ? 'Hide full comparison' : 'See full comparison';
+}
+
+function updateSummary(){
+  const items = []; let total = 0; let hasRange = false;
+  const seen = new Set();
+  document.querySelectorAll('[data-tier].selected[data-price]').forEach(c=>{
+    const key = `${c.dataset.product}-${c.dataset.tier}`;
+    if(seen.has(key)) return;  // dedupe (compact card + table header share key)
+    seen.add(key);
+    const p = parseInt(c.dataset.price);
+    total += p;
+    if(c.dataset.tier === 'transform'){ hasRange = true; }
+    items.push({name:c.dataset.name, price:p});
+  });
+  const bar = document.getElementById('summaryBar');
+  if(!items.length){ bar.classList.remove('visible'); return; }
+  bar.classList.add('visible');
+  document.getElementById('sumItems').innerHTML = items.map(i=>`<span class="sum-chip">${i.name} <span class="chip-price">$${i.price.toLocaleString()}</span></span>`).join('');
+  document.getElementById('sumPrice').textContent = hasRange ? `$${total.toLocaleString()} – $${(total+2000).toLocaleString()}` : `$${total.toLocaleString()}`;
+}
+
+/* ─── COMPARISON COLLAPSE ─── */
+function toggleCmpGroup(btn){
+  const grp = btn.dataset.grp;
+  const rows = document.querySelectorAll(`.cmp-row.cmp-hidden[data-grp="${grp}"]`);
+  const willExpand = !btn.classList.contains('expanded');
+  rows.forEach(r => r.classList.toggle('cmp-show', willExpand));
+  btn.classList.toggle('expanded', willExpand);
+  btn.querySelector('.cmp-toggle-text').textContent = willExpand ? 'Show less' : btn.dataset.expandLabel;
+}
+
+/* ─── RISKS TABS ─── */
+function switchRisks(btn){
+  const wrap = btn.closest('.risks-wrap');
+  const tier = btn.dataset.tier;
+  wrap.querySelectorAll('.risks-tab').forEach(t => t.classList.remove('active'));
+  wrap.querySelectorAll('.risks-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  wrap.querySelector(`.risks-panel[data-tier="${tier}"]`).classList.add('active');
+}
+
+/* ─── LIGHTBOX & CASE TOGGLE ─── */
+function openLightbox(el){
+  const img = el.querySelector('img');
+  if(!img) return;
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img');
+  lbImg.src = img.src;
+  lbImg.alt = img.alt || '';
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox(e){
+  if(e) e.stopPropagation();
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+  if(e.key !== 'Escape') return;
+  closeLightbox();
+  closeFinderModal();
+});
+function toggleCaseStory(btn){
+  const blocks = btn.closest('.ps-case').querySelector('.ps-case-blocks');
+  if(!blocks) return;
+  const willOpen = !blocks.classList.contains('open');
+  blocks.classList.toggle('open', willOpen);
+  btn.classList.toggle('expanded', willOpen);
+  btn.querySelector('.ps-case-toggle-text').textContent = willOpen ? 'Show less' : 'Show more';
+}
+
+/* ─── PRO SERVICES ─── */
+function switchPS(id, btn){
+  document.querySelectorAll('.ps-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ps-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('ps-'+id).classList.add('active');
+}
+
+/* ─── FAQ ─── */
+function toggleFaq(el){
+  const item = el.parentElement;
+  item.classList.toggle('open');
+}
+
+/* ─── INIT ─── */
+initQuiz();
+</script>
+</body>
+</html>
