@@ -293,66 +293,52 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 }
 
 /* COMPARISON TABLE */
-.cmp-wrap{background:var(--white);border:1.5px solid var(--g200);border-radius:16px;overflow:hidden;margin-top:8px}
-.cmp-headerrow{display:grid;grid-template-columns:220px 1fr 1fr 1fr;background:var(--g50);border-bottom:2px solid var(--g200)}
-.cmp-corner{padding:18px}
-.cmp-tier{padding:24px 18px 22px;text-align:center;border-left:1px solid var(--g200);cursor:pointer;transition:all .25s;background:var(--white);position:relative}
-.cmp-tier::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;z-index:2}
-.cmp-tier[data-tier="launch"]{background:linear-gradient(180deg,rgba(16,185,129,0.08),rgba(16,185,129,0.01))}
-.cmp-tier[data-tier="accel"]{background:linear-gradient(180deg,rgba(59,130,246,0.08),rgba(59,130,246,0.01))}
-.cmp-tier[data-tier="transform"]{background:linear-gradient(180deg,rgba(139,92,246,0.08),rgba(139,92,246,0.01))}
-.cmp-tier[data-tier="launch"]::before{background:linear-gradient(90deg,var(--green),var(--green-neon))}
-.cmp-tier[data-tier="accel"]::before{background:linear-gradient(90deg,var(--blue),var(--blue-neon))}
-.cmp-tier[data-tier="transform"]::before{background:linear-gradient(90deg,var(--purple),var(--purple-neon))}
-.cmp-tier[data-tier="launch"]:hover{background:linear-gradient(180deg,rgba(16,185,129,0.18),rgba(16,185,129,0.04));box-shadow:inset 0 -2px 0 var(--green)}
-.cmp-tier[data-tier="accel"]:hover{background:linear-gradient(180deg,rgba(59,130,246,0.18),rgba(59,130,246,0.04));box-shadow:inset 0 -2px 0 var(--blue)}
-.cmp-tier[data-tier="transform"]:hover{background:linear-gradient(180deg,rgba(139,92,246,0.18),rgba(139,92,246,0.04));box-shadow:inset 0 -2px 0 var(--purple)}
-/* Column hover highlight via :has() */
-.cmp-wrap:has(.cmp-tier[data-tier="launch"]:hover) .cmp-row > .cmp-cell:nth-child(2):not(.cmp-merged){background:linear-gradient(135deg,rgba(16,185,129,0.16),rgba(34,211,238,0.06))}
-.cmp-wrap:has(.cmp-tier[data-tier="accel"]:hover) .cmp-row > .cmp-cell:nth-child(3):not(.cmp-merged){background:linear-gradient(135deg,rgba(59,130,246,0.16),rgba(34,211,238,0.06))}
-.cmp-wrap:has(.cmp-tier[data-tier="transform"]:hover) .cmp-row > .cmp-cell:nth-child(4):not(.cmp-merged){background:linear-gradient(135deg,rgba(139,92,246,0.16),rgba(59,130,246,0.06))}
-.cmp-tier-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--g900);margin-bottom:4px}
+/* Compact comparison table — neutral, detail-oriented */
+.cmp-wrap{background:var(--white);border:1px solid var(--g200);border-radius:12px;overflow:hidden;margin-top:8px}
+.cmp-headerrow{display:grid;grid-template-columns:200px 1fr 1fr 1fr;background:var(--white);border-bottom:1px solid var(--g200);position:sticky;top:0;z-index:5}
+.cmp-corner{padding:14px}
+.cmp-tier{padding:14px 14px 12px;text-align:center;border-left:1px solid var(--g200);cursor:pointer;transition:background .15s;background:transparent;position:relative}
+.cmp-tier::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;z-index:2}
+.cmp-tier[data-tier="launch"]::before{background:var(--green)}
+.cmp-tier[data-tier="accel"]::before{background:var(--blue)}
+.cmp-tier[data-tier="transform"]::before{background:var(--purple)}
+.cmp-tier:hover{background:rgba(0,0,0,0.02)}
+/* Subtle column hover via :has() */
+.cmp-wrap:has(.cmp-tier[data-tier="launch"]:hover) .cmp-row > .cmp-cell:nth-child(2):not(.cmp-merged){background:rgba(16,185,129,0.04)}
+.cmp-wrap:has(.cmp-tier[data-tier="accel"]:hover) .cmp-row > .cmp-cell:nth-child(3):not(.cmp-merged){background:rgba(59,130,246,0.04)}
+.cmp-wrap:has(.cmp-tier[data-tier="transform"]:hover) .cmp-row > .cmp-cell:nth-child(4):not(.cmp-merged){background:rgba(139,92,246,0.04)}
+.cmp-tier-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:var(--g900);margin-bottom:2px;letter-spacing:-0.2px}
 .cmp-tier[data-tier="launch"] .cmp-tier-name{color:var(--green)}
 .cmp-tier[data-tier="accel"] .cmp-tier-name{color:var(--blue)}
 .cmp-tier[data-tier="transform"] .cmp-tier-name{color:var(--purple)}
-.cmp-tier-fit{font-size:12.5px;color:var(--g500);margin-bottom:14px;font-style:italic;line-height:1.5;min-height:56px;padding:0 4px}
-.cmp-tier-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--g900);margin-bottom:14px;line-height:1.1}
-.cmp-tier[data-tier="launch"] .cmp-tier-price{color:var(--green)}
-.cmp-tier[data-tier="accel"] .cmp-tier-price{color:var(--blue)}
-.cmp-tier[data-tier="transform"] .cmp-tier-price{color:var(--purple)}
-.cmp-tier-price sup{font-size:11px;color:var(--g400);font-weight:600;margin-left:2px;top:-6px;position:relative}
-.cmp-tier-cta{display:inline-block;padding:8px 22px;border:1.5px solid var(--g300);border-radius:8px;font-size:13px;font-weight:600;color:var(--g700);transition:all .2s}
+.cmp-tier-fit{display:none}
+.cmp-tier-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:var(--g700);margin-bottom:8px;line-height:1.1}
+.cmp-tier-price sup{font-size:9px;color:var(--g400);font-weight:600;margin-left:2px;top:-5px;position:relative}
+.cmp-tier-cta{display:inline-block;padding:4px 14px;border:1px solid var(--g300);border-radius:6px;font-size:11.5px;font-weight:600;color:var(--g600);transition:all .15s}
 .cmp-tier:hover .cmp-tier-cta{border-color:var(--g500);color:var(--g900)}
 .cmp-tier.selected{background:var(--g50)}
-.cmp-tier[data-tier="launch"].selected{box-shadow:inset 0 -3px 0 var(--green)}
-.cmp-tier[data-tier="accel"].selected{box-shadow:inset 0 -3px 0 var(--blue)}
-.cmp-tier[data-tier="transform"].selected{box-shadow:inset 0 -3px 0 var(--purple)}
+.cmp-tier[data-tier="launch"].selected{box-shadow:inset 0 -2px 0 var(--green)}
+.cmp-tier[data-tier="accel"].selected{box-shadow:inset 0 -2px 0 var(--blue)}
+.cmp-tier[data-tier="transform"].selected{box-shadow:inset 0 -2px 0 var(--purple)}
 .cmp-tier[data-tier="launch"].selected .cmp-tier-cta{background:var(--green);border-color:var(--green);color:var(--white)}
 .cmp-tier[data-tier="accel"].selected .cmp-tier-cta{background:var(--blue);border-color:var(--blue);color:var(--white)}
 .cmp-tier[data-tier="transform"].selected .cmp-tier-cta{background:var(--purple);border-color:var(--purple);color:var(--white)}
-.cmp-grp{padding:10px 22px;background:linear-gradient(135deg,rgba(59,130,246,0.08),rgba(34,211,238,0.05));border-top:1px solid rgba(59,130,246,0.18);border-bottom:1px solid rgba(59,130,246,0.18);position:relative;display:flex;align-items:baseline;justify-content:space-between;gap:16px}
-.cmp-grp::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--blue),var(--cyan))}
-.cmp-grp-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:800;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:1.4px;text-transform:uppercase;display:inline-block;flex-shrink:0}
-.cmp-grp-sub{font-size:11.5px;color:var(--g600);font-weight:500;text-transform:none;letter-spacing:normal;margin-top:0;text-align:right}
-.cmp-row.cmp-glance .cmp-cell{font-weight:700;color:var(--g800);font-size:14px;padding:14px 16px}
-.cmp-row.cmp-glance .cmp-cell strong{font-size:17px}
-.cmp-row.cmp-glance .cmp-cell:nth-child(2){background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(34,211,238,0.06));color:var(--green)}
-.cmp-row.cmp-glance .cmp-cell:nth-child(3){background:linear-gradient(135deg,rgba(59,130,246,0.12),rgba(34,211,238,0.06));color:var(--blue)}
-.cmp-row.cmp-glance .cmp-cell:nth-child(4){background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(59,130,246,0.06));color:var(--purple)}
-.cmp-row.cmp-hidden{display:none}
-.cmp-row.cmp-hidden.cmp-show{display:grid}
-.cmp-toggle{padding:11px 20px;background:var(--white);text-align:center;font-size:12.5px;color:var(--blue);font-weight:600;cursor:pointer;border-top:1px solid var(--g100);transition:background .2s;user-select:none}
-.cmp-toggle:hover{background:rgba(59,130,246,0.04)}
-.cmp-toggle .cmp-toggle-icon{display:inline-block;vertical-align:middle;margin-left:6px;transition:transform .25s}
-.cmp-toggle.expanded .cmp-toggle-icon{transform:rotate(180deg)}
-.cmp-row{display:grid;grid-template-columns:220px 1fr 1fr 1fr;border-top:1px solid var(--g100);transition:background .15s}
-.cmp-row:hover{background:var(--g50)}
-.cmp-lbl{padding:16px 20px;font-size:13px;font-weight:700;color:var(--g900);line-height:1.4;background:var(--g50);border-right:1.5px solid var(--g200)}
-.cmp-cell{padding:16px;font-size:13px;color:var(--g600);line-height:1.55;border-left:1px solid var(--g100);background:var(--white)}
+/* Simple group header */
+.cmp-grp{padding:12px 16px 8px;background:var(--g50);border-top:1px solid var(--g200);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.cmp-grp-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:10.5px;font-weight:800;color:var(--g500);letter-spacing:1.4px;text-transform:uppercase;display:inline-block;flex-shrink:0}
+.cmp-grp-sub{font-size:11.5px;color:var(--g500);font-weight:500}
+/* Glance rows — neutral, no per-tier tint */
+.cmp-row.cmp-glance .cmp-cell{font-weight:600;color:var(--g800);font-size:12.5px;padding:9px 14px}
+.cmp-row.cmp-glance .cmp-cell strong{font-size:14px;color:var(--g900);font-weight:700}
+/* Standard rows — compact */
+.cmp-row{display:grid;grid-template-columns:200px 1fr 1fr 1fr;border-top:1px solid var(--g100);transition:background .12s}
+.cmp-row:hover{background:rgba(0,0,0,0.015)}
+.cmp-lbl{padding:9px 16px;font-size:12.5px;font-weight:600;color:var(--g800);line-height:1.4;background:var(--g50);border-right:1px solid var(--g200)}
+.cmp-cell{padding:9px 14px;font-size:12.5px;color:var(--g600);line-height:1.5;border-left:1px solid var(--g100);background:var(--white)}
 .cmp-cell strong{color:var(--g900);font-weight:700}
 .cmp-cell.cmp-empty{color:var(--g300);font-weight:600;text-align:center}
-.cmp-cell.cmp-merged{grid-column:span 3;text-align:center;background:linear-gradient(180deg,rgba(59,130,246,0.05),rgba(34,211,238,0.04));font-weight:500;color:var(--g700)}
-.cmp-footnote{padding:14px 20px;background:var(--g50);border-top:1px solid var(--g200);font-size:11.5px;color:var(--g500);line-height:1.6;margin:0}
+.cmp-cell.cmp-merged{grid-column:span 3;text-align:center;background:var(--g50);font-weight:500;color:var(--g700)}
+.cmp-footnote{padding:10px 16px;background:var(--g50);border-top:1px solid var(--g200);font-size:11px;color:var(--g500);line-height:1.6;margin:0}
 
 /* RISKS TABS (compact) */
 .risks-wrap{background:var(--white);border:1px solid var(--g200);border-radius:12px;padding:18px 22px 20px;margin-top:56px}
@@ -438,10 +424,10 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 .finder-modal #quiz .section-inner{max-width:none}
 
 /* Inline finder CTA inside "At a glance" group header */
-.cmp-finder-cta-inline{background:var(--white);border:1.5px solid rgba(59,130,246,0.4);padding:6px 14px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;line-height:1.4;transition:all .2s;text-transform:none;letter-spacing:normal}
-.cmp-finder-cta-inline:hover{border-color:var(--blue);background:linear-gradient(135deg,rgba(59,130,246,0.06),rgba(34,211,238,0.03));transform:translateY(-1px);box-shadow:0 4px 14px rgba(59,130,246,0.2)}
-.cmp-finder-cta-prompt{font-size:11.5px;color:var(--g500);font-weight:500;text-transform:none;letter-spacing:normal}
-.cmp-finder-cta-action{font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;font-weight:800;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:0.2px}
+.cmp-finder-cta-inline{background:transparent;border:none;padding:0;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:6px;line-height:1.4;transition:opacity .15s;text-transform:none;letter-spacing:normal}
+.cmp-finder-cta-inline:hover{opacity:0.75}
+.cmp-finder-cta-prompt{font-size:11px;color:var(--g500);font-weight:500;text-transform:none;letter-spacing:normal}
+.cmp-finder-cta-action{font-family:'DM Sans',sans-serif;font-size:11.5px;font-weight:700;color:var(--blue);letter-spacing:0.1px}
 @media(max-width:860px){
   .finder-modal{padding:0}
   .finder-modal-content{max-width:100%;border-radius:0;min-height:100vh;margin:0}
@@ -802,47 +788,42 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="cmp-cell"><strong>2–3 role-based workshops</strong> <span style="color:var(--g500)">(admin · manager · rep)</span></div>
           <div class="cmp-cell"><strong>Full training plan</strong> <span style="color:var(--g500)">(+ train-the-trainer)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="activation">
+        <div class="cmp-row" data-grp="activation">
           <div class="cmp-lbl">Lead channels connected</div>
           <div class="cmp-cell"><strong>2</strong> <span style="color:var(--g500)">(Meta Ads + 1 other)</span></div>
           <div class="cmp-cell"><strong>3–4</strong> <span style="color:var(--g500)">(Meta Ads + 2–3 with routing rules)</span></div>
           <div class="cmp-cell"><strong>All channels</strong> <span style="color:var(--g500)">(advanced multi-team distribution)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="activation">
+        <div class="cmp-row" data-grp="activation">
           <div class="cmp-lbl">Process discovery & design</div>
           <div class="cmp-cell">1 kickoff call to capture your current flow</div>
           <div class="cmp-cell">1–2 consulting sessions to map and redesign your process</div>
           <div class="cmp-cell">Deep-dive workshop · AS-IS → TO-BE map · stakeholder interviews</div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="activation">
+        <div class="cmp-row" data-grp="activation">
           <div class="cmp-lbl">Data migration</div>
           <div class="cmp-cell"><strong>Self-service</strong> <span style="color:var(--g500)">(CSV templates + guide)</span></div>
           <div class="cmp-cell"><strong>Full CS-handled</strong> <span style="color:var(--g500)">(mapping + cleaning + importing + validating)</span></div>
           <div class="cmp-cell"><strong>Multi-source migration</strong> <span style="color:var(--g500)">(deduplication + historical cleanup)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="activation">
+        <div class="cmp-row" data-grp="activation">
           <div class="cmp-lbl">Automations</div>
           <div class="cmp-cell"><strong>Basic</strong> <span style="color:var(--g500)">(assignment, follow-up, SLA)</span></div>
           <div class="cmp-cell"><strong>Tailored</strong> <span style="color:var(--g500)">(routing logic + escalation rules)</span></div>
           <div class="cmp-cell"><strong>Advanced — 10+</strong> <span style="color:var(--g500)">(including approval flows)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="activation">
+        <div class="cmp-row" data-grp="activation">
           <div class="cmp-lbl">Dashboards</div>
           <div class="cmp-cell cmp-empty">—</div>
           <div class="cmp-cell"><strong>1</strong> <span style="color:var(--g500)">(basic, pipeline visibility)</span></div>
           <div class="cmp-cell"><strong>2–3 custom</strong> <span style="color:var(--g500)">(per stakeholder + scheduled reports)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="activation">
+        <div class="cmp-row" data-grp="activation">
           <div class="cmp-lbl">Documentation</div>
           <div class="cmp-cell">Standard Help Center access</div>
           <div class="cmp-cell">Custom user guide tailored to your workflows</div>
           <div class="cmp-cell">Custom SOP + recorded video walkthroughs</div>
         </div>
-        <div class="cmp-toggle" data-grp="activation" data-expand-label="Show all 9 services" onclick="toggleCmpGroup(this)">
-          <span class="cmp-toggle-text">Show all 9 services</span>
-          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-
         <!-- ADOPTION group -->
         <div class="cmp-grp">
           <div class="cmp-grp-title">Adoption</div>
@@ -864,15 +845,11 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="cmp-cell"><strong>30 days</strong> group chat + email</div>
           <div class="cmp-cell"><strong>60 days</strong> dedicated CS engagement</div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="adoption">
+        <div class="cmp-row" data-grp="adoption">
           <div class="cmp-lbl">Review calls</div>
           <div class="cmp-cell cmp-empty">—</div>
           <div class="cmp-cell">1 review call at Day 30</div>
           <div class="cmp-cell">2 review calls (Day 30, Day 60) + 1 optimization session (Day 90)</div>
-        </div>
-        <div class="cmp-toggle" data-grp="adoption" data-expand-label="Show all 4 commitments" onclick="toggleCmpGroup(this)">
-          <span class="cmp-toggle-text">Show all 4 commitments</span>
-          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
       </div>
       </div>
@@ -1017,39 +994,35 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="cmp-cell"><strong>Tailored flows</strong> <span style="color:var(--g500)">(per channel + custom qualification logic)</span></div>
           <div class="cmp-cell"><strong>Advanced multi-flow</strong> <span style="color:var(--g500)">(by product line / region + escalation rules)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="lead-activation">
+        <div class="cmp-row" data-grp="lead-activation">
           <div class="cmp-lbl">CRM integration (Lead → Sales Ops)</div>
           <div class="cmp-cell"><strong>Basic field sync</strong> <span style="color:var(--g500)">(name, contact, source tag)</span></div>
           <div class="cmp-cell"><strong>CS-handled mapping</strong> <span style="color:var(--g500)">(full lead-to-deal field mapping + validation)</span></div>
           <div class="cmp-cell"><strong>Multi-source integration</strong> <span style="color:var(--g500)">(deduplication + historical conversations + custom routing)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="lead-activation">
+        <div class="cmp-row" data-grp="lead-activation">
           <div class="cmp-lbl">Conversation flow design</div>
           <div class="cmp-cell">1 kickoff call to capture lead qualification logic</div>
           <div class="cmp-cell">1–2 discovery sessions to map conversation scenarios</div>
           <div class="cmp-cell">Deep-dive workshop · multi-channel scenario design · escalation playbook</div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="lead-activation">
+        <div class="cmp-row" data-grp="lead-activation">
           <div class="cmp-lbl">Broadcast & template messages</div>
           <div class="cmp-cell"><strong>1–2 templates</strong> <span style="color:var(--g500)">(Meta-approved, basic broadcast)</span></div>
           <div class="cmp-cell"><strong>3–5 templates</strong> <span style="color:var(--g500)">(per channel + opt-in management)</span></div>
           <div class="cmp-cell"><strong>Unlimited</strong> <span style="color:var(--g500)">(+ Meta pre-approval ownership + compliant lists)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="lead-activation">
+        <div class="cmp-row" data-grp="lead-activation">
           <div class="cmp-lbl">Conversation routing</div>
           <div class="cmp-cell"><strong>Basic</strong> <span style="color:var(--g500)">(round-robin assignment)</span></div>
           <div class="cmp-cell"><strong>Tailored rules</strong> <span style="color:var(--g500)">(by channel, source, qualification)</span></div>
           <div class="cmp-cell"><strong>Advanced multi-team</strong> <span style="color:var(--g500)">(by segment / region / language)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="lead-activation">
+        <div class="cmp-row" data-grp="lead-activation">
           <div class="cmp-lbl">Documentation</div>
           <div class="cmp-cell">Standard Help Center access</div>
           <div class="cmp-cell">Custom user guide tailored to your flows</div>
           <div class="cmp-cell">Custom SOP + recorded video walkthroughs</div>
-        </div>
-        <div class="cmp-toggle" data-grp="lead-activation" data-expand-label="Show all 8 services" onclick="toggleCmpGroup(this)">
-          <span class="cmp-toggle-text">Show all 8 services</span>
-          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
 
         <div class="cmp-grp">
@@ -1072,15 +1045,11 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="cmp-cell"><strong>30 days</strong> group chat + email</div>
           <div class="cmp-cell"><strong>60 days</strong> dedicated CS engagement</div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="lead-adoption">
+        <div class="cmp-row" data-grp="lead-adoption">
           <div class="cmp-lbl">Review calls</div>
           <div class="cmp-cell cmp-empty">—</div>
           <div class="cmp-cell">1 review call at Day 30</div>
           <div class="cmp-cell">2 review calls (Day 30, Day 60) + 1 optimization session (Day 90)</div>
-        </div>
-        <div class="cmp-toggle" data-grp="lead-adoption" data-expand-label="Show all 4 commitments" onclick="toggleCmpGroup(this)">
-          <span class="cmp-toggle-text">Show all 4 commitments</span>
-          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
       </div>
       </div>
@@ -1224,45 +1193,41 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="cmp-cell"><strong>2–3 role-based workshops</strong> <span style="color:var(--g500)">(admin · manager · end-user)</span></div>
           <div class="cmp-cell"><strong>Full training plan</strong> <span style="color:var(--g500)">(+ train-the-trainer)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="work-activation">
+        <div class="cmp-row" data-grp="work-activation">
           <div class="cmp-lbl">Intake forms</div>
           <div class="cmp-cell"><strong>1–2</strong> <span style="color:var(--g500)">(basic web forms)</span></div>
           <div class="cmp-cell"><strong>3–5</strong> <span style="color:var(--g500)">(custom fields + validation)</span></div>
           <div class="cmp-cell"><strong>Multiple</strong> <span style="color:var(--g500)">(role-specific + conditional logic)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="work-activation">
+        <div class="cmp-row" data-grp="work-activation">
           <div class="cmp-lbl">Process consulting & design</div>
           <div class="cmp-cell">1 kickoff call to map your current process</div>
           <div class="cmp-cell">1–2 process workshops · AS-IS → TO-BE for each workflow</div>
           <div class="cmp-cell">Deep-dive audit · cross-department mapping · SLA design</div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="work-activation">
+        <div class="cmp-row" data-grp="work-activation">
           <div class="cmp-lbl">Approval flows</div>
           <div class="cmp-cell"><strong>Basic</strong> <span style="color:var(--g500)">(single-step approval)</span></div>
           <div class="cmp-cell"><strong>Multi-level</strong> <span style="color:var(--g500)">(routing + escalation rules)</span></div>
           <div class="cmp-cell"><strong>Complex chains</strong> <span style="color:var(--g500)">(conditional routing + parallel approvals)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="work-activation">
+        <div class="cmp-row" data-grp="work-activation">
           <div class="cmp-lbl">Data migration</div>
           <div class="cmp-cell"><strong>Self-service</strong> <span style="color:var(--g500)">(CSV templates + guide)</span></div>
           <div class="cmp-cell"><strong>Full CS-handled</strong> <span style="color:var(--g500)">(mapping + cleaning + importing + validating)</span></div>
           <div class="cmp-cell"><strong>Multi-source migration</strong> <span style="color:var(--g500)">(deduplication + historical cleanup)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="work-activation">
+        <div class="cmp-row" data-grp="work-activation">
           <div class="cmp-lbl">Permissions & access control</div>
           <div class="cmp-cell"><strong>Basic roles</strong> <span style="color:var(--g500)">(per workflow)</span></div>
           <div class="cmp-cell"><strong>Custom roles</strong> <span style="color:var(--g500)">(department-based + visibility rules)</span></div>
           <div class="cmp-cell"><strong>Multi-team matrix</strong> <span style="color:var(--g500)">(SSO + custom permission policies)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="work-activation">
+        <div class="cmp-row" data-grp="work-activation">
           <div class="cmp-lbl">Documentation</div>
           <div class="cmp-cell">Standard Help Center access</div>
           <div class="cmp-cell">Custom user guide tailored to your workflows</div>
           <div class="cmp-cell">Custom SOP + recorded video walkthroughs</div>
-        </div>
-        <div class="cmp-toggle" data-grp="work-activation" data-expand-label="Show all 9 services" onclick="toggleCmpGroup(this)">
-          <span class="cmp-toggle-text">Show all 9 services</span>
-          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
 
         <div class="cmp-grp">
@@ -1285,15 +1250,11 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="cmp-cell"><strong>30 days</strong> group chat + email</div>
           <div class="cmp-cell"><strong>60 days</strong> dedicated CS engagement</div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="work-adoption">
+        <div class="cmp-row" data-grp="work-adoption">
           <div class="cmp-lbl">Review calls</div>
           <div class="cmp-cell cmp-empty">—</div>
           <div class="cmp-cell">1 review call at Day 30</div>
           <div class="cmp-cell">2 review calls (Day 30, Day 60) + 1 optimization session (Day 90)</div>
-        </div>
-        <div class="cmp-toggle" data-grp="work-adoption" data-expand-label="Show all 4 commitments" onclick="toggleCmpGroup(this)">
-          <span class="cmp-toggle-text">Show all 4 commitments</span>
-          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
       </div>
       </div>
@@ -1437,45 +1398,41 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="cmp-cell"><strong>2–3 role-based workshops</strong> <span style="color:var(--g500)">(HR · manager · employee)</span></div>
           <div class="cmp-cell"><strong>Full training plan</strong> <span style="color:var(--g500)">(+ train-the-trainer)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="people-activation">
+        <div class="cmp-row" data-grp="people-activation">
           <div class="cmp-lbl">Document templates & e-sign</div>
           <div class="cmp-cell"><strong>Standard templates</strong> <span style="color:var(--g500)">(contracts, offers, basic letters)</span></div>
           <div class="cmp-cell"><strong>Customized templates</strong> <span style="color:var(--g500)">(branded + role-specific + e-sign)</span></div>
           <div class="cmp-cell"><strong>Full template library</strong> <span style="color:var(--g500)">(multi-country compliance + version control)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="people-activation">
+        <div class="cmp-row" data-grp="people-activation">
           <div class="cmp-lbl">Process consulting & design</div>
           <div class="cmp-cell">1 kickoff call to capture HR processes</div>
           <div class="cmp-cell">1–2 HR workshops · AS-IS → TO-BE for hiring & lifecycle</div>
           <div class="cmp-cell">Deep-dive audit · multi-country/policy mapping · compliance review</div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="people-activation">
+        <div class="cmp-row" data-grp="people-activation">
           <div class="cmp-lbl">Approval flows (time-off, leave, offers)</div>
           <div class="cmp-cell"><strong>Basic</strong> <span style="color:var(--g500)">(single-manager approval)</span></div>
           <div class="cmp-cell"><strong>Multi-level routing</strong> <span style="color:var(--g500)">(manager → HR → finance)</span></div>
           <div class="cmp-cell"><strong>Complex chains</strong> <span style="color:var(--g500)">(country-specific + escalation + delegation rules)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="people-activation">
+        <div class="cmp-row" data-grp="people-activation">
           <div class="cmp-lbl">Employee data migration</div>
           <div class="cmp-cell"><strong>Self-service</strong> <span style="color:var(--g500)">(CSV templates + guide)</span></div>
           <div class="cmp-cell"><strong>Full CS-handled</strong> <span style="color:var(--g500)">(mapping + cleaning + importing + validating)</span></div>
           <div class="cmp-cell"><strong>Multi-source migration</strong> <span style="color:var(--g500)">(prior HRIS + history + entitlements)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="people-activation">
+        <div class="cmp-row" data-grp="people-activation">
           <div class="cmp-lbl">Permissions & access control</div>
           <div class="cmp-cell"><strong>Basic roles</strong> <span style="color:var(--g500)">(HR · manager · employee)</span></div>
           <div class="cmp-cell"><strong>Custom roles</strong> <span style="color:var(--g500)">(department-based + sensitive data rules)</span></div>
           <div class="cmp-cell"><strong>Multi-team matrix</strong> <span style="color:var(--g500)">(SSO + country/entity-specific policies)</span></div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="people-activation">
+        <div class="cmp-row" data-grp="people-activation">
           <div class="cmp-lbl">Documentation</div>
           <div class="cmp-cell">Standard Help Center access</div>
           <div class="cmp-cell">Custom user guide tailored to your HR flows</div>
           <div class="cmp-cell">Custom SOP + recorded video walkthroughs</div>
-        </div>
-        <div class="cmp-toggle" data-grp="people-activation" data-expand-label="Show all 9 services" onclick="toggleCmpGroup(this)">
-          <span class="cmp-toggle-text">Show all 9 services</span>
-          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
 
         <div class="cmp-grp">
@@ -1498,15 +1455,11 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="cmp-cell"><strong>30 days</strong> group chat + email</div>
           <div class="cmp-cell"><strong>60 days</strong> dedicated CS engagement</div>
         </div>
-        <div class="cmp-row cmp-hidden" data-grp="people-adoption">
+        <div class="cmp-row" data-grp="people-adoption">
           <div class="cmp-lbl">Review calls</div>
           <div class="cmp-cell cmp-empty">—</div>
           <div class="cmp-cell">1 review call at Day 30</div>
           <div class="cmp-cell">2 review calls (Day 30, Day 60) + 1 optimization session (Day 90)</div>
-        </div>
-        <div class="cmp-toggle" data-grp="people-adoption" data-expand-label="Show all 4 commitments" onclick="toggleCmpGroup(this)">
-          <span class="cmp-toggle-text">Show all 4 commitments</span>
-          <svg class="cmp-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
       </div>
       </div>
@@ -3063,16 +3016,6 @@ function updateSummary(){
   bar.classList.add('visible');
   document.getElementById('sumItems').innerHTML = items.map(i=>`<span class="sum-chip">${i.name} <span class="chip-price">$${i.price.toLocaleString()}</span></span>`).join('');
   document.getElementById('sumPrice').textContent = hasRange ? `$${total.toLocaleString()} – $${(total+2000).toLocaleString()}` : `$${total.toLocaleString()}`;
-}
-
-/* ─── COMPARISON COLLAPSE ─── */
-function toggleCmpGroup(btn){
-  const grp = btn.dataset.grp;
-  const rows = document.querySelectorAll(`.cmp-row.cmp-hidden[data-grp="${grp}"]`);
-  const willExpand = !btn.classList.contains('expanded');
-  rows.forEach(r => r.classList.toggle('cmp-show', willExpand));
-  btn.classList.toggle('expanded', willExpand);
-  btn.querySelector('.cmp-toggle-text').textContent = willExpand ? 'Show less' : btn.dataset.expandLabel;
 }
 
 /* ─── RISKS TABS ─── */
