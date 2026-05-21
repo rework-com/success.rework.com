@@ -77,6 +77,18 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 .quiz-layout{display:grid;grid-template-columns:1fr 425px;gap:24px;margin-top:28px;align-items:start}
 .finder-product-pill{display:inline-block;padding:4px 12px;background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(34,211,238,0.06));border:1px solid rgba(59,130,246,0.3);border-radius:100px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;color:var(--blue);letter-spacing:0.3px;text-transform:uppercase;vertical-align:middle;white-space:nowrap}
 .finder-titlewrap{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.finder-prod-tabs{display:flex;gap:4px;border-bottom:1.5px solid var(--g200);margin:18px 0 22px;flex-wrap:wrap}
+.finder-prod-tab{position:relative;border:none;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:13.5px;font-weight:700;color:var(--g500);padding:10px 16px 12px;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1.5px;transition:all .18s;display:inline-flex;align-items:center;gap:7px}
+.finder-prod-tab:hover{color:var(--g800)}
+.finder-prod-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.finder-prod-tab-badge{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--g500);background:var(--g100);padding:2px 6px;border-radius:100px}
+.finder-prod-tab.active .finder-prod-tab-badge{color:var(--blue);background:rgba(59,130,246,0.1)}
+.finder-placeholder{padding:56px 32px;text-align:center;background:var(--g50);border:1.5px dashed var(--g200);border-radius:14px}
+.finder-placeholder-icon{font-size:34px;margin-bottom:14px}
+.finder-placeholder-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--g800);margin-bottom:8px}
+.finder-placeholder-sub{font-size:13px;color:var(--g500);line-height:1.6;max-width:480px;margin:0 auto 18px}
+.finder-placeholder-cta{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--white);border:1.5px solid var(--g300);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--g700);text-decoration:none;cursor:pointer;transition:all .2s}
+.finder-placeholder-cta:hover{border-color:var(--blue);color:var(--blue)}
 .quiz-left{display:flex;flex-direction:column;gap:7px}
 .quiz-right{position:sticky;top:68px}
 .q-card{background:var(--white);border:1.5px solid var(--g200);border-radius:11px;padding:12px 16px;transition:all .2s}
@@ -2142,17 +2154,29 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
       <div class="section-inner">
         <div style="max-width:760px">
           <div class="section-label">Package Finder</div>
-          <div class="finder-titlewrap">
-            <div class="section-title" style="margin-bottom:0">Find your implementation package</div>
-            <span class="finder-product-pill">For Sales Ops</span>
-          </div>
-          <p class="section-sub">Answer the questions on the left — your recommendation updates live. Change any answer to see how it affects the result.</p>
+          <div class="section-title" style="margin-bottom:8px">Find your implementation package</div>
+          <p class="section-sub">Pick the product you're scoping. Answer the questions on the left — your recommendation updates live.</p>
         </div>
-        <div class="quiz-layout">
+
+        <div class="finder-prod-tabs" role="tablist">
+          <button class="finder-prod-tab active" data-product="sales" role="tab" onclick="switchFinderProduct('sales',this)">Sales Ops</button>
+          <button class="finder-prod-tab" data-product="lead" role="tab" onclick="switchFinderProduct('lead',this)">Lead Ops</button>
+          <button class="finder-prod-tab" data-product="work" role="tab" onclick="switchFinderProduct('work',this)">Work Ops</button>
+          <button class="finder-prod-tab" data-product="people" role="tab" onclick="switchFinderProduct('people',this)">People Ops</button>
+        </div>
+
+        <div id="finderPanelQuiz" class="quiz-layout">
           <div class="quiz-left" id="quizLeft"></div>
           <div class="quiz-right">
             <div class="quiz-result-panel" id="quizResultPanel"></div>
           </div>
+        </div>
+
+        <div id="finderPanelPlaceholder" class="finder-placeholder" style="display:none">
+          <div class="finder-placeholder-icon">🛠️</div>
+          <div class="finder-placeholder-title" id="finderPlaceholderTitle">Coming soon</div>
+          <div class="finder-placeholder-sub" id="finderPlaceholderSub">We're still tuning the scoping questions for this product. In the meantime, browse the tiers or talk to us — we'll scope it with you live.</div>
+          <a href="https://rework.com" target="_blank" class="finder-placeholder-cta">Talk to us →</a>
         </div>
       </div>
     </section>
@@ -2167,113 +2191,392 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
 <script>
 /* ─── QUIZ DATA ─── */
-const QUESTIONS = [
-  {
-    id:'team_size', type:'single',
-    q:'How many people are on your sales team?',
-    hint:'This sets your baseline package — other questions can push it up within the limit allowed by your team size.',
-    options:[
-      {label:'1–10 sales', tier:'launchpad'},
-      {label:'10–50 sales', tier:'accelerator'},
-      {label:'50+ sales', tier:'transform'},
-    ]
+const QUIZZES = {
+  sales: {
+    label:'Sales Ops', scoring:'sales', available:true,
+    multiNoun:'source',
+    questions:[
+      {
+        id:'team_size', type:'single',
+        q:'How many people are on your sales team?',
+        hint:'This sets your baseline package. Other answers can step you up to a bigger pack — but only if at least 3 of them point that way.',
+        options:[
+          {label:'1–10 sales', tier:'launchpad'},
+          {label:'10–50 sales', tier:'accelerator'},
+          {label:'50+ sales', tier:'transform'},
+        ]
+      },
+      {
+        id:'lead_sources', type:'multi',
+        q:'Where do your leads come from?',
+        hint:'Select all that apply.',
+        groups:[
+          {label:'Organic / Direct', tagClass:'organic', tag:'Sales Ops handles these', type:'organic', options:['Events & exhibitions','Referrals from existing customers','Direct outreach (cold call, email, LinkedIn)','Walk-ins / existing customer base']},
+          {label:'Digital Channels', tagClass:'digital', tag:'+ Leads Ops recommended', type:'digital', options:['Meta Ads (Facebook / Instagram)','Landing pages','Web forms on website','WhatsApp','Other chat channels (Telegram, Messenger...)']}
+        ]
+      },
+      {
+        id:'process', type:'single',
+        q:"What's the current state of your sales process?",
+        options:[
+          {label:"We don't have a formal process", sub:"Reps work however they want — we need help building one from scratch", tier:'accelerator'},
+          {label:"We have a process in spreadsheets or people's heads", sub:"It exists, we just need to digitize what we already have", tier:'launchpad'},
+          {label:"We have a documented, complex process", sub:"Multi-stage, cross-team — needs deep configuration and redesign", tier:'transform'},
+        ]
+      },
+      {
+        id:'reporting', type:'single',
+        q:'Does your team regularly review sales numbers?',
+        options:[
+          {label:"Not really — no regular reporting habit yet", tier:'launchpad'},
+          {label:"We do it manually — someone compiles Excel weekly", tier:'accelerator'},
+          {label:"Yes — structured reviews, we need real-time dashboards", tier:'transform'},
+        ]
+      },
+      {
+        id:'admin', type:'single',
+        q:'Is there someone who can own system setup and management?',
+        options:[
+          {label:"No dedicated person — everyone is focused on selling", sub:"We need the CS team to handle most of the configuration", tier:'accelerator'},
+          {label:"Yes — someone can handle it part-time", sub:"Comfortable with tools, can follow CS guidance for setup", tier:'launchpad'},
+          {label:"Yes — dedicated Sales Ops or Admin person", sub:"They can own implementation and drive adoption internally", tier:'transform'},
+        ]
+      },
+      {
+        id:'migration', type:'single',
+        q:'Do you have existing data to bring into Rework?',
+        hint:'Contacts, deals, or activity history from spreadsheets or a previous CRM.',
+        options:[
+          {label:"No — starting completely fresh", tier:'launchpad'},
+          {label:"Yes — some data in spreadsheets, roughly organized", tier:'accelerator'},
+          {label:"Yes — large or messy dataset from multiple sources", tier:'transform'},
+        ]
+      }
+    ],
+    results:{
+      launchpad:{tier:'launchpad', badge:'Launchpad',
+        headline:"You're set up to start clean and move fast.",
+        body:"Your process already exists, your team is small, your leads come through direct channels, and someone on your team can manage the system. Launchpad gets you properly configured without overengineering — in 3–5 weeks.",
+        price:'$500', sessions:'3', weeks:'3–5',
+        tagline:'Get your sales team started on Rework in weeks, not months.'},
+      accelerator:{tier:'accelerator', badge:'Accelerator',
+        headline:"You need more than just software setup — you need it built right.",
+        body:"Accelerator gives you the consulting, migration support, and role-based training to get your team running the right way from day one.",
+        price:'$1,500', sessions:'6–8', weeks:'4–8',
+        tagline:'Build a sales machine with tailored processes and hands-on support.'},
+      transform:{tier:'transform', badge:'Transform',
+        headline:"You're running a complex sales organization — it deserves a proper transformation.",
+        body:"Multiple pipelines, multiple channels, a team that needs structured training and clear SOPs. Transform gives you a dedicated Onboarding Manager, deep configuration, and full documentation to make sure your entire org operates on Rework — consistently.",
+        price:'$3,000 – $5,000', sessions:'10–15', weeks:'8–12',
+        tagline:'Redesign how your sales organization operates — from lead to revenue.'}
+    },
+    triggerMsgs:{
+      no_formal_process:"You don't have a formal process yet — our CS team will design it with you from scratch.",
+      no_admin:"You don't have a dedicated admin — our CS team handles the heavy lifting for you.",
+      digital_channels:"You're running digital lead channels that need proper routing and Leads Ops configuration."
+    }
   },
-  {
-    id:'lead_sources', type:'multi',
-    q:'Where do your leads come from?',
-    hint:'Select all that apply.',
-    groups:[
-      {label:'Organic / Direct', tagClass:'organic', tag:'Sales Ops handles these', type:'organic', options:['Events & exhibitions','Referrals from existing customers','Direct outreach (cold call, email, LinkedIn)','Walk-ins / existing customer base']},
-      {label:'Digital Channels', tagClass:'digital', tag:'+ Leads Ops recommended', type:'digital', options:['Meta Ads (Facebook / Instagram)','Landing pages','Web forms on website','WhatsApp','Other chat channels (Telegram, Messenger...)']}
-    ]
+  lead: {
+    label:'Lead Ops', scoring:'lead', available:true,
+    multiNoun:'channel',
+    questions:[
+      {
+        id:'team_size', type:'single',
+        q:'How many people will use Lead Ops?',
+        hint:'This sets your baseline package. Other answers can step you up to a bigger pack — but only if at least 3 of them point that way.',
+        options:[
+          {label:'1–5 users', tier:'launchpad'},
+          {label:'5–20 users', tier:'accelerator'},
+          {label:'20+ users across teams or regions', tier:'transform'},
+        ]
+      },
+      {
+        id:'channels', type:'multi',
+        q:'Which chat channels do you need to connect?',
+        hint:'Select all that apply. More channels means more routing, AI tuning, and broadcast setup.',
+        groups:[
+          {label:'Core channels', tagClass:'organic', tag:'Most customers start here', type:'core', options:['WhatsApp Business','Messenger','Instagram DM']},
+          {label:'Extended channels', tagClass:'digital', tag:'Often needed at scale', type:'ext', options:['Web chat widget','Telegram','Zalo','Line / other regional']}
+        ]
+      },
+      {
+        id:'qualification', type:'single',
+        q:'How do you want to qualify incoming leads?',
+        options:[
+          {label:"Just tag them Hot / Warm / Cold", sub:"One simple flow for every lead", tier:'launchpad'},
+          {label:"Different qualification per channel or product", sub:"For example: WhatsApp leads scored differently than Web leads", tier:'accelerator'},
+          {label:"Different flows per product line or region, with escalation rules", sub:"Complex routing that needs ongoing tuning", tier:'transform'},
+        ]
+      },
+      {
+        id:'crm', type:'single',
+        q:'How will Lead Ops connect to your CRM or sales system?',
+        options:[
+          {label:"Standalone — no CRM integration needed for now", tier:'launchpad'},
+          {label:"Sync with Rework Sales Ops or one external CRM", tier:'accelerator'},
+          {label:"Multi-source CRM + historical data + complex field mapping", tier:'transform'},
+        ]
+      },
+      {
+        id:'broadcast', type:'single',
+        q:'Do you need to send broadcast or template messages?',
+        hint:'Outbound WhatsApp/Messenger messages require Meta-approved templates.',
+        options:[
+          {label:"No — only inbound conversations", tier:'launchpad'},
+          {label:"Yes — a few templates (promos, notifications, opt-in flows)", tier:'accelerator'},
+          {label:"Yes — heavy outbound: segmented bulk campaigns, ongoing template approvals", tier:'transform'},
+        ]
+      },
+      {
+        id:'admin', type:'single',
+        q:'Who will own setup and ongoing management?',
+        options:[
+          {label:"A marketing or sales lead can drive it part-time", sub:"Comfortable with tools, can follow CS guidance", tier:'launchpad'},
+          {label:"We need Rework CS to do most setup, then train our team", sub:"Hands-on configuration support required", tier:'accelerator'},
+          {label:"Dedicated team across regions — need train-the-trainer + Onboarding Manager", sub:"Multi-team, multi-region rollout", tier:'transform'},
+        ]
+      }
+    ],
+    results:{
+      launchpad:{tier:'launchpad', badge:'Launchpad',
+        headline:"Get chat channels live and capture leads in days, not weeks.",
+        body:"A small team, a couple of core channels, and straightforward qualification. Launchpad gets you connected, routing leads, and tagging conversations — in 2–4 weeks.",
+        price:'$300', sessions:'3', weeks:'2–4',
+        tagline:'Get chat channels live and capture leads in days, not weeks.'},
+      accelerator:{tier:'accelerator', badge:'Accelerator',
+        headline:"Build a multi-channel lead funnel with AI qualification.",
+        body:"More channels, smarter qualification per source, and broadcast templates that won't get your number flagged. Accelerator gives you the routing, CRM mapping, and role-based training to operate a real lead funnel.",
+        price:'$1,000', sessions:'5–7', weeks:'4–6',
+        tagline:'Build a multi-channel lead funnel with AI qualification.'},
+      transform:{tier:'transform', badge:'Transform',
+        headline:"Operate omnichannel chat at scale across teams and regions.",
+        body:"All channels, advanced multi-team distribution, AI flows by product line or region, and a Dedicated Onboarding Manager. Transform is built for orgs running chat as a primary revenue surface — not a side channel.",
+        price:'Custom', sessions:'8–12', weeks:'6–10',
+        tagline:'Operate omnichannel chat at scale across teams and regions.'}
+    },
+    triggerMsgs:{
+      broadcast_heavy:"You're sending broadcasts — plan for a 1–3 day Meta template approval window before go-live.",
+      crm_complex:"Multi-source CRM integration — you'll need a dedicated CRM PIC on your side to validate field mappings.",
+      many_channels:"5+ chat channels — WhatsApp Business API setup requires access from your Meta Business Manager admin."
+    }
   },
-  {
-    id:'process', type:'single',
-    q:"What's the current state of your sales process?",
-    options:[
-      {label:"We don't have a formal process", sub:"Reps work however they want — we need help building one from scratch", tier:'accelerator'},
-      {label:"We have a process in spreadsheets or people's heads", sub:"It exists, we just need to digitize what we already have", tier:'launchpad'},
-      {label:"We have a documented, complex process", sub:"Multi-stage, cross-team — needs deep configuration and redesign", tier:'transform'},
-    ]
+  work: {
+    label:'Work Ops', scoring:'work', available:true,
+    multiNoun:'department',
+    questions:[
+      {
+        id:'team_size', type:'single',
+        q:'How many employees will use Work Ops?',
+        hint:'This sets your baseline package. Other answers can step you up to a bigger pack — but only if at least 3 of them point that way.',
+        options:[
+          {label:'1–20 employees', tier:'launchpad'},
+          {label:'20–100 employees', tier:'accelerator'},
+          {label:'100+ employees', tier:'transform'},
+        ]
+      },
+      {
+        id:'departments', type:'multi',
+        q:'Which departments need digitized workflows?',
+        hint:'Select all that apply. More departments means more roles, permissions, and cross-team handoffs.',
+        groups:[
+          {label:'Core operations', tagClass:'organic', tag:'Most customers start here', type:'core', options:['Operations','Customer Service','Procurement / Supply']},
+          {label:'Other functions', tagClass:'digital', tag:'Often added as you scale', type:'ext', options:['Sales / Marketing','HR / People','Finance / Accounting','IT / Admin']}
+        ]
+      },
+      {
+        id:'workflow_type', type:'single',
+        q:'What kinds of workflows do you need?',
+        options:[
+          {label:"Simple — a few standalone processes in one department", sub:"e.g. expense requests, leave requests, basic intake forms", tier:'launchpad'},
+          {label:"Connected — multi-step processes that move between people or departments", sub:"e.g. onboarding tasks, project intake, ticket routing", tier:'accelerator'},
+          {label:"Complex — multi-team handoffs with custom objects and business logic", sub:"e.g. quote-to-cash, hiring, multi-stage operational pipelines", tier:'transform'},
+        ]
+      },
+      {
+        id:'approvals', type:'single',
+        q:'How complex are your approval flows?',
+        options:[
+          {label:"Single approver per request", sub:"One person signs off and the request moves on", tier:'launchpad'},
+          {label:"Multi-level approval (e.g. manager → HR → finance)", sub:"Several approvers in sequence, with routing rules", tier:'accelerator'},
+          {label:"Parallel approvals or different chains by request type", sub:"Multiple approvers at once, or branching logic per case", tier:'transform'},
+        ]
+      },
+      {
+        id:'migration', type:'single',
+        q:'Do you have existing data to bring into Rework?',
+        hint:'Tasks, requests, or records from spreadsheets or another tool.',
+        options:[
+          {label:"No — starting completely fresh", tier:'launchpad'},
+          {label:"Yes — some data in one source (spreadsheets or one tool)", tier:'accelerator'},
+          {label:"Yes — multiple sources, needs cleanup and deduplication", tier:'transform'},
+        ]
+      },
+      {
+        id:'admin', type:'single',
+        q:'Who will own setup and ongoing management?',
+        options:[
+          {label:"A department lead can drive it part-time", sub:"Comfortable with tools, can follow CS guidance", tier:'launchpad'},
+          {label:"We need Rework CS to do most setup, then train our team", sub:"Hands-on configuration support required", tier:'accelerator'},
+          {label:"Dedicated Ops or IT team — we need train-the-trainer + Onboarding Manager", sub:"Multi-department rollout", tier:'transform'},
+        ]
+      }
+    ],
+    results:{
+      launchpad:{tier:'launchpad', badge:'Launchpad',
+        headline:"Digitize your first workflows and get your team aligned.",
+        body:"A small team, a handful of straightforward processes, and one person who can drive setup. Launchpad gets the core workflows live and your team trained — in 3–5 weeks.",
+        price:'$500', sessions:'3', weeks:'3–5',
+        tagline:'Digitize your first workflows and get your team aligned.'},
+      accelerator:{tier:'accelerator', badge:'Accelerator',
+        headline:"Streamline operations across departments with structured workflows.",
+        body:"Multiple departments, multi-step processes that hand off between roles, and approval routing that needs to work the first time. Accelerator gives you the configuration, migration support, and role-based training to make it stick.",
+        price:'$1,500', sessions:'6–8', weeks:'4–8',
+        tagline:'Streamline operations across departments with structured workflows.'},
+      transform:{tier:'transform', badge:'Transform',
+        headline:"Redesign your operating system — standardize, automate, and scale.",
+        body:"A large org, complex workflows with custom objects, parallel approvals, and SSO + multi-team permissions. Transform gives you a Dedicated Onboarding Manager, deep configuration, and full SOPs — so the whole organization operates consistently on Rework.",
+        price:'$3,000 – $5,000', sessions:'10–15', weeks:'8–12',
+        tagline:'Redesign your operating system — standardize, automate, and scale.'}
+    },
+    triggerMsgs:{
+      complex_approvals:"Parallel or branching approvals — we'll run joint design sessions to map every chain before configuring.",
+      multi_source_migration:"Multi-source migration with deduplication — designate one data PIC on your side to validate before go-live.",
+      cross_dept:"4+ departments — align department leads early to lock down workflow ownership and permissions."
+    }
   },
-  {
-    id:'reporting', type:'single',
-    q:'Does your team regularly review sales numbers?',
-    options:[
-      {label:"Not really — no regular reporting habit yet", tier:'launchpad'},
-      {label:"We do it manually — someone compiles Excel weekly", tier:'accelerator'},
-      {label:"Yes — structured reviews, we need real-time dashboards", tier:'transform'},
-    ]
-  },
-  {
-    id:'admin', type:'single',
-    q:'Is there someone who can own system setup and management?',
-    options:[
-      {label:"No dedicated person — everyone is focused on selling", sub:"We need the CS team to handle most of the configuration", tier:'accelerator'},
-      {label:"Yes — someone can handle it part-time", sub:"Comfortable with tools, can follow CS guidance for setup", tier:'launchpad'},
-      {label:"Yes — dedicated Sales Ops or Admin person", sub:"They can own implementation and drive adoption internally", tier:'transform'},
-    ]
-  },
-  {
-    id:'migration', type:'single',
-    q:'Do you have existing data to bring into Rework?',
-    hint:'Contacts, deals, or activity history from spreadsheets or a previous CRM.',
-    options:[
-      {label:"No — starting completely fresh", tier:'launchpad'},
-      {label:"Yes — some data in spreadsheets, roughly organized", tier:'accelerator'},
-      {label:"Yes — large or messy dataset from multiple sources", tier:'transform'},
-    ]
+  people: {
+    label:'People Ops', scoring:'people', available:true,
+    multiNoun:'module',
+    questions:[
+      {
+        id:'team_size', type:'single',
+        q:'How many employees will use People Ops?',
+        hint:'This sets your baseline package. Other answers can step you up to a bigger pack — but only if at least 3 of them point that way.',
+        options:[
+          {label:'1–20 employees', tier:'launchpad'},
+          {label:'20–100 employees', tier:'accelerator'},
+          {label:'100+ employees, multi-country teams', tier:'transform'},
+        ]
+      },
+      {
+        id:'modules', type:'multi',
+        q:'Which HR modules do you need set up?',
+        hint:'Select all that apply. More modules means a longer rollout and more training.',
+        groups:[
+          {label:'Core HR', tagClass:'organic', tag:'Most customers start here', type:'core', options:['Employee records (HRIS)','Time-off / leave','Employee contracts']},
+          {label:'Full lifecycle', tagClass:'digital', tag:'Added as you scale', type:'ext', options:['Timesheet / attendance','Offer letters','Onboarding flow','Hiring / recruitment','Performance reviews']}
+        ]
+      },
+      {
+        id:'templates', type:'single',
+        q:'What do your HR documents and templates look like?',
+        options:[
+          {label:"Standard templates work for us", sub:"We can use Rework's defaults with minor edits", tier:'launchpad'},
+          {label:"We need branded templates with e-signature", sub:"Customized to our company brand and signing flow", tier:'accelerator'},
+          {label:"Multi-country templates with compliance review", sub:"Different employment law per country — needs legal review", tier:'transform'},
+        ]
+      },
+      {
+        id:'approvals', type:'single',
+        q:'How complex are your HR approval flows?',
+        options:[
+          {label:"Simple — manager approves time-off, contracts, expenses", sub:"One approver per request", tier:'launchpad'},
+          {label:"Multi-level — manager → HR → finance routing", sub:"Several approvers in sequence per request type", tier:'accelerator'},
+          {label:"Cross-entity — different chains by country, department, or seniority", sub:"Complex chains that vary by who and where", tier:'transform'},
+        ]
+      },
+      {
+        id:'migration', type:'single',
+        q:'Do you have existing employee data to bring into Rework?',
+        hint:'Employee records, contracts, time-off history.',
+        options:[
+          {label:"No — starting fresh or just a few people to add manually", tier:'launchpad'},
+          {label:"Yes — one source (spreadsheet or previous HRIS)", tier:'accelerator'},
+          {label:"Yes — multiple sources (prior HRIS + payroll + manual records)", tier:'transform'},
+        ]
+      },
+      {
+        id:'admin', type:'single',
+        q:'Who will own setup and ongoing management?',
+        options:[
+          {label:"HR lead can drive it part-time", sub:"Comfortable with tools, can follow CS guidance", tier:'launchpad'},
+          {label:"We need Rework CS to do most setup, then train our HR team", sub:"Hands-on configuration support required", tier:'accelerator'},
+          {label:"Dedicated HRBPs across regions — need train-the-trainer + Onboarding Manager", sub:"Multi-team, multi-country rollout", tier:'transform'},
+        ]
+      }
+    ],
+    results:{
+      launchpad:{tier:'launchpad', badge:'Launchpad',
+        headline:"Get HR essentials running on Rework — fast and clean.",
+        body:"A small team, core HR modules (records, time-off, contracts), and one HR lead who can drive setup. Launchpad gets you running with the essentials — in 3–5 weeks.",
+        price:'$500', sessions:'3', weeks:'3–5',
+        tagline:'Get HR essentials running on Rework — fast and clean.'},
+      accelerator:{tier:'accelerator', badge:'Accelerator',
+        headline:"Connect the full people lifecycle — hiring, onboarding, and beyond.",
+        body:"More modules across the employee lifecycle, branded templates with e-sign, and approval routing that needs to handle real org structure. Accelerator gives you the configuration, migration support, and role-based training to operate it properly.",
+        price:'$1,500', sessions:'6–8', weeks:'4–8',
+        tagline:'Connect the full people lifecycle — hiring, onboarding, and beyond.'},
+      transform:{tier:'transform', badge:'Transform',
+        headline:"HR operating system for the whole organization — built for scale.",
+        body:"A large, multi-country org with hiring + performance lifecycle, compliance review, audit trail for sensitive fields, and HRBPs across regions. Transform gives you a Dedicated Onboarding Manager, deep configuration, and full SOPs.",
+        price:'$3,000 – $5,000', sessions:'10–15', weeks:'8–12',
+        tagline:'HR operating system for the whole organization — built for scale.'}
+    },
+    triggerMsgs:{
+      multi_country:"Multi-country templates — we'll review against local employment law before go-live (allow extra time for legal sign-off).",
+      multi_source_hr:"Multi-source HR migration — designate one PIC per source (prior HRIS owner, payroll owner) to avoid mid-migration blockers.",
+      many_modules:"7+ HR modules — we'll sequence the rollout by module group, not all at once, so adoption stays manageable."
+    }
   }
-];
-
-const RESULTS = {
-  launchpad:{
-    tier:'launchpad', badge:'Launchpad',
-    headline:"You're set up to start clean and move fast.",
-    body:"Your process already exists, your team is small, your leads come through direct channels, and someone on your team can manage the system. Launchpad gets you properly configured without overengineering — in 3–5 weeks.",
-    price:'$500', sessions:'3', weeks:'3–5',
-    tagline:'Get your sales team started on Rework in weeks, not months.'
-  },
-  accelerator:{
-    tier:'accelerator', badge:'Accelerator',
-    headline:"You need more than just software setup — you need it built right.",
-    body:"Accelerator gives you the consulting, migration support, and role-based training to get your team running the right way from day one.",
-    price:'$1,500', sessions:'6–8', weeks:'4–8',
-    tagline:'Build a sales machine with tailored processes and hands-on support.'
-  },
-  transform:{
-    tier:'transform', badge:'Transform',
-    headline:"You're running a complex sales organization — it deserves a proper transformation.",
-    body:"Multiple pipelines, multiple channels, a team that needs structured training and clear SOPs. Transform gives you a dedicated Onboarding Manager, deep configuration, and full documentation to make sure your entire org operates on Rework — consistently.",
-    price:'$3,000 – $5,000', sessions:'10–15', weeks:'8–12',
-    tagline:'Redesign how your sales organization operates — from lead to revenue.'
-  }
-};
-
-const TRIGGER_MSGS = {
-  no_formal_process:"You don't have a formal process yet — our CS team will design it with you from scratch.",
-  no_admin:"You don't have a dedicated admin — our CS team handles the heavy lifting for you.",
-  digital_channels:"You're running digital lead channels that need proper routing and Leads Ops configuration."
 };
 
 /* ─── QUIZ STATE ─── */
-let qAnswers = {};
+let currentQuizProduct = 'sales';
+let qAnswersByProduct = {sales:{}, lead:{}, work:{}, people:{}};
+let q2DigitalByProduct = {sales:0, lead:0, work:0, people:0};
+let q2NeedsLeadsByProduct = {sales:false, lead:false, work:false, people:false};
+// Aliases that always point at the active product's state. Reassigned on switch.
+let qAnswers = qAnswersByProduct.sales;
 let q2Digital = 0;
 let q2NeedsLeads = false;
 
+function activeQuiz(){ return QUIZZES[currentQuizProduct]; }
+function activeQuestions(){ return activeQuiz().questions; }
+function activeMultiNoun(){ return activeQuiz().multiNoun || 'item'; }
+
 function initQuiz(){
-  qAnswers = {}; q2Digital = 0; q2NeedsLeads = false;
+  // Reset state for all products
+  ['sales','lead','work','people'].forEach(p => {
+    qAnswersByProduct[p] = {};
+    q2DigitalByProduct[p] = 0;
+    q2NeedsLeadsByProduct[p] = false;
+  });
+  syncStateAliases();
   renderAllQuestions();
   renderPlaceholder();
+}
+
+function syncStateAliases(){
+  qAnswers = qAnswersByProduct[currentQuizProduct] || (qAnswersByProduct[currentQuizProduct] = {});
+  q2Digital = q2DigitalByProduct[currentQuizProduct] || 0;
+  q2NeedsLeads = q2NeedsLeadsByProduct[currentQuizProduct] || false;
+}
+
+function persistStateAliases(){
+  qAnswersByProduct[currentQuizProduct] = qAnswers;
+  q2DigitalByProduct[currentQuizProduct] = q2Digital;
+  q2NeedsLeadsByProduct[currentQuizProduct] = q2NeedsLeads;
 }
 
 function renderAllQuestions(){
   const left = document.getElementById('quizLeft');
   if(!left) return;
-  left.innerHTML = QUESTIONS.map((q,i) => renderQuestionCard(q,i)).join('');
+  const qs = activeQuestions();
+  left.innerHTML = qs.map((q,i) => renderQuestionCard(q,i)).join('');
 }
 
 function renderQuestionCard(q, step){
+  const qs = activeQuestions();
   const answered = !!qAnswers[q.id];
   const isCollapsed = answered; // start collapsed if already answered
   const classes = ['q-card', answered?'answered':'', isCollapsed?'collapsed':''].filter(Boolean).join(' ');
@@ -2285,14 +2588,15 @@ function renderQuestionCard(q, step){
       previewText = q.options[qAnswers[q.id].index]?.label || '';
     } else {
       const count = Object.keys(qAnswers[q.id]?.checked||{}).length;
-      previewText = `${count} source${count!==1?'s':''} selected`;
+      const noun = activeMultiNoun();
+      previewText = `${count} ${noun}${count!==1?'s':''} selected`;
     }
   }
 
   let html = `<div class="${classes}" id="qcard-${q.id}" onclick="handleQuizCardClick(event,this)">
     <div class="q-card-hdr" onclick="handleQuizCardClick(event,this)">
       <div style="flex:1">
-        <div class="q-num">Question ${step+1} of ${QUESTIONS.length}</div>
+        <div class="q-num">Question ${step+1} of ${qs.length}</div>
         <div class="q-question">${q.q}</div>
       </div>
       <svg class="q-collapse-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
@@ -2329,7 +2633,7 @@ function renderQuestionCard(q, step){
         </div>`;
       });
     });
-    html += `<button class="q-chk-done${anyChecked?' enabled':''}" id="qchkdone-${q.id}" onclick="confirmLeadSources(event,'${q.id}')">Done ✓</button>`;
+    html += `<button class="q-chk-done${anyChecked?' enabled':''}" id="qchkdone-${q.id}" onclick="confirmMultiAnswer(event,'${q.id}')">Done ✓</button>`;
   }
 
   html += `</div></div>`;
@@ -2348,6 +2652,7 @@ function handleQuizCardClick(e, el){
 function qSelectLive(e, qid, idx, tier, el){
   e.stopPropagation();
   qAnswers[qid] = {tier, index:idx};
+  persistStateAliases();
   const card = el.closest('.q-card');
   card.querySelectorAll('.q-opt-c').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
@@ -2371,14 +2676,46 @@ function qToggleLive(e, el){
   } else {
     delete qAnswers[qid].checked[key];
   }
-  q2Digital = Object.keys(qAnswers[qid].checked).filter(k=>k.startsWith('digital')).length;
-  const anyChecked = Object.keys(qAnswers[qid].checked).length > 0;
-  q2NeedsLeads = q2Digital > 0;
-  if(anyChecked){
-    qAnswers[qid].tier = q2Digital === 0 ? 'launchpad' : q2Digital <= 2 ? 'accelerator' : 'transform';
-  } else {
-    delete qAnswers[qid];
+  const totalChecked = Object.keys(qAnswers[qid].checked).length;
+  const anyChecked = totalChecked > 0;
+  if(currentQuizProduct === 'sales'){
+    // Sales: digital count → tier; needsLeads flag drives the pair-with-Leads-Ops note
+    q2Digital = Object.keys(qAnswers[qid].checked).filter(k=>k.startsWith('digital')).length;
+    q2NeedsLeads = q2Digital > 0;
+    if(anyChecked){
+      qAnswers[qid].tier = q2Digital === 0 ? 'launchpad' : q2Digital <= 2 ? 'accelerator' : 'transform';
+    } else {
+      delete qAnswers[qid];
+    }
+  } else if(currentQuizProduct === 'lead'){
+    // Lead: total channel count → tier (≤2 launchpad, 3–4 accelerator, 5+ transform)
+    q2Digital = totalChecked;
+    q2NeedsLeads = false;
+    if(anyChecked){
+      qAnswers[qid].tier = totalChecked <= 2 ? 'launchpad' : totalChecked <= 4 ? 'accelerator' : 'transform';
+    } else {
+      delete qAnswers[qid];
+    }
+  } else if(currentQuizProduct === 'work'){
+    // Work: total department count → tier (1 launchpad, 2–3 accelerator, 4+ transform)
+    q2Digital = totalChecked;
+    q2NeedsLeads = false;
+    if(anyChecked){
+      qAnswers[qid].tier = totalChecked <= 1 ? 'launchpad' : totalChecked <= 3 ? 'accelerator' : 'transform';
+    } else {
+      delete qAnswers[qid];
+    }
+  } else if(currentQuizProduct === 'people'){
+    // People: total HR module count → tier (≤3 launchpad, 4–6 accelerator, 7+ transform)
+    q2Digital = totalChecked;
+    q2NeedsLeads = false;
+    if(anyChecked){
+      qAnswers[qid].tier = totalChecked <= 3 ? 'launchpad' : totalChecked <= 6 ? 'accelerator' : 'transform';
+    } else {
+      delete qAnswers[qid];
+    }
   }
+  persistStateAliases();
   const card = el.closest('.q-card');
   card.classList.toggle('answered', card.querySelectorAll('.q-chk-c.checked').length > 0);
   // Enable/disable Done button
@@ -2387,111 +2724,146 @@ function qToggleLive(e, el){
   renderResult();
 }
 
-function confirmLeadSources(e, qid){
+function confirmMultiAnswer(e, qid){
   e.stopPropagation();
   const card = document.getElementById('qcard-'+qid);
   if(!card || !qAnswers[qid]) return;
   const count = Object.keys(qAnswers[qid]?.checked||{}).length;
+  const noun = activeMultiNoun();
   const prev = card.querySelector('.q-selected-preview');
-  if(prev) prev.textContent = `✓ ${count} source${count!==1?'s':''} selected`;
+  if(prev) prev.textContent = `✓ ${count} ${noun}${count!==1?'s':''} selected`;
   setTimeout(() => card.classList.add('collapsed'), 200);
 }
 
 function calcResult(){
   const idxToTier = ['', 'launchpad', 'accelerator', 'transform'];
   const tierToIdx = {launchpad:1, accelerator:2, transform:3};
+  const quiz = activeQuiz();
 
-  // ── PRIMARY GATE: team_size sets floor + ceiling
-  // 1–10 sales  → Launchpad floor, Accelerator ceiling
-  // 10–50 sales → Accelerator floor, Transform ceiling
-  // 50+ sales   → Transform floor, Transform ceiling
-  let floor = 1, ceiling = 3;
+  // ── BASELINE: team_size sets the floor. There is no ceiling — upgrades are
+  //    earned by other answers (rule below). Defaults to Launchpad if unanswered.
+  let baselineIdx = 1;
   const teamAnswer = qAnswers.team_size;
   if(teamAnswer && teamAnswer.tier){
-    if(teamAnswer.tier === 'launchpad'){ floor = 1; ceiling = 2; }
-    else if(teamAnswer.tier === 'accelerator'){ floor = 2; ceiling = 3; }
-    else if(teamAnswer.tier === 'transform'){ floor = 3; ceiling = 3; }
+    baselineIdx = tierToIdx[teamAnswer.tier] || 1;
   }
 
-  // ── COMPLEXITY MODIFIER: tally other answers
+  // ── TALLY votes across the 5 non-team questions
   const scores = {launchpad:0, accelerator:0, transform:0};
   const triggers = [];
-  QUESTIONS.forEach(q => {
+  quiz.questions.forEach(q => {
     if(q.id === 'team_size') return;
     const a = qAnswers[q.id];
     if(!a || !a.tier) return;
     scores[a.tier]++;
   });
-  if(qAnswers.process?.tier === 'accelerator') triggers.push('no_formal_process');
-  if(qAnswers.admin?.tier === 'accelerator') triggers.push('no_admin');
-  if(q2NeedsLeads) triggers.push('digital_channels');
 
-  // Complexity-suggested tier (majority of non-team votes)
-  let complexityIdx;
-  if(scores.transform >= scores.accelerator && scores.transform >= scores.launchpad && scores.transform > 0) complexityIdx = 3;
-  else if(scores.accelerator >= scores.launchpad && scores.accelerator > 0) complexityIdx = 2;
-  else complexityIdx = 1;
+  // Per-product trigger surfaces (informational, not part of scoring)
+  if(quiz.scoring === 'sales'){
+    if(qAnswers.process?.tier === 'accelerator') triggers.push('no_formal_process');
+    if(qAnswers.admin?.tier === 'accelerator') triggers.push('no_admin');
+    if(q2NeedsLeads) triggers.push('digital_channels');
+  } else if(quiz.scoring === 'lead'){
+    if(qAnswers.broadcast?.tier === 'transform') triggers.push('broadcast_heavy');
+    if(qAnswers.crm?.tier === 'transform') triggers.push('crm_complex');
+    if((qAnswers.channels?.checked && Object.keys(qAnswers.channels.checked).length >= 5)) triggers.push('many_channels');
+  } else if(quiz.scoring === 'work'){
+    if(qAnswers.approvals?.tier === 'transform') triggers.push('complex_approvals');
+    if(qAnswers.migration?.tier === 'transform') triggers.push('multi_source_migration');
+    if((qAnswers.departments?.checked && Object.keys(qAnswers.departments.checked).length >= 4)) triggers.push('cross_dept');
+  } else if(quiz.scoring === 'people'){
+    if(qAnswers.templates?.tier === 'transform') triggers.push('multi_country');
+    if(qAnswers.migration?.tier === 'transform') triggers.push('multi_source_hr');
+    if((qAnswers.modules?.checked && Object.keys(qAnswers.modules.checked).length >= 7)) triggers.push('many_modules');
+  }
 
-  // Apply gate bounds: clamp complexity within [floor, ceiling]
-  let finalIdx = Math.max(floor, Math.min(ceiling, complexityIdx));
-
-  // ── SPECIAL CASE: Sales 1–10 stays Launchpad unless 3 specific "need-help"
-  // signals all line up — data to migrate + no formal process + no dedicated admin.
-  // Lead source count and reporting habits do NOT promote.
-  let smallTeamUpgrade = false;
-  if(teamAnswer && teamAnswer.tier === 'launchpad'){
-    const needsMigration = qAnswers.migration?.tier === 'accelerator' || qAnswers.migration?.tier === 'transform';
-    const noProcess = qAnswers.process?.tier === 'accelerator';
-    const noAdmin = qAnswers.admin?.tier === 'accelerator';
-    smallTeamUpgrade = needsMigration && noProcess && noAdmin;
-    finalIdx = smallTeamUpgrade ? 2 : 1;
+  // ── UPGRADE RULE: from baseline, stay unless ≥3 of the 5 non-team votes point
+  //    to a higher tier. Prefer the highest tier that earned ≥3 votes.
+  const UPGRADE_THRESHOLD = 3;
+  let finalIdx = baselineIdx;
+  let upgradedTo = null;
+  let upgradeVotes = 0;
+  if(baselineIdx < 3 && scores.transform >= UPGRADE_THRESHOLD){
+    finalIdx = 3; upgradedTo = 'transform'; upgradeVotes = scores.transform;
+  } else if(baselineIdx < 2 && scores.accelerator >= UPGRADE_THRESHOLD){
+    finalIdx = 2; upgradedTo = 'accelerator'; upgradeVotes = scores.accelerator;
   }
 
   const result = idxToTier[finalIdx];
-  const cappedByGate = complexityIdx > ceiling;
-  const upliftedByComplexity = finalIdx > floor;
+  const wasUpgraded = finalIdx > baselineIdx;
+  // Best higher-tier vote count (used in copy even when threshold not met)
+  let bestHigherVotes = 0, bestHigherTier = null;
+  if(baselineIdx < 3 && scores.transform > 0){ bestHigherVotes = scores.transform; bestHigherTier = 'transform'; }
+  if(baselineIdx < 2 && scores.accelerator > bestHigherVotes){ bestHigherVotes = scores.accelerator; bestHigherTier = 'accelerator'; }
 
   return {
     result, scores, triggers,
-    gate: {floor: idxToTier[floor], ceiling: idxToTier[ceiling]},
-    complexitySuggested: idxToTier[complexityIdx],
-    cappedByGate, upliftedByComplexity, smallTeamUpgrade,
-    isSmallTeam: teamAnswer?.tier === 'launchpad'
+    baseline: idxToTier[baselineIdx],
+    wasUpgraded, upgradedTo, upgradeVotes,
+    bestHigherVotes, bestHigherTier,
+    isAtFloor: !wasUpgraded
   };
 }
 
 function renderResult(){
   const panel = document.getElementById('quizResultPanel');
   if(!panel) return;
+  const quiz = activeQuiz();
+  const qs = quiz.questions;
   const answeredCount = Object.keys(qAnswers).length;
   if(answeredCount < 3){ renderPlaceholder(answeredCount); return; }
-  const pct = (answeredCount / QUESTIONS.length) * 100;
-  const {result, triggers, gate, complexitySuggested, cappedByGate, upliftedByComplexity, smallTeamUpgrade, isSmallTeam} = calcResult();
-  const r = RESULTS[result];
+  const pct = (answeredCount / qs.length) * 100;
+  const {result, triggers, baseline, wasUpgraded, upgradedTo, upgradeVotes, bestHigherVotes, bestHigherTier, isAtFloor} = calcResult();
+  const r = quiz.results[result];
   const accelTriggers = triggers.length > 0
-    ? `<div class="qrp-triggers">${triggers.map(t=>`<div class="qrp-trigger"><span class="qrp-trigger-arrow">→</span> ${TRIGGER_MSGS[t]}</div>`).join('')}</div>` : '';
-  // Gate-context note (only show after team_size answered)
+    ? `<div class="qrp-triggers">${triggers.map(t=>`<div class="qrp-trigger"><span class="qrp-trigger-arrow">→</span> ${quiz.triggerMsgs[t]}</div>`).join('')}</div>` : '';
+
+  // Per-product gate copy (the size-bucket name shown in the small-team note)
+  const teamSizeLabels = {
+    sales:{small:'1–10 sales teams'},
+    lead:{small:'1–5 user setups'},
+    work:{small:'1–20 employee orgs'},
+    people:{small:'1–20 employee orgs'}
+  };
+  const tl = teamSizeLabels[currentQuizProduct] || teamSizeLabels.sales;
+  const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+  const baselineLabel = cap(baseline);
+
+  // Count answered non-team questions, for "X of N" denominators
+  const nonTeamAnswered = quiz.questions.filter(q => q.id !== 'team_size' && qAnswers[q.id]?.tier).length;
+
   let gateNote = '';
   if(qAnswers.team_size){
-    const ceilingLabel = gate.ceiling.charAt(0).toUpperCase() + gate.ceiling.slice(1);
-    const floorLabel = gate.floor.charAt(0).toUpperCase() + gate.floor.slice(1);
-    if(isSmallTeam && smallTeamUpgrade){
-      // Sales 1–10: 3 "need help" signals all present → Accelerator
-      gateNote = `<div class="qrp-gate-note">Most <strong>1–10 sales teams</strong> fit Launchpad. Your combination of <strong>data to migrate + no formal process + no dedicated admin</strong> means Accelerator's hands-on support is worth the upgrade.</div>`;
-    } else if(isSmallTeam){
-      // Sales 1–10 default → Launchpad
-      gateNote = `<div class="qrp-gate-note">Most <strong>1–10 sales teams</strong> fit Launchpad — the package is designed for your size. We'd only suggest stepping up if you needed full process consulting + managed data migration + a hands-off setup.</div>`;
-    } else if(cappedByGate){
-      const suggestedLabel = complexitySuggested.charAt(0).toUpperCase() + complexitySuggested.slice(1);
-      gateNote = `<div class="qrp-gate-note">⚠️ Your other answers suggest <strong>${suggestedLabel}</strong>, but for your team size the largest fit is <strong>${ceilingLabel}</strong>. If you're expecting rapid growth, ask us about ${suggestedLabel}.</div>`;
-    } else if(upliftedByComplexity){
-      gateNote = `<div class="qrp-gate-note">Your team size starts you at <strong>${floorLabel}</strong>, but your complexity pushed the recommendation up to <strong>${r.badge}</strong>.</div>`;
+    if(wasUpgraded){
+      // ≥3 of 5 non-team answers pointed to a higher tier → upgrade
+      gateNote = `<div class="qrp-gate-note">Your team size puts your baseline at <strong>${baselineLabel}</strong>, but <strong>${upgradeVotes} of 5</strong> of your other answers point to <strong>${cap(upgradedTo)}</strong>'s capabilities — that earns the upgrade.</div>`;
+    } else if(baseline === 'launchpad' && bestHigherVotes > 0 && bestHigherVotes < 3){
+      // At floor, but some higher-tier signals — not enough to upgrade
+      gateNote = `<div class="qrp-gate-note">Most <strong>${tl.small}</strong> fit <strong>Launchpad</strong>. ${bestHigherVotes} of your other answers point to <strong>${cap(bestHigherTier)}</strong> — we'd only step you up if 3 or more did.</div>`;
+    } else if(baseline === 'launchpad'){
+      // At floor, no higher signals
+      gateNote = `<div class="qrp-gate-note">Most <strong>${tl.small}</strong> fit <strong>Launchpad</strong> — the package is designed for your size, and your other answers are consistent with that.</div>`;
+    } else if(baseline === 'transform'){
+      // Baseline is already the max — no upgrade possible
+      gateNote = `<div class="qrp-gate-note">Your team size puts you in the <strong>Transform</strong> range — the package built for orgs at your scale.</div>`;
+    } else if(bestHigherVotes > 0 && bestHigherVotes < 3){
+      // Baseline = accelerator, some transform signals but not enough
+      gateNote = `<div class="qrp-gate-note">Your team size puts your baseline at <strong>${baselineLabel}</strong>. ${bestHigherVotes} of your other answers point to <strong>${cap(bestHigherTier)}</strong> — we'd only step you up if 3 or more did.</div>`;
     } else {
-      gateNote = `<div class="qrp-gate-note">Your team size puts you in the <strong>${r.badge}</strong> range.</div>`;
+      // Baseline = accelerator, no higher signals
+      gateNote = `<div class="qrp-gate-note">Your team size puts your baseline at <strong>${baselineLabel}</strong>, and your other answers are consistent with that.</div>`;
     }
   }
-  const leadsNote = q2NeedsLeads
-    ? `<div class="qrp-leads-note">💡 <span>Pair with <strong>Leads Ops</strong> — channel setup included at no extra cost in Accelerator & Transform.</span></div>` : '';
+
+  // Cross-sell note: Sales finder suggests pairing with Lead Ops; Lead finder suggests pairing with Sales Ops when CRM sync requested
+  let crossSellNote = '';
+  if(quiz.scoring === 'sales' && q2NeedsLeads){
+    crossSellNote = `<div class="qrp-leads-note">💡 <span>Pair with <strong>Lead Ops</strong> — channel setup included at no extra cost in Accelerator & Transform.</span></div>`;
+  } else if(quiz.scoring === 'lead' && (qAnswers.crm?.tier === 'accelerator' || qAnswers.crm?.tier === 'transform')){
+    crossSellNote = `<div class="qrp-leads-note">💡 <span>Pair with <strong>Sales Ops</strong> — bundled CRM mapping makes the Lead → Sales handoff clean from day one.</span></div>`;
+  }
+
+  const priceNote = r.price === 'Custom' ? 'Pricing on request' : 'One-time fee';
   panel.innerHTML = `
     <div class="qrp-progress"><div class="qrp-progress-fill" style="width:${pct}%"></div></div>
     <div class="qrp-body">
@@ -2500,7 +2872,7 @@ function renderResult(){
       <div class="qrp-body-txt">${r.body}</div>
       ${gateNote}
       ${accelTriggers}
-      ${leadsNote}
+      ${crossSellNote}
       <div class="qrp-pkg ${result}">
         <div class="qrp-pkg-row">
           <div>
@@ -2509,7 +2881,7 @@ function renderResult(){
           </div>
           <div style="text-align:right">
             <div class="qrp-pkg-price">${r.price}</div>
-            <div class="qrp-pkg-note">One-time fee</div>
+            <div class="qrp-pkg-note">${priceNote}</div>
           </div>
         </div>
         <div class="qrp-stats">
@@ -2521,15 +2893,16 @@ function renderResult(){
           <button class="qrp-btn-sec" onclick="seeDetailsFromFinder()">See details</button>
         </div>
       </div>
-      <div class="qrp-answered-count">${answeredCount} of ${QUESTIONS.length} answered</div>
+      <div class="qrp-answered-count">${answeredCount} of ${qs.length} answered</div>
     </div>`;
 }
 
 function renderPlaceholder(answered){
   const panel = document.getElementById('quizResultPanel');
   if(!panel) return;
+  const qs = activeQuestions();
   answered = answered || 0;
-  const pct = (answered / QUESTIONS.length) * 100;
+  const pct = (answered / qs.length) * 100;
   const needed = Math.max(0, 3 - answered);
   const icon = answered === 0 ? '🎯' : '⏳';
   const title = answered === 0 ? 'Your recommendation appears here' : `${answered} of 3 answered`;
@@ -2555,24 +2928,77 @@ function switchPkg(product, btn){
     const risks = document.querySelector(`.risks-wrap[data-product="${p}"]`);
     if(risks) risks.style.display = p === product ? 'block' : 'none';
   });
-  // Package Finder nav link + corner pill hidden on non-Sales tabs (quiz is Sales-only)
-  const findLink = document.querySelector('.nav-link[href="#quiz"]');
-  if(findLink) findLink.style.display = product === 'sales' ? '' : 'none';
-  const pkgPill = document.getElementById('pkgFinderPill');
-  if(pkgPill) pkgPill.style.display = product === 'sales' ? '' : 'none';
   document.querySelectorAll('[data-product][data-tier]').forEach(c => {
     if(c.dataset.product !== product) c.classList.remove('selected');
   });
   updateSummary();
 }
 
-// Package Finder is now in a modal — opens from Hero CTA, nav, footer, and Sales Ops corner CTA
-function openFinderModal(e){
-  if(e) e.preventDefault();
-  const salesTab = document.querySelector('.pkg-tab');
-  if(salesTab && !salesTab.classList.contains('active')){
-    switchPkg('sales', salesTab);
+/* ─── FINDER (shared modal, product-tabbed inside) ─── */
+// Map a packages-section product to a finder-internal product. Work/People route
+// to their placeholder tabs; Sales/Lead route to their real quizzes.
+function resolveFinderProduct(p){
+  return (p === 'sales' || p === 'lead' || p === 'work' || p === 'people') ? p : 'sales';
+}
+
+function switchFinderProduct(product, btn){
+  product = resolveFinderProduct(product);
+  // Persist current product's state before swapping
+  persistStateAliases();
+  currentQuizProduct = product;
+  syncStateAliases();
+
+  // Toggle tab active state
+  document.querySelectorAll('.finder-prod-tab').forEach(t => t.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  else {
+    const target = document.querySelector(`.finder-prod-tab[data-product="${product}"]`);
+    if(target) target.classList.add('active');
   }
+
+  const quizPanel = document.getElementById('finderPanelQuiz');
+  const phPanel = document.getElementById('finderPanelPlaceholder');
+  const phTitle = document.getElementById('finderPlaceholderTitle');
+  const phSub = document.getElementById('finderPlaceholderSub');
+  const hasQuiz = !!(QUIZZES[product] && QUIZZES[product].available);
+
+  if(hasQuiz){
+    if(quizPanel) quizPanel.style.display = '';
+    if(phPanel) phPanel.style.display = 'none';
+    renderAllQuestions();
+    renderResult();
+  } else {
+    const label = product === 'work' ? 'Work Ops' : product === 'people' ? 'People Ops' : 'This product';
+    if(quizPanel) quizPanel.style.display = 'none';
+    if(phPanel) phPanel.style.display = '';
+    if(phTitle) phTitle.textContent = `${label} finder — coming soon`;
+    if(phSub) phSub.textContent = `We're still tuning the scoping questions for ${label}. In the meantime, browse the ${label} tiers or talk to us — we'll scope it with you live.`;
+  }
+}
+
+// Package Finder is a shared modal. Opens from Hero CTA, nav, footer, and per-product corner pills.
+// Pre-selects the finder tab matching whichever product tab is currently active.
+function openFinderModal(eOrProduct){
+  let forcedProduct = null;
+  if(typeof eOrProduct === 'string'){
+    forcedProduct = eOrProduct;
+  } else if(eOrProduct && typeof eOrProduct.preventDefault === 'function'){
+    eOrProduct.preventDefault();
+  }
+  // Decide which finder tab to land on:
+  // 1. Explicit product arg wins. 2. Else mirror the active packages tab. 3. Else Sales.
+  let target = forcedProduct;
+  if(!target){
+    const activeTab = document.querySelector('.pkg-tab.active');
+    if(activeTab){
+      const onclickAttr = activeTab.getAttribute('onclick') || '';
+      const m = onclickAttr.match(/switchPkg\('(\w+)'/);
+      if(m) target = m[1];
+    }
+  }
+  target = resolveFinderProduct(target || 'sales');
+  switchFinderProduct(target, null);
+
   const modal = document.getElementById('finder-modal');
   if(modal){
     modal.classList.add('open');
