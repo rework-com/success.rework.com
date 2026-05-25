@@ -72,6 +72,116 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
 .phase-gate{display:inline-flex;align-items:center;gap:4px;margin-top:10px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:100px;padding:3px 10px;font-size:10px;font-weight:600;color:var(--blue)}
 
+/* FRAMEWORK (v1.1) */
+#framework{background:linear-gradient(180deg,var(--g50) 0%,var(--white) 100%);padding:64px 24px 72px;position:relative;overflow:hidden}
+#framework .section-sub{max-width:540px;margin-bottom:8px}
+#framework .section-sub strong{color:var(--g900);font-weight:700}
+
+/* Header at top (full width), then 2-column below */
+.fw-header{max-width:720px;margin:0 0 26px}
+.fw-header .section-title{font-size:29px}
+.fw-subtitle{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:var(--g500);margin:5px 0 0;line-height:1.4}
+.fw-layout-v2{display:grid;grid-template-columns:1fr 1.5fr;gap:32px;align-items:start}
+.fw-col-diagram{display:flex;flex-direction:column;align-items:center;gap:16px;position:sticky;top:90px;align-self:start}
+.fw-col-pillars{display:grid;grid-template-columns:1fr 1fr;gap:11px;align-content:center}
+/* Intro caption sits below the diagram, supporting it (quieter than the cards) */
+.fw-intro-text{font-size:12px;color:var(--g600);line-height:1.6;max-width:380px;text-align:center;margin:0}
+.fw-intro-text strong{color:var(--g900);font-weight:700}
+
+/* The rotating ring */
+.fw-ring{width:100%;max-width:415px;height:auto;display:block;overflow:visible}
+.fw-ring-rotor{/* animated via JS requestAnimationFrame (SVG transform attribute) */}
+.fw-ring-seg{cursor:pointer;transition:filter .25s ease,opacity .25s ease;opacity:1}
+.fw-ring-seg:hover{filter:brightness(1.06) drop-shadow(0 4px 18px rgba(0,0,0,0.12))}
+.fw-ring-seg.active{filter:drop-shadow(0 6px 20px rgba(0,0,0,0.18))}
+.fw-ring-content{pointer-events:none}
+.fw-ring-label{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;letter-spacing:0.2px}
+.fw-ring-content[data-segment="people"] .fw-ring-label{fill:#7C3AED}
+.fw-ring-content[data-segment="process"] .fw-ring-label{fill:#2D5BE3}
+.fw-ring-content[data-segment="tech"] .fw-ring-label{fill:#0B8A5A}
+.fw-ring-content[data-segment="people"] .fw-ring-icon{stroke:#7C3AED;color:#7C3AED}
+.fw-ring-content[data-segment="process"] .fw-ring-icon{stroke:#2D5BE3;color:#2D5BE3}
+.fw-ring-content[data-segment="tech"] .fw-ring-icon{stroke:#0B8A5A;color:#0B8A5A}
+/* Data center — same visual weight as the pillars, but smaller now */
+.fw-ring-data{cursor:pointer;transform-box:fill-box;transform-origin:center;transition:transform .35s cubic-bezier(.34,1.56,.64,1);outline:none}
+.fw-ring-data:hover{transform:scale(1.05)}
+.fw-ring-data:focus-visible .fw-ring-data-bg{stroke:#2563EB;stroke-width:2}
+.fw-ring-data.pulse{animation:fwDataPulse .65s cubic-bezier(.34,1.56,.64,1)}
+.fw-ring-data-bg{transition:filter .35s}
+.fw-ring-data.pulse .fw-ring-data-bg{filter:drop-shadow(0 0 18px rgba(59,130,246,0.5))}
+.fw-ring-data-lbl{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:800;fill:#1F2937;letter-spacing:0.2px;pointer-events:none}
+.fw-ring-data-icon{pointer-events:none}
+@keyframes fwDataPulse{
+  0%{transform:scale(1)}
+  45%{transform:scale(1.14)}
+  100%{transform:scale(1.04)}
+}
+
+/* Pillar cards (2x2 grid in right column).
+   Default = all bright. When any sibling is .active, the rest dim. */
+.fw-pillar{background:var(--white);border:none;border-radius:13px;padding:20px;transition:all .35s cubic-bezier(.4,0,.2,1);position:relative;cursor:pointer;opacity:1;min-height:215px;display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(15,23,42,0.04),0 6px 18px rgba(15,23,42,0.06)}
+.fw-pillar:hover{box-shadow:0 2px 6px rgba(15,23,42,0.06),0 12px 28px rgba(15,23,42,0.09);transform:translateY(-2px)}
+/* Dim non-active siblings only when one pillar is selected */
+.fw-col-pillars:has(.fw-pillar.active) .fw-pillar:not(.active){opacity:0.45}
+.fw-col-pillars:has(.fw-pillar.active) .fw-pillar:not(.active):hover{opacity:0.75}
+.fw-pillar.active{transform:translateY(-2px)}
+.fw-pillar-people.active{box-shadow:0 4px 10px rgba(139,92,246,0.10),0 14px 36px rgba(139,92,246,0.22)}
+.fw-pillar-process.active{box-shadow:0 4px 10px rgba(45,91,227,0.10),0 14px 36px rgba(45,91,227,0.22)}
+.fw-pillar-tech.active{box-shadow:0 4px 10px rgba(11,138,90,0.10),0 14px 36px rgba(11,138,90,0.22)}
+.fw-pillar-data.active{box-shadow:0 4px 10px rgba(96,165,250,0.12),0 14px 36px rgba(96,165,250,0.24)}
+/* Card header: icon badge + title, with underline in pillar accent color */
+.fw-pillar-head{display:flex;align-items:center;gap:10px;padding-bottom:12px;margin-bottom:15px;border-bottom:1.5px solid var(--g200)}
+.fw-pillar-people .fw-pillar-head{border-bottom-color:#DDD6FE}
+.fw-pillar-process .fw-pillar-head{border-bottom-color:#BFDBFE}
+.fw-pillar-tech .fw-pillar-head{border-bottom-color:#A7F3D0}
+.fw-pillar-data .fw-pillar-head{border-bottom-color:#BFDBFE}
+.fw-pillar-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fw-pillar-icon svg{width:20px;height:20px}
+.fw-pillar-people .fw-pillar-icon{background:#8B5CF6}
+.fw-pillar-process .fw-pillar-icon{background:#2D5BE3}
+.fw-pillar-tech .fw-pillar-icon{background:#0B8A5A}
+.fw-pillar-data .fw-pillar-icon{background:#60A5FA}
+.fw-pillar-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;line-height:1.1;letter-spacing:-0.1px}
+.fw-pillar-people .fw-pillar-title{color:#7C3AED}
+.fw-pillar-process .fw-pillar-title{color:#2D5BE3}
+.fw-pillar-tech .fw-pillar-title{color:#0B8A5A}
+.fw-pillar-data .fw-pillar-title{color:#2D5BE3}
+.fw-pillar-count{display:none}
+/* List with numbered circle badges (white text in pillar-colored circle) */
+.fw-pillar-list{counter-reset:fwc;list-style:none;padding-left:0;margin:0;display:flex;flex-direction:column;gap:11px}
+.fw-pillar-list li{counter-increment:fwc;font-size:11.5px;color:var(--g700);line-height:1.45;padding-left:26px;position:relative}
+.fw-pillar-list li strong{font-weight:700;color:var(--g900)}
+.fw-pillar-list li::before{content:counter(fwc);position:absolute;left:0;top:0;width:18px;height:18px;border-radius:50%;color:#FFFFFF;font-family:'Plus Jakarta Sans',sans-serif;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:1}
+.fw-pillar-people .fw-pillar-list li::before{background:#8B5CF6}
+.fw-pillar-process .fw-pillar-list li::before{background:#2D5BE3}
+.fw-pillar-tech .fw-pillar-list li::before{background:#0B8A5A}
+.fw-pillar-data .fw-pillar-list li::before{background:#60A5FA}
+.fw-li-soft{color:var(--g500);font-weight:400}
+.fw-sublist-note{font-size:10.5px;color:var(--g500);font-style:italic;margin:5px 0 3px;line-height:1.4}
+.fw-sublist{list-style:none;padding-left:0;margin:0 0 2px;display:flex;flex-direction:column;gap:3px}
+.fw-sublist li{font-size:11.5px;color:var(--g600);line-height:1.45;padding-left:12px;position:relative}
+.fw-sublist li::before{content:"";position:absolute;left:3px;top:7px;width:4px;height:4px;border-radius:50%;background:var(--g400)}
+/* Pillar accents — match ring palette (lighter pastel-to-saturated) */
+.fw-pillar-people::before{background:linear-gradient(90deg,#C4B5FD,#8B5CF6)}
+.fw-pillar-people .fw-pillar-title{color:#7C3AED}
+.fw-pillar-process::before{background:linear-gradient(90deg,#93C5FD,#3B82F6)}
+.fw-pillar-process .fw-pillar-title{color:#2563EB}
+.fw-pillar-tech::before{background:linear-gradient(90deg,#6EE7B7,#10B981)}
+.fw-pillar-tech .fw-pillar-title{color:#059669}
+.fw-pillar-data::before{background:linear-gradient(90deg,#BFDBFE,#60A5FA)}
+.fw-pillar-data .fw-pillar-title{color:#1F2937}
+
+@media(max-width:1024px){
+  .fw-layout-v2{grid-template-columns:1fr;gap:32px}
+  .fw-col-diagram{position:static;order:-1}
+  .fw-ring{max-width:380px}
+}
+@media(max-width:560px){
+  .fw-ring{max-width:320px}
+  .fw-ring-label{font-size:15px}
+  .fw-col-pillars{grid-template-columns:1fr}
+}
+
 /* QUIZ TWO-COLUMN */
 #quiz{background:linear-gradient(180deg,var(--g50) 0%,var(--white) 100%);padding:48px 24px}
 .quiz-layout{display:grid;grid-template-columns:1fr 425px;gap:24px;margin-top:28px;align-items:start}
@@ -327,6 +437,11 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 .cmp-grp{padding:12px 16px 8px;background:var(--g50);border-top:1px solid var(--g200);display:flex;align-items:center;justify-content:space-between;gap:16px}
 .cmp-grp-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:10.5px;font-weight:800;color:var(--g500);letter-spacing:1.4px;text-transform:uppercase;display:inline-block;flex-shrink:0}
 .cmp-grp-sub{font-size:11.5px;color:var(--g500);font-weight:500}
+/* Pillar group accents — match the framework palette */
+.cmp-grp-people .cmp-grp-title{color:#7C3AED}
+.cmp-grp-process .cmp-grp-title{color:#2D5BE3}
+.cmp-grp-tech .cmp-grp-title{color:#0B8A5A}
+.cmp-grp-data .cmp-grp-title{color:#2D5BE3}
 /* Glance rows — neutral, no per-tier tint */
 .cmp-row.cmp-glance .cmp-cell{font-weight:600;color:var(--g800);font-size:12.5px;padding:9px 14px}
 .cmp-row.cmp-glance .cmp-cell strong{font-size:14px;color:var(--g900);font-weight:700}
@@ -627,6 +742,220 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
   </div>
 </section>
 
+<!-- FRAMEWORK (v1.1) -->
+<section class="section" id="framework">
+  <div class="section-inner">
+    <div class="fw-header">
+      <div class="section-label">Our Framework</div>
+      <h2 class="section-title">Digital Transformation Framework</h2>
+      <p class="fw-subtitle">4 key pillars to modernize your business</p>
+    </div>
+    <div class="fw-layout-v2">
+      <div class="fw-col-diagram">
+        <svg class="fw-ring" viewBox="0 0 400 400" role="img" aria-label="Digital Transformation Framework: People, Process, and Technology, anchored by Data at the center.">
+          <defs>
+            <!-- Pillar gradients (user-spec) — applied with fill-opacity 0.72 -->
+            <linearGradient id="fwGradPeople" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#C4B5FD"/>
+              <stop offset="100%" stop-color="#8B5CF6"/>
+            </linearGradient>
+            <linearGradient id="fwGradProcess" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#93C5FD"/>
+              <stop offset="100%" stop-color="#2D5BE3"/>
+            </linearGradient>
+            <linearGradient id="fwGradTech" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#6EE7B7"/>
+              <stop offset="100%" stop-color="#0B8A5A"/>
+            </linearGradient>
+            <!-- Data gradient — soft slate→indigo, sits visually quiet but distinct -->
+            <linearGradient id="fwGradData" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#F8FAFC"/>
+              <stop offset="100%" stop-color="#C7D2FE"/>
+            </linearGradient>
+          </defs>
+
+          <g id="fwRotor" class="fw-ring-rotor">
+            <!-- Each segment: body 108° + chunky "fat-arrow" tip (forward 12°, wings extend past r1/r2) + concave V-notch tail (7° inside body).
+                 Tip path: body-end → outer-wing (r=185) → apex (r=122.5, forward 12°) → inner-wing (r=63) → back to inner-body-end. -->
+            <!-- People (right) — body -52.5° to 52.5°, fat-arrow tip apex 67.5°, outer wing r=188, inner wing r=60, notch apex -45.5° -->
+            <path class="fw-ring-seg" data-segment="people" fill="url(#fwGradPeople)" fill-opacity="0.72" stroke="#FFFFFF" stroke-width="1.5"
+                  d="M 303.5 65.1 A 170 170 0 0 1 303.5 334.9 L 314.5 349.2 L 246.9 313.2 L 236.5 247.6 L 245.7 259.5 A 75 75 0 0 0 245.7 140.5 L 285.9 112.6 Z"/>
+            <!-- Process (bottom) — body 67.5° to 172.5°, tip apex 187.5°, notch apex 74.5° -->
+            <path class="fw-ring-seg" data-segment="process" fill="url(#fwGradProcess)" fill-opacity="0.72" stroke="#FFFFFF" stroke-width="1.5"
+                  d="M 265.1 357.1 A 170 170 0 0 1 31.5 222.2 L 13.6 224.5 L 78.6 184.0 L 140.5 207.8 L 125.6 209.8 A 75 75 0 0 0 228.7 269.3 L 232.7 318.0 Z"/>
+            <!-- Technology (top) — body 187.5° to 292.5°, tip apex 307.5°, notch apex 194.5° -->
+            <path class="fw-ring-seg" data-segment="tech" fill="url(#fwGradTech)" fill-opacity="0.72" stroke="#FFFFFF" stroke-width="1.5"
+                  d="M 31.5 177.8 A 170 170 0 0 1 265.1 42.9 L 271.9 26.3 L 274.6 102.8 L 223.0 144.6 L 228.7 130.7 A 75 75 0 0 0 125.6 190.2 L 81.4 169.3 Z"/>
+
+            <!-- Pillar content (label + icon), counter-rotates around its centroid to stay upright -->
+            <g class="fw-ring-content" data-segment="people">
+              <text class="fw-ring-label" x="322.5" y="198" text-anchor="middle">People</text>
+              <g class="fw-ring-icon" transform="translate(322.5 219)" fill="currentColor">
+                <circle cx="0" cy="-5" r="3.8"/>
+                <path d="M -6.5 8 Q -6.5 1.5 0 1.5 Q 6.5 1.5 6.5 8 Z"/>
+                <circle cx="-9" cy="-4" r="2.8"/>
+                <path d="M -13.5 6 Q -13.5 0.5 -9 0.5 L -9 8 L -13.5 8 Z"/>
+                <circle cx="9" cy="-4" r="2.8"/>
+                <path d="M 9 0.5 Q 13.5 0.5 13.5 6 L 13.5 8 L 9 8 Z"/>
+              </g>
+            </g>
+            <g class="fw-ring-content" data-segment="process">
+              <text class="fw-ring-label" x="138.75" y="304" text-anchor="middle">Process</text>
+              <g class="fw-ring-icon" transform="translate(138.75 325)" fill="none" stroke-width="1.6" stroke-linecap="round">
+                <circle cx="0" cy="0" r="3.5"/>
+                <circle cx="0" cy="0" r="1.2" fill="currentColor" stroke="none"/>
+                <line x1="0" y1="-5.5" x2="0" y2="-8"/>
+                <line x1="0" y1="5.5" x2="0" y2="8"/>
+                <line x1="-5.5" y1="0" x2="-8" y2="0"/>
+                <line x1="5.5" y1="0" x2="8" y2="0"/>
+                <line x1="3.9" y1="-3.9" x2="5.5" y2="-5.5"/>
+                <line x1="-3.9" y1="-3.9" x2="-5.5" y2="-5.5"/>
+                <line x1="3.9" y1="3.9" x2="5.5" y2="5.5"/>
+                <line x1="-3.9" y1="3.9" x2="-5.5" y2="5.5"/>
+              </g>
+            </g>
+            <g class="fw-ring-content" data-segment="tech">
+              <text class="fw-ring-label" x="138.75" y="92" text-anchor="middle">Technology</text>
+              <g class="fw-ring-icon" transform="translate(138.75 113)" fill="none" stroke-width="1.5" stroke-linecap="round">
+                <rect x="-8" y="-8" width="16" height="16" rx="1.5"/>
+                <rect x="-4" y="-4" width="8" height="8" rx="0.5" fill="currentColor" stroke="none"/>
+                <line x1="-12" y1="-4" x2="-8" y2="-4"/>
+                <line x1="-12" y1="0" x2="-8" y2="0"/>
+                <line x1="-12" y1="4" x2="-8" y2="4"/>
+                <line x1="8" y1="-4" x2="12" y2="-4"/>
+                <line x1="8" y1="0" x2="12" y2="0"/>
+                <line x1="8" y1="4" x2="12" y2="4"/>
+                <line x1="-4" y1="-12" x2="-4" y2="-8"/>
+                <line x1="0" y1="-12" x2="0" y2="-8"/>
+                <line x1="4" y1="-12" x2="4" y2="-8"/>
+                <line x1="-4" y1="8" x2="-4" y2="12"/>
+                <line x1="0" y1="8" x2="0" y2="12"/>
+                <line x1="4" y1="8" x2="4" y2="12"/>
+              </g>
+            </g>
+          </g>
+
+          <!-- Center Data (does NOT rotate with the ring) — smaller, sits inside the inner radius -->
+          <g class="fw-ring-data" id="fwData" onclick="pulseFwData()" role="button" tabindex="0" aria-label="Data — the connective tissue">
+            <circle class="fw-ring-data-bg" cx="200" cy="200" r="55" fill="url(#fwGradData)" stroke="#C7D2FE" stroke-width="1.5"/>
+            <g class="fw-ring-data-icon" transform="translate(200 191)" fill="none" stroke="#2563EB" stroke-width="1.4">
+              <ellipse cx="0" cy="-5.5" rx="8.5" ry="2.4" fill="#2563EB"/>
+              <line x1="-8.5" y1="-5.5" x2="-8.5" y2="5.5"/>
+              <line x1="8.5" y1="-5.5" x2="8.5" y2="5.5"/>
+              <path d="M -8.5 5.5 A 8.5 2.4 0 0 0 8.5 5.5"/>
+              <path d="M -8.5 -1.5 A 8.5 2.4 0 0 0 8.5 -1.5"/>
+              <path d="M -8.5 2 A 8.5 2.4 0 0 0 8.5 2"/>
+            </g>
+            <text class="fw-ring-data-lbl" x="200" y="218" text-anchor="middle">Data</text>
+          </g>
+        </svg>
+        <p class="fw-intro-text">These <strong>4 pillars</strong> are the foundation of every successful digital transformation. Rework has packaged them into <strong>17 service components</strong> — and based on where you are today and what you need, we partner with you on the right mix at your tier.</p>
+      </div>
+
+      <!-- Pillar text column (stacked vertically, click-to-activate) -->
+      <div class="fw-col-pillars">
+      <div class="fw-pillar fw-pillar-people" data-pillar="people" onclick="setActivePillarFromCard('people')">
+        <div class="fw-pillar-head">
+          <div class="fw-pillar-icon" aria-hidden="true">
+            <svg viewBox="-16 -16 32 32" width="22" height="22"><g fill="#FFFFFF">
+              <circle cx="0" cy="-5" r="3.8"/>
+              <path d="M -6.5 8 Q -6.5 1.5 0 1.5 Q 6.5 1.5 6.5 8 Z"/>
+              <circle cx="-9" cy="-4" r="2.8"/>
+              <path d="M -13.5 6 Q -13.5 0.5 -9 0.5 L -9 8 L -13.5 8 Z"/>
+              <circle cx="9" cy="-4" r="2.8"/>
+              <path d="M 9 0.5 Q 13.5 0.5 13.5 6 L 13.5 8 L 9 8 Z"/>
+            </g></svg>
+          </div>
+          <div class="fw-pillar-title">People</div>
+        </div>
+        <ol class="fw-pillar-list">
+          <li>Define implementation plan &amp; pioneer team</li>
+          <li><strong>Train end-users</strong> via workshops</li>
+          <li><strong>Train the trainers</strong> (Rework Master)</li>
+          <li><strong>Deliver user guides</strong> &amp; post-launch support</li>
+          <li>Progress check-ins &amp; reports</li>
+        </ol>
+      </div>
+      <div class="fw-pillar fw-pillar-process" data-pillar="process" onclick="setActivePillarFromCard('process')">
+        <div class="fw-pillar-head">
+          <div class="fw-pillar-icon" aria-hidden="true">
+            <svg viewBox="-12 -12 24 24" width="22" height="22"><g fill="none" stroke="#FFFFFF" stroke-width="1.7" stroke-linecap="round">
+              <circle cx="0" cy="0" r="3.5"/>
+              <circle cx="0" cy="0" r="1.3" fill="#FFFFFF" stroke="none"/>
+              <line x1="0" y1="-5.5" x2="0" y2="-8"/>
+              <line x1="0" y1="5.5" x2="0" y2="8"/>
+              <line x1="-5.5" y1="0" x2="-8" y2="0"/>
+              <line x1="5.5" y1="0" x2="8" y2="0"/>
+              <line x1="3.9" y1="-3.9" x2="5.5" y2="-5.5"/>
+              <line x1="-3.9" y1="-3.9" x2="-5.5" y2="-5.5"/>
+              <line x1="3.9" y1="3.9" x2="5.5" y2="5.5"/>
+              <line x1="-3.9" y1="3.9" x2="-5.5" y2="5.5"/>
+            </g></svg>
+          </div>
+          <div class="fw-pillar-title">Process</div>
+        </div>
+        <ol class="fw-pillar-list">
+          <li><strong>Audit current processes</strong> (AS-IS)</li>
+          <li><strong>Redesign processes</strong> for digital delivery (TO-BE)</li>
+          <li><strong>Pilot, validate and refine</strong></li>
+          <li>Go-live &amp; full rollout</li>
+          <li>Document final SOPs</li>
+        </ol>
+      </div>
+      <div class="fw-pillar fw-pillar-tech" data-pillar="tech" onclick="setActivePillarFromCard('tech')">
+        <div class="fw-pillar-head">
+          <div class="fw-pillar-icon" aria-hidden="true">
+            <svg viewBox="-14 -14 28 28" width="22" height="22"><g fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round">
+              <rect x="-8" y="-8" width="16" height="16" rx="1.5"/>
+              <rect x="-4" y="-4" width="8" height="8" rx="0.5" fill="#FFFFFF" stroke="none"/>
+              <line x1="-12" y1="-4" x2="-8" y2="-4"/>
+              <line x1="-12" y1="0" x2="-8" y2="0"/>
+              <line x1="-12" y1="4" x2="-8" y2="4"/>
+              <line x1="8" y1="-4" x2="12" y2="-4"/>
+              <line x1="8" y1="0" x2="12" y2="0"/>
+              <line x1="8" y1="4" x2="12" y2="4"/>
+              <line x1="-4" y1="-12" x2="-4" y2="-8"/>
+              <line x1="0" y1="-12" x2="0" y2="-8"/>
+              <line x1="4" y1="-12" x2="4" y2="-8"/>
+              <line x1="-4" y1="8" x2="-4" y2="12"/>
+              <line x1="0" y1="8" x2="0" y2="12"/>
+              <line x1="4" y1="8" x2="4" y2="12"/>
+            </g></svg>
+          </div>
+          <div class="fw-pillar-title">Technology</div>
+        </div>
+        <ol class="fw-pillar-list">
+          <li><strong>Set up workspace</strong> &amp; user access</li>
+          <li><strong>Build the operating model</strong> on Rework</li>
+          <li>Integrate with third-party systems</li>
+        </ol>
+      </div>
+      <div class="fw-pillar fw-pillar-data" data-pillar="data" onclick="setActivePillarFromCard('data')">
+        <div class="fw-pillar-head">
+          <div class="fw-pillar-icon" aria-hidden="true">
+            <svg viewBox="-11 -10 22 20" width="22" height="22"><g fill="none" stroke="#FFFFFF" stroke-width="1.5">
+              <ellipse cx="0" cy="-7" rx="8.5" ry="2.4" fill="#FFFFFF"/>
+              <line x1="-8.5" y1="-7" x2="-8.5" y2="7"/>
+              <line x1="8.5" y1="-7" x2="8.5" y2="7"/>
+              <path d="M -8.5 7 A 8.5 2.4 0 0 0 8.5 7"/>
+              <path d="M -8.5 0 A 8.5 2.4 0 0 0 8.5 0"/>
+              <path d="M -8.5 3.5 A 8.5 2.4 0 0 0 8.5 3.5"/>
+            </g></svg>
+          </div>
+          <div class="fw-pillar-title">Data</div>
+        </div>
+        <ol class="fw-pillar-list">
+          <li>Design the data model</li>
+          <li>Migrate existing data</li>
+          <li><strong>Define KPIs &amp; metrics</strong></li>
+          <li><strong>Build dashboards &amp; reports</strong></li>
+        </ol>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PACKAGES -->
 <section class="section" id="packages">
   <div class="section-inner">
@@ -656,52 +985,48 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-cta">Select</div>
           <ul class="compact-card-features">
             <li><strong>3 working sessions</strong> in <strong>3–5 weeks</strong></li>
-            <li>1 customized sales pipeline</li>
-            <li>Meta Ads + 1 lead channel connected</li>
-            <li>Self-service data migration (templates + guide)</li>
-            <li>Basic automations: assignment, follow-up, SLA</li>
-            <li>1 group training workshop (90 min, online)</li>
-            <li>Standard Help Center + email support</li>
-            <li>Quarterly active-usage report</li>
+            <li><strong>Audit current processes</strong> · 1 kickoff call</li>
+            <li><strong>Build the operating model</strong> · 1 pipeline + Meta Ads + basic automations</li>
+            <li><strong>Migrate existing data</strong> · Self-service via CSV templates</li>
+            <li><strong>Train end-users</strong> · 1 group workshop, 90 min</li>
+            <li><strong>Deliver user guides</strong> · Help Center + email support</li>
           </ul>
         </div>
-        <div class="compact-card" data-tier="accel" data-product="sales" data-price="1500" data-name="Sales Ops · Accelerator" onclick="toggleCard(this)">
+        <div class="compact-card" data-tier="accel" data-product="sales" data-price="1000" data-name="Sales Ops · Accelerator" onclick="toggleCard(this)">
           <div class="compact-card-name">Accelerator</div>
-          <div class="compact-card-audience">Best for 10–50 sales teams</div>
+          <div class="compact-card-audience">Best for 10–20 sales teams</div>
           <div class="compact-card-tagline">Build a sales machine with tailored processes and hands-on support.</div>
-          <div class="compact-card-price"><span class="compact-card-price-prefix">from</span> $1,500</div>
+          <div class="compact-card-price"><span class="compact-card-price-prefix">from</span> $1,000</div>
           <div class="compact-card-price-note">One-time implementation fee</div>
           <div class="compact-card-cta">Select</div>
           <ul class="compact-card-features">
             <li><strong>6–8 working sessions</strong> in <strong>4–8 weeks</strong></li>
-            <li><strong>Customized pipelines</strong> tailored to your process</li>
-            <li>Multi-channel lead routing (Meta Ads + chat channels)</li>
-            <li><strong>Rework-handled</strong> data migration with validation</li>
-            <li>Tailored automations + escalation rules</li>
-            <li>Pipeline visibility dashboard</li>
-            <li>Role-based training (admin · manager · rep)</li>
-            <li>30 days group chat + 1 review call after go-live</li>
-            <li>Quarterly active-usage report + health check</li>
+            <li><strong>Audit + Redesign processes</strong> · 1–2 consulting sessions, tailored TO-BE</li>
+            <li><strong>Build the operating model</strong> · 1–2 tailored pipelines + multi-channel routing</li>
+            <li><strong>Migrate existing data</strong> · Rework-handled with validation</li>
+            <li><strong>Train end-users</strong> · 2–3 role-based workshops</li>
+            <li><strong>Train the trainers</strong> · 1 train-the-trainer session</li>
+            <li><strong>Build dashboards &amp; reports</strong> · 1 pipeline visibility dashboard</li>
+            <li><strong>Deliver user guides</strong> · Custom guide + 30 days post-launch chat</li>
           </ul>
         </div>
         <div class="compact-card" data-tier="transform" data-product="sales" data-price="3000" data-name="Sales Ops · Transform" onclick="toggleCard(this)">
           <div class="compact-card-name">Transform</div>
-          <div class="compact-card-audience">Best for 50+ sales orgs across teams or regions</div>
+          <div class="compact-card-audience">Best for 20+ sales orgs across teams or regions</div>
           <div class="compact-card-tagline">Redesign how your sales organization operates — from lead to revenue.</div>
           <div class="compact-card-price"><span class="compact-card-price-prefix">from</span> $3,000</div>
           <div class="compact-card-price-note">Custom scoped · One-time fee</div>
           <div class="compact-card-cta">Select</div>
           <ul class="compact-card-features">
             <li><strong>10–15 working sessions</strong> in <strong>8–12 weeks</strong></li>
-            <li>Multiple sales pipelines designed from scratch</li>
-            <li>All channels connected with advanced multi-team routing</li>
-            <li>Multi-source data migration + deduplication</li>
-            <li>Advanced automations + approval flows</li>
-            <li>Custom dashboards + scheduled reports</li>
-            <li>Full training plan + train-the-trainer + SOP videos</li>
-            <li><strong>Dedicated Onboarding Manager</strong> (named CSM, 4hr SLA)</li>
-            <li>60 days CS engagement + monthly review calls</li>
-            <li>Quarterly active-usage report + adoption monitoring</li>
+            <li><strong>Audit + Redesign processes</strong> · Deep-dive workshop + cross-team TO-BE</li>
+            <li><strong>Build the operating model</strong> · 3+ pipelines + advanced automations + approval flows</li>
+            <li><strong>Integrate with third-party systems</strong> · Multi-system suite + custom APIs</li>
+            <li><strong>Migrate existing data</strong> · Multi-source + deduplication</li>
+            <li><strong>Train end-users</strong> · 5–6 scenario workshops per role</li>
+            <li><strong>Train the trainers</strong> · 3 sessions + cert handoff</li>
+            <li><strong>Build dashboards &amp; reports</strong> · 2–3 custom dashboards + scheduled reports</li>
+            <li><strong>Dedicated CSM + custom SOP</strong> · Named CSM, 4hr SLA, 60-day engagement</li>
           </ul>
         </div>
       </div>
@@ -724,10 +1049,10 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             <div class="cmp-tier-price">from $500</div>
             <div class="cmp-tier-cta">Select</div>
           </div>
-          <div class="cmp-tier" data-tier="accel" data-product="sales" data-price="1500" data-name="Sales Ops · Accelerator" onclick="toggleCard(this)">
+          <div class="cmp-tier" data-tier="accel" data-product="sales" data-price="1000" data-name="Sales Ops · Accelerator" onclick="toggleCard(this)">
             <div class="cmp-tier-name">Accelerator</div>
             <div class="cmp-tier-fit">Build a sales machine with tailored processes and hands-on support.</div>
-            <div class="cmp-tier-price">from $1,500</div>
+            <div class="cmp-tier-price">from $1,000</div>
             <div class="cmp-tier-cta">Select</div>
           </div>
           <div class="cmp-tier" data-tier="transform" data-product="sales" data-price="3000" data-name="Sales Ops · Transform" onclick="toggleCard(this)">
@@ -749,8 +1074,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
         <div class="cmp-row cmp-glance">
           <div class="cmp-lbl">Best for</div>
           <div class="cmp-cell"><strong>1–10</strong> sales team</div>
-          <div class="cmp-cell"><strong>10–50</strong> sales team</div>
-          <div class="cmp-cell"><strong>50+</strong> sales team</div>
+          <div class="cmp-cell"><strong>10–20</strong> sales team</div>
+          <div class="cmp-cell"><strong>20+</strong> sales team</div>
         </div>
         <div class="cmp-row cmp-glance">
           <div class="cmp-lbl">Timeline</div>
@@ -760,96 +1085,147 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
         </div>
         <div class="cmp-row cmp-glance">
           <div class="cmp-lbl">Working sessions</div>
-          <div class="cmp-cell"><strong>3</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(2 setup + 1 training workshop)</span></div>
-          <div class="cmp-cell"><strong>6–8</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(1 survey + 2–3 setup + 2–3 training workshops)</span></div>
-          <div class="cmp-cell"><strong>10–15</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(2 survey + 4–6 setup + 4–6 training workshops + 1–2 reviews)</span></div>
+          <div class="cmp-cell"><strong>3</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(2 setup + 1 training)</span></div>
+          <div class="cmp-cell"><strong>6–8</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(1 survey + 2–3 setup + 2–3 training)</span></div>
+          <div class="cmp-cell"><strong>10–15</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(2 survey + 4–6 setup + 5–6 training + 1–2 reviews)</span></div>
         </div>
-
-        <!-- ACTIVATION group -->
-        <div class="cmp-grp">
-          <div class="cmp-grp-title">Activation</div>
-          <div class="cmp-grp-sub">Getting your system configured and live</div>
-        </div>
-        <div class="cmp-row">
+        <div class="cmp-row cmp-glance">
           <div class="cmp-lbl">Your Rework team</div>
           <div class="cmp-cell">1 Customer Success Specialist</div>
           <div class="cmp-cell">1 Customer Success Specialist</div>
-          <div class="cmp-cell"><strong>Customer Success Manager + Customer Success Associate</strong></div>
+          <div class="cmp-cell"><strong>CSM + CS Associate</strong> <span style="color:var(--g500);font-weight:500;font-size:12.5px">(named, 4hr SLA)</span></div>
+        </div>
+
+        <!-- PEOPLE group -->
+        <div class="cmp-grp cmp-grp-people">
+          <div class="cmp-grp-title">People</div>
+          <div class="cmp-grp-sub">5 components</div>
         </div>
         <div class="cmp-row">
-          <div class="cmp-lbl">Sales pipelines configured</div>
-          <div class="cmp-cell"><strong>1</strong> <span style="color:var(--g500)">(from template)</span></div>
-          <div class="cmp-cell"><strong>1–2</strong> <span style="color:var(--g500)">(customized to your process)</span></div>
-          <div class="cmp-cell"><strong>3+</strong> <span style="color:var(--g500)">(designed from scratch by segment / region / product line)</span></div>
+          <div class="cmp-lbl">Define implementation plan &amp; pioneer team</div>
+          <div class="cmp-cell">1 kickoff call to align goals &amp; owner</div>
+          <div class="cmp-cell">Survey + scoping session, define RACI</div>
+          <div class="cmp-cell"><strong>2 scoping sessions</strong> + stakeholder map + exec sponsor sign-off</div>
         </div>
         <div class="cmp-row">
-          <div class="cmp-lbl">Training</div>
+          <div class="cmp-lbl">Train end-users via workshops</div>
           <div class="cmp-cell"><strong>1 group workshop</strong> <span style="color:var(--g500)">(90 min, online)</span></div>
           <div class="cmp-cell"><strong>2–3 role-based workshops</strong> <span style="color:var(--g500)">(admin · manager · rep)</span></div>
-          <div class="cmp-cell"><strong>Full training plan</strong> <span style="color:var(--g500)">(+ train-the-trainer)</span></div>
+          <div class="cmp-cell"><strong>5–6 scenario-based workshops</strong> per role</div>
         </div>
-        <div class="cmp-row" data-grp="activation">
-          <div class="cmp-lbl">Lead channels connected</div>
-          <div class="cmp-cell"><strong>2</strong> <span style="color:var(--g500)">(Meta Ads + 1 other)</span></div>
-          <div class="cmp-cell"><strong>3–4</strong> <span style="color:var(--g500)">(Meta Ads + 2–3 with routing rules)</span></div>
-          <div class="cmp-cell"><strong>All channels</strong> <span style="color:var(--g500)">(advanced multi-team distribution)</span></div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Train the trainers (Rework Master)</div>
+          <div class="cmp-cell cmp-empty">—</div>
+          <div class="cmp-cell"><strong>1 train-the-trainer</strong> session for designated admin</div>
+          <div class="cmp-cell"><strong>3 train-the-trainer sessions</strong> + SOP videos + cert handoff</div>
         </div>
-        <div class="cmp-row" data-grp="activation">
-          <div class="cmp-lbl">Process discovery & design</div>
-          <div class="cmp-cell">1 kickoff call to capture your current flow</div>
-          <div class="cmp-cell">1–2 consulting sessions to map and redesign your process</div>
-          <div class="cmp-cell">Deep-dive workshop · AS-IS → TO-BE map · stakeholder interviews</div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Deliver user guides &amp; post-launch support</div>
+          <div class="cmp-cell">Standard Help Center + email</div>
+          <div class="cmp-cell">Custom user guide + <strong>30 days</strong> group chat</div>
+          <div class="cmp-cell">Custom SOP + recorded walkthroughs + <strong>60 days</strong> dedicated CS</div>
         </div>
-        <div class="cmp-row" data-grp="activation">
-          <div class="cmp-lbl">Data migration</div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Progress check-ins &amp; reports</div>
+          <div class="cmp-cell">Quarterly active-usage report</div>
+          <div class="cmp-cell">Quarterly report + health check + <strong>1 review call</strong> (Day 30)</div>
+          <div class="cmp-cell">Quarterly report + <strong>2 review calls</strong> (Day 30 &amp; 60) + monthly reviews</div>
+        </div>
+
+        <!-- PROCESS group -->
+        <div class="cmp-grp cmp-grp-process">
+          <div class="cmp-grp-title">Process</div>
+          <div class="cmp-grp-sub">5 components</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Audit current processes (AS-IS)</div>
+          <div class="cmp-cell">1 kickoff call to capture current flow</div>
+          <div class="cmp-cell">1–2 consulting sessions to map your sales process</div>
+          <div class="cmp-cell">Deep-dive workshop + stakeholder interviews</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Redesign processes for digital delivery (TO-BE)</div>
+          <div class="cmp-cell">Match to Rework template (minimal customization)</div>
+          <div class="cmp-cell">Tailored process design per your funnel</div>
+          <div class="cmp-cell">Full TO-BE map + cross-team workflows</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Pilot, validate and refine</div>
+          <div class="cmp-cell">Self-pilot, reviewed at go-live</div>
+          <div class="cmp-cell">Guided pilot + 1 checkpoint</div>
+          <div class="cmp-cell">Phased pilot + 2+ checkpoints + iterate</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Go-live &amp; full rollout</div>
+          <div class="cmp-cell">Single go-live (one team)</div>
+          <div class="cmp-cell">Coordinated go-live (sequenced)</div>
+          <div class="cmp-cell">Phased rollout across teams / regions</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Document final SOPs</div>
+          <div class="cmp-cell">Standard Help Center access</div>
+          <div class="cmp-cell">Custom user guide for your workflows</div>
+          <div class="cmp-cell">Custom SOP + recorded video walkthroughs</div>
+        </div>
+
+        <!-- TECHNOLOGY group -->
+        <div class="cmp-grp cmp-grp-tech">
+          <div class="cmp-grp-title">Technology</div>
+          <div class="cmp-grp-sub">3 components</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Set up workspace &amp; user access</div>
+          <div class="cmp-cell">Basic workspace + users by team</div>
+          <div class="cmp-cell">Custom roles + permissions <span style="color:var(--g500)">(admin · manager · rep)</span></div>
+          <div class="cmp-cell">Multi-team workspace + SSO + advanced permission matrix</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Build the operating model on Rework</div>
+          <div class="cmp-cell"><strong>1 pipeline</strong> <span style="color:var(--g500)">(from template)</span> + Meta Ads channel + basic automations</div>
+          <div class="cmp-cell"><strong>1–2 tailored pipelines</strong> + multi-channel routing + tailored automations + escalation</div>
+          <div class="cmp-cell"><strong>3+ pipelines</strong> from scratch + all channels routing + advanced automations + approval flows</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Integrate with third-party systems</div>
+          <div class="cmp-cell cmp-empty">—</div>
+          <div class="cmp-cell"><strong>1–2 standard integrations</strong> <span style="color:var(--g500)">(CRM / email / calendar)</span></div>
+          <div class="cmp-cell"><strong>Multi-system integration suite</strong> + custom APIs</div>
+        </div>
+
+        <!-- DATA group -->
+        <div class="cmp-grp cmp-grp-data">
+          <div class="cmp-grp-title">Data</div>
+          <div class="cmp-grp-sub">4 components</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Design the data model</div>
+          <div class="cmp-cell">Standard fields <span style="color:var(--g500)">(contact · deal · activity)</span></div>
+          <div class="cmp-cell">Custom fields per your sales motion</div>
+          <div class="cmp-cell">Multi-pipeline data model + custom objects + audit</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Migrate existing data</div>
           <div class="cmp-cell"><strong>Self-service</strong> <span style="color:var(--g500)">(CSV templates + guide)</span></div>
           <div class="cmp-cell"><strong>Full CS-handled</strong> <span style="color:var(--g500)">(mapping + cleaning + importing + validating)</span></div>
           <div class="cmp-cell"><strong>Multi-source migration</strong> <span style="color:var(--g500)">(deduplication + historical cleanup)</span></div>
         </div>
-        <div class="cmp-row" data-grp="activation">
-          <div class="cmp-lbl">Automations</div>
-          <div class="cmp-cell"><strong>Basic</strong> <span style="color:var(--g500)">(assignment, follow-up, SLA)</span></div>
-          <div class="cmp-cell"><strong>Tailored</strong> <span style="color:var(--g500)">(routing logic + escalation rules)</span></div>
-          <div class="cmp-cell"><strong>Advanced — 10+</strong> <span style="color:var(--g500)">(including approval flows)</span></div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Define KPIs &amp; metrics</div>
+          <div class="cmp-cell">Standard KPIs <span style="color:var(--g500)">(close rate · activity · revenue)</span></div>
+          <div class="cmp-cell">Custom KPIs aligned to your funnel</div>
+          <div class="cmp-cell">Per-stakeholder KPIs + leading indicators</div>
         </div>
-        <div class="cmp-row" data-grp="activation">
-          <div class="cmp-lbl">Dashboards</div>
-          <div class="cmp-cell cmp-empty">—</div>
-          <div class="cmp-cell"><strong>1</strong> <span style="color:var(--g500)">(basic, pipeline visibility)</span></div>
-          <div class="cmp-cell"><strong>2–3 custom</strong> <span style="color:var(--g500)">(per stakeholder + scheduled reports)</span></div>
+        <div class="cmp-row">
+          <div class="cmp-lbl">Build dashboards &amp; reports</div>
+          <div class="cmp-cell cmp-empty">— <span style="color:var(--g500);font-weight:500">(standard reports)</span></div>
+          <div class="cmp-cell"><strong>1 dashboard</strong> <span style="color:var(--g500)">(pipeline visibility)</span></div>
+          <div class="cmp-cell"><strong>2–3 custom dashboards</strong> + scheduled reports</div>
         </div>
-        <div class="cmp-row" data-grp="activation">
-          <div class="cmp-lbl">Documentation</div>
-          <div class="cmp-cell">Standard Help Center access</div>
-          <div class="cmp-cell">Custom user guide tailored to your workflows</div>
-          <div class="cmp-cell">Custom SOP + recorded video walkthroughs</div>
-        </div>
-        <!-- ADOPTION group -->
-        <div class="cmp-grp">
-          <div class="cmp-grp-title">Adoption</div>
-          <div class="cmp-grp-sub">Making sure your team actually uses it</div>
-        </div>
+
+        <!-- Health Check commitment (kept as a footer commitment, not a per-tier comparison) -->
         <div class="cmp-row">
           <div class="cmp-lbl">Customer Health Check<br><span style="font-weight:500;color:var(--g500);font-size:11.5px">Our delivery commitment</span></div>
           <div class="cmp-cell cmp-merged"><strong>Quarterly active-usage report sent to your team.</strong><br><span style="font-size:12px;color:var(--g500)">If daily-active rate drops below the healthy threshold (50% of named users active on a typical business day), we book a review call to identify what's blocking adoption — at no extra cost.</span></div>
-        </div>
-        <div class="cmp-row">
-          <div class="cmp-lbl">Communication</div>
-          <div class="cmp-cell">Email + scheduled sessions</div>
-          <div class="cmp-cell">Sessions + WhatsApp/Viber group chat</div>
-          <div class="cmp-cell">Sessions + dedicated channel, 4hr response</div>
-        </div>
-        <div class="cmp-row">
-          <div class="cmp-lbl">Post-launch support window</div>
-          <div class="cmp-cell">Support portal + email</div>
-          <div class="cmp-cell"><strong>30 days</strong> group chat + email</div>
-          <div class="cmp-cell"><strong>60 days</strong> dedicated CS engagement</div>
-        </div>
-        <div class="cmp-row" data-grp="adoption">
-          <div class="cmp-lbl">Review calls</div>
-          <div class="cmp-cell cmp-empty">—</div>
-          <div class="cmp-cell">1 review call at Day 30</div>
-          <div class="cmp-cell">2 review calls (Day 30, Day 60) + 1 optimization session (Day 90)</div>
         </div>
       </div>
       </div>
@@ -3071,6 +3447,112 @@ function toggleFaq(el){
   const item = el.parentElement;
   item.classList.toggle('open');
 }
+
+/* ─── FRAMEWORK RING ─── */
+// Rotation needed to bring each segment to the right (0°) position.
+// Segments are placed at 0° (people), 120° (process), 240° (tech) in SVG angles.
+const FW_ROT = {people: 0, process: -120, tech: -240};
+let fwActiveSegment = 'people';
+
+// Smoothly animate SVG transform attribute via requestAnimationFrame.
+// CSS transitions don't reliably animate SVG attributes, but the attribute approach
+// is the only one that respects an explicit center of rotation across all browsers.
+const FW_DURATION = 750;
+const fwAnimState = {rotor: 0, contents: {people: 0, process: 0, tech: 0}};
+let fwAnimFrame = null;
+const easeOutBack = t => { const c1 = 1.70158; const c3 = c1 + 1; return 1 + c3 * Math.pow(t-1, 3) + c1 * Math.pow(t-1, 2); };
+
+function rotateFwTo(segment){
+  if(!FW_ROT.hasOwnProperty(segment)) return;
+  // Highlight the pillar text card immediately (independent of rotation)
+  document.querySelectorAll('.fw-ring-seg').forEach(s => {
+    s.classList.toggle('active', s.dataset.segment === segment);
+  });
+  setActivePillar(segment);
+  if(segment === fwActiveSegment) return; // already pointing here — skip the spin
+  const targetRotor = FW_ROT[segment];
+  const targetContent = -targetRotor;
+  const startRotor = fwAnimState.rotor;
+  const startContents = {...fwAnimState.contents};
+  const startTime = performance.now();
+  const rotor = document.getElementById('fwRotor');
+  const contents = Array.from(document.querySelectorAll('.fw-ring-content'));
+  const centroids = {people: [322.5, 208], process: [138.75, 314], tech: [138.75, 102]};
+  if(fwAnimFrame) cancelAnimationFrame(fwAnimFrame);
+
+  function tick(now){
+    const t = Math.min(1, (now - startTime) / FW_DURATION);
+    const e = easeOutBack(t);
+    const curRotor = startRotor + (targetRotor - startRotor) * e;
+    rotor.setAttribute('transform', `rotate(${curRotor} 200 200)`);
+    contents.forEach(c => {
+      const seg = c.dataset.segment;
+      const target = targetContent;
+      const start = startContents[seg];
+      const cur = start + (target - start) * e;
+      const [cx, cy] = centroids[seg] || [200, 200];
+      c.setAttribute('transform', `rotate(${cur} ${cx} ${cy})`);
+      fwAnimState.contents[seg] = cur;
+    });
+    fwAnimState.rotor = curRotor;
+    if(t < 1) fwAnimFrame = requestAnimationFrame(tick);
+    else fwAnimFrame = null;
+  }
+  fwAnimFrame = requestAnimationFrame(tick);
+
+  fwActiveSegment = segment;
+}
+
+function pulseFwData(){
+  const data = document.getElementById('fwData');
+  if(!data) return;
+  data.classList.remove('pulse');
+  // Force reflow to restart the CSS animation
+  void data.offsetWidth;
+  data.classList.add('pulse');
+  setActivePillar('data');
+}
+
+// Sync the right-column pillar cards: only one is "active" at a time.
+function setActivePillar(pillar){
+  document.querySelectorAll('.fw-pillar').forEach(card => {
+    card.classList.toggle('active', card.dataset.pillar === pillar);
+  });
+}
+
+// Called when user clicks a pillar card on the right. Mirrors what clicking
+// the corresponding diagram piece would do (rotate or pulse).
+function setActivePillarFromCard(pillar){
+  if(pillar === 'data'){
+    pulseFwData();
+  } else {
+    rotateFwTo(pillar);
+  }
+}
+
+// Delegate clicks: ring segments rotate; clicks OUTSIDE any framework
+// interactive element clear all .active highlights (default = "all bright")
+document.addEventListener('click', e => {
+  const seg = e.target.closest('.fw-ring-seg');
+  if(seg && seg.dataset.segment){
+    rotateFwTo(seg.dataset.segment);
+    return;
+  }
+  // Pillar cards + Data center have their own onclick handlers — leave them alone
+  if(e.target.closest('.fw-pillar') || e.target.closest('.fw-ring-data')) return;
+  // Click landed outside the framework — clear active highlights
+  document.querySelectorAll('.fw-pillar.active, .fw-ring-seg.active').forEach(el => el.classList.remove('active'));
+});
+
+// Keyboard support for the Data button
+document.addEventListener('keydown', e => {
+  if(e.key === 'Enter' || e.key === ' '){
+    if(e.target && e.target.id === 'fwData'){
+      e.preventDefault();
+      pulseFwData();
+    }
+  }
+});
 
 /* ─── INIT ─── */
 initQuiz();
