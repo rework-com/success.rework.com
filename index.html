@@ -1273,13 +1273,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             <li>Quarterly active-usage report + health check</li>
           </ul>
         </div>
-        <div class="compact-card" data-tier="transform" data-product="lead" data-price="2000" data-name="Lead Ops · Transform" onclick="toggleCard(this)">
+        <div class="compact-card" data-tier="transform" data-product="lead" data-price="3000" data-name="Lead Ops · Transform" onclick="toggleCard(this)">
           <div class="compact-card-name">Transform</div>
           <div class="compact-card-audience">Best for 20+ users across teams or regions</div>
           <div class="compact-card-tagline">Operate omnichannel chat at scale across teams and regions.</div>
-          <div class="compact-card-price">Custom</div>
-          <div class="compact-card-price-note">Pricing on request · Contact us</div>
-          <div class="compact-card-cta">Contact us</div>
+          <div class="compact-card-price"><span class="compact-card-price-prefix">from</span> $3,000</div>
+          <div class="compact-card-price-note">One-time implementation fee</div>
+          <div class="compact-card-cta">Select</div>
           <ul class="compact-card-features">
             <li><strong>8–12 working sessions</strong> in <strong>6–10 weeks</strong></li>
             <li>All chat channels + advanced multi-team distribution</li>
@@ -1318,11 +1318,11 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             <div class="cmp-tier-price">from $1,000</div>
             <div class="cmp-tier-cta">Select</div>
           </div>
-          <div class="cmp-tier" data-tier="transform" data-product="lead" data-price="2000" data-name="Lead Ops · Transform" onclick="toggleCard(this)">
+          <div class="cmp-tier" data-tier="transform" data-product="lead" data-price="3000" data-name="Lead Ops · Transform" onclick="toggleCard(this)">
             <div class="cmp-tier-name">Transform</div>
             <div class="cmp-tier-fit">Operate omnichannel chat at scale across teams and regions.</div>
-            <div class="cmp-tier-price">Custom</div>
-            <div class="cmp-tier-cta">Contact us</div>
+            <div class="cmp-tier-price">from $3,000</div>
+            <div class="cmp-tier-cta">Select</div>
           </div>
         </div>
 
@@ -2531,8 +2531,8 @@ const QUIZZES = {
         hint:'This sets your baseline package. Other answers can step you up to a bigger pack — but only if at least 3 of them point that way.',
         options:[
           {label:'1–10 sales', tier:'launchpad'},
-          {label:'10–50 sales', tier:'accelerator'},
-          {label:'50+ sales', tier:'transform'},
+          {label:'10–20 sales', tier:'accelerator'},
+          {label:'20+ sales', tier:'transform'},
         ]
       },
       {
@@ -2680,7 +2680,7 @@ const QUIZZES = {
       transform:{tier:'transform', badge:'Transform',
         headline:"Operate omnichannel chat at scale across teams and regions.",
         body:"All channels, advanced multi-team distribution, AI flows by product line or region, and a Dedicated Onboarding Manager. Transform is built for orgs running chat as a primary revenue surface — not a side channel.",
-        price:'Custom', sessions:'8–12', weeks:'6–10',
+        price:'$3,000', sessions:'8–12', weeks:'6–10',
         tagline:'Operate omnichannel chat at scale across teams and regions.'}
     },
     triggerMsgs:{
