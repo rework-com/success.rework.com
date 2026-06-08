@@ -117,6 +117,10 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 .fw-pillars-bottom .fw-pillar-list li{font-size:11px;color:#7E8DA3}
 /* Phase tag — small inline badge inside Data/AI card head */
 .fw-phase-tag{display:inline-block;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:#64748B;background:rgba(100,116,139,0.12);border:1px solid rgba(100,116,139,0.22);padding:2px 7px;border-radius:100px;white-space:nowrap}
+/* Phase 1 (Digital) — blue accent */
+.fw-phase-tag.phase-1{color:#60A5FA;background:rgba(59,130,246,0.10);border-color:rgba(59,130,246,0.30)}
+/* Phase 2 (Intelligence) — amber accent · 2-line layout */
+.fw-phase-tag.phase-2{color:#F59E0B;background:rgba(245,158,11,0.10);border-color:rgba(245,158,11,0.32);white-space:normal;text-align:center;line-height:1.25;padding:3px 8px}
 
 /* The rotating ring — dark mode glow */
 .fw-ring{width:100%;max-width:415px;height:auto;display:block;overflow:visible;filter:drop-shadow(0 0 30px rgba(59,130,246,0.30)) drop-shadow(0 8px 24px rgba(0,0,0,0.5))}
@@ -415,6 +419,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 .cc-pillar-fill.none{background:transparent}
 .cc-pillar-level{font-size:10px;color:var(--g500);width:62px;flex-shrink:0;text-align:right;font-weight:500}
 .cc-pillar-level.none-lbl{color:var(--g300);text-decoration:line-through;text-decoration-color:var(--g300)}
+.cc-pillar-fill.coming{background:repeating-linear-gradient(90deg,rgba(245,158,11,0.35) 0 4px,transparent 4px 7px);width:100%!important}
+.cc-pillar-level.coming-lbl{color:#D97706;font-style:italic;font-weight:600;font-size:9.5px}
 /* Success looks like — green callout */
 .cc-success{background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.20);border-radius:8px;padding:10px 12px;margin-top:12px}
 .cc-success-label{font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:var(--green);margin-bottom:4px}
@@ -568,6 +574,12 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 .cmp-tier[data-tier="transform"].selected .cmp-tier-cta{background:var(--purple);border-color:var(--purple);color:var(--white)}
 /* Simple group header */
 .cmp-grp{padding:12px 16px 8px;background:var(--g50);border-top:1px solid var(--g200);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.cmp-grp-titlebar{display:flex;flex-direction:column;gap:3px;align-items:flex-start}
+.cmp-grp-title-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cmp-grp-services{font-family:'DM Sans',sans-serif;font-size:10.5px;font-style:italic;color:var(--g500);font-weight:500;letter-spacing:0.2px;line-height:1.3}
+.cmp-phase-tag{display:inline-block;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;padding:2px 7px;border-radius:100px;white-space:nowrap}
+.cmp-phase-tag.phase-1{color:#60A5FA;background:rgba(59,130,246,0.10);border:1px solid rgba(59,130,246,0.30)}
+.cmp-phase-tag.phase-2{color:#F59E0B;background:rgba(245,158,11,0.10);border:1px solid rgba(245,158,11,0.32)}
 .cmp-grp-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:10.5px;font-weight:800;color:var(--g500);letter-spacing:1.4px;text-transform:uppercase;display:inline-block;flex-shrink:0}
 .cmp-grp-sub{font-size:11.5px;color:var(--g500);font-weight:500}
 /* Pillar group accents — match the framework palette */
@@ -881,7 +893,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
     <div class="fw-header-block">
       <div class="section-label">Our Framework</div>
       <h2 class="section-title">Digital Transformation Framework</h2>
-      <p class="fw-subtitle">5 key pillars to modernize your business</p>
+      <p class="fw-subtitle">5 key pillars to modernize your business — Digital foundation first, then Intelligence.</p>
     </div>
 
     <div class="fw-layout-v2">
@@ -1013,7 +1025,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             </g>
           </g>
         </svg>
-        <p class="fw-intro-text">These <strong>5 pillars</strong> are the foundation of every successful digital transformation. Rework partners with you on the right mix at your tier — from configuring the platform to layering AI where it creates real leverage.</p>
+        <p class="fw-intro-text">5 pillars across <strong>2 phases</strong>. <strong>Phase 1 — Digital Transformation</strong> (People + Process + Technology) builds the foundation. <strong>Phase 2 — Intelligence Transformation</strong> (Data + AI) layers on top once Phase 1 is stable.</p>
       </div>
 
       <!-- Pillar cards — 3 tall (People/Process/Tech) on top, 2 wide (Data/AI) on bottom -->
@@ -1032,6 +1044,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             </g></svg>
           </div>
           <div class="fw-pillar-title">People</div>
+          <span class="fw-phase-tag phase-1">Phase 1 · Digital</span>
         </div>
         <p class="fw-pillar-overview">Train your team and train the trainers. Build internal champions who pull everyone else into the new way of working.</p>
         <hr class="fw-pillar-divider"/>
@@ -1061,6 +1074,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             </g></svg>
           </div>
           <div class="fw-pillar-title">Process</div>
+          <span class="fw-phase-tag phase-1">Phase 1 · Digital</span>
         </div>
         <p class="fw-pillar-overview">Upgrade from spreadsheets, group chats, and paperwork into one structured, visible map where every step is clear and accountable.</p>
         <hr class="fw-pillar-divider"/>
@@ -1093,12 +1107,16 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             </g></svg>
           </div>
           <div class="fw-pillar-title">Technology</div>
+          <span class="fw-phase-tag phase-1">Phase 1 · Digital</span>
         </div>
         <p class="fw-pillar-overview">Setup a system that's easy on Day 1, flexible by Month 3 and ready to scale when your team doubles.</p>
         <hr class="fw-pillar-divider"/>
         <ul class="fw-pillar-list">
           <li>Workspace &amp; user setup</li>
-          <li>Operating model config</li>
+          <li>Pipeline &amp; workflow configuration</li>
+          <li>Custom fields, views &amp; permissions</li>
+          <li>Automation rules &amp; triggers</li>
+          <li>Forms &amp; lead capture setup</li>
           <li>Third-party integrations</li>
         </ul>
       </div>
@@ -1118,7 +1136,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             </g></svg>
           </div>
           <div class="fw-pillar-title">Data</div>
-          <span class="fw-phase-tag">Often later</span>
+          <span class="fw-phase-tag phase-2">Phase 2<br>Intelligence</span>
         </div>
         <div class="fw-pillar-body">
           <p class="fw-pillar-overview">See what's really happening — daily numbers, real KPIs, dashboards your team actually opens.</p>
@@ -1141,14 +1159,15 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             </g></svg>
           </div>
           <div class="fw-pillar-title">AI</div>
-          <span class="fw-phase-tag">Often later</span>
+          <span class="fw-phase-tag phase-2">Phase 2<br>Intelligence</span>
         </div>
         <div class="fw-pillar-body">
-          <p class="fw-pillar-overview">Let AI handle the repetitive work so your team focuses on what actually moves the business.</p>
+          <p class="fw-pillar-overview">Deploy AI agents that qualify leads, answer queries, and flag issues before your team even sees them — built on top of your Rework data.</p>
           <hr class="fw-pillar-divider"/>
           <ul class="fw-pillar-list">
-            <li>Agent deployment</li>
-            <li>Workflow automation</li>
+            <li>Agent deployment &amp; training</li>
+            <li>Qualification &amp; smart routing</li>
+            <li>Knowledge base setup</li>
             <li>Performance monitoring</li>
             <li>Continuous optimization</li>
           </ul>
@@ -1191,12 +1210,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-audience">Best for 1–10 Sales teams</div>
           <div class="compact-card-cta">Select</div>
           <ul class="compact-card-features">
-            <li><strong>Deal pipeline</strong> — stages match your actual sales process</li>
-            <li><strong>Customer database</strong> — new prospects and existing accounts</li>
-            <li><strong>Basic quotation template</strong> connected to deals</li>
-            <li><strong>Follow-up automation</strong> for stale deals</li>
-            <li><strong>End-user training</strong> for owner and sales reps</li>
-            <li><strong>SOP</strong> for deal creation, progression, and customer follow-up</li>
+            <li><strong>Deal pipeline + customer database</strong> — pipeline stages, contact &amp; account structure</li>
+            <li><strong>Activity tracking</strong> — calls, meetings, emails, visits per deal</li>
+            <li><strong>Basic quotation</strong> + follow-up automation for stale deals</li>
+            <li><strong>Data migrated</strong> from Excel/previous CRM + <strong>basic dashboards</strong> live day one</li>
+            <li><strong>Web forms</strong> for inbound inquiry capture</li>
+            <li><strong>End-user training</strong> + SOP for deal creation and customer follow-up</li>
+            <li><strong>Rework Master identified</strong> — internal champion included in all sessions</li>
           </ul>
           <div class="cc-success">
             <div class="cc-success-label">Success looks like</div>
@@ -1207,7 +1227,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             <div class="cc-pillar-row"><span class="cc-pillar-name">People</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Process</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Technology</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:30%"></div></div><span class="cc-pillar-level">Basic</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill none" style="width:0%"></div></div><span class="cc-pillar-level none-lbl">Not included</span></div>
           </div>
         </div>
@@ -1222,12 +1242,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-cta">Select</div>
           <div class="cc-plus-note">Everything in Launchpad, plus:</div>
           <ul class="compact-card-features">
-            <li><strong>Multi-stage pipeline</strong> with probability weighting and deal velocity</li>
-            <li><strong>Full account management</strong> + automated follow-up reminders</li>
-            <li><strong>Quotation workflow</strong> — approval, versioning, tracking</li>
-            <li><strong>Sales forecasting dashboard</strong> + rep performance reporting</li>
-            <li><strong>Coaching layer</strong> — flag stale deals, missed follow-ups, at-risk pipeline</li>
-            <li><strong>Role-based training</strong> + 30-day post-launch chat</li>
+            <li><strong>Multi-stage pipeline</strong> with probability + deal velocity + Lead Routing</li>
+            <li><strong>Full account management</strong> + automated follow-up reminders by cadence</li>
+            <li><strong>Quotation workflow</strong> — approval, versioning, quote-to-deal conversion tracking</li>
+            <li><strong>AI coaching</strong> — stalled deal detection, auto-trigger follow-ups, deal priority scoring</li>
+            <li><strong>Forecasting dashboard</strong> + rep performance + pipeline health report</li>
+            <li><strong>Instant Form integration</strong> + structured pipeline review playbook + 30-day post-launch chat</li>
+            <li><strong>Rework Master trained</strong> — manages the system and onboards new reps independently</li>
           </ul>
           <div class="cc-success">
             <div class="cc-success-label">Success looks like</div>
@@ -1238,8 +1259,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             <div class="cc-pillar-row"><span class="cc-pillar-name">People</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Process</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Technology</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:30%"></div></div><span class="cc-pillar-level">Basic</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
           </div>
         </div>
         <div class="compact-card" data-tier="transform" data-product="sales" data-price="3000" data-name="Sales Ops · Transform" onclick="toggleCard(this)">
@@ -1253,13 +1274,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-cta">Select</div>
           <div class="cc-plus-note">Everything in Accelerator, plus:</div>
           <ul class="compact-card-features">
-            <li><strong>Multi-team or multi-product pipeline</strong> — separate views per team or market</li>
-            <li><strong>Full key account management</strong> — segmented by tier, revenue, or region</li>
-            <li><strong>AI deal health scoring</strong> + sales playbook in Rework</li>
-            <li><strong>Advanced quotation</strong> — dynamic pricing + product catalog</li>
-            <li><strong>Executive revenue dashboard</strong> + cohort analysis</li>
-            <li><strong>Train-the-trainer</strong> + complete SOP library</li>
-            <li><strong>Priority support</strong> for 90-day post-launch</li>
+            <li><strong>Multi-team or multi-product pipeline</strong> — separate views per team, market, or entity</li>
+            <li><strong>Full key account management</strong> — segmented + multi-team ownership + customer lifecycle tracking</li>
+            <li><strong>AI deal health scoring</strong> + Sales playbook + AI-suggested next actions per deal</li>
+            <li><strong>Advanced quotation</strong> — dynamic pricing, product catalog, multi-level approval + quote analytics</li>
+            <li><strong>Executive revenue dashboard</strong> + cohort analysis + custom attribution</li>
+            <li><strong>Train-the-trainer</strong> + complete SOP library + governance framework + 60–90 day dedicated CS</li>
+            <li><strong>Full Rework Master programme</strong> — internal sales lead owns, configures, extends independently</li>
           </ul>
           <div class="cc-success">
             <div class="cc-success-label">Success looks like</div>
@@ -1270,7 +1291,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             <div class="cc-pillar-row"><span class="cc-pillar-name">People</span><div class="cc-pillar-bar"><div class="cc-pillar-fill full" style="width:100%"></div></div><span class="cc-pillar-level">Advanced</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Process</span><div class="cc-pillar-bar"><div class="cc-pillar-fill full" style="width:100%"></div></div><span class="cc-pillar-level">Advanced</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Technology</span><div class="cc-pillar-bar"><div class="cc-pillar-fill full" style="width:100%"></div></div><span class="cc-pillar-level">Advanced</span></div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill full" style="width:100%"></div></div><span class="cc-pillar-level">Advanced</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
           </div>
         </div>
@@ -1337,7 +1358,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- CUSTOMER & ACCOUNT MANAGEMENT group -->
         <div class="cmp-grp cmp-grp-people">
-          <div class="cmp-grp-title">Customer &amp; Account Management</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Customer &amp; Account Management</div></div><div class="cmp-grp-services">Sales Operating Services</div></div>
           <div class="cmp-grp-sub">3 components</div>
         </div>
         <div class="cmp-row">
@@ -1361,14 +1382,14 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- PIPELINE MANAGEMENT group -->
         <div class="cmp-grp cmp-grp-process">
-          <div class="cmp-grp-title">Pipeline Management</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Pipeline Management</div></div><div class="cmp-grp-services">Sales Operating Services · Platform Services</div></div>
           <div class="cmp-grp-sub">3 components</div>
         </div>
         <div class="cmp-row">
           <div class="cmp-lbl">Deal pipeline</div>
           <div class="cmp-cell"><strong>1 pipeline</strong> — stages match your sales process · new business + existing customer tracks</div>
-          <div class="cmp-cell"><strong>Multi-stage</strong> with probability weighting + deal velocity · automated stage triggers</div>
-          <div class="cmp-cell"><strong>Multi-team or multi-product pipeline</strong> — separate views per team or market</div>
+          <div class="cmp-cell"><strong>Multi-stage</strong> with probability weighting + deal velocity · automated stage triggers · <strong>Instant Form integration</strong> · pipeline review playbook</div>
+          <div class="cmp-cell"><strong>Multi-team or multi-product pipeline</strong> — separate views per team or market · <strong>Sales playbook</strong> built into Rework</div>
         </div>
         <div class="cmp-row">
           <div class="cmp-lbl">Sales activity tracking</div>
@@ -1385,7 +1406,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- QUOTATION group -->
         <div class="cmp-grp cmp-grp-tech">
-          <div class="cmp-grp-title">Quotation</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Quotation</div></div><div class="cmp-grp-services">Commerce Operating Services</div></div>
           <div class="cmp-grp-sub">2 components</div>
         </div>
         <div class="cmp-row">
@@ -1403,8 +1424,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- REPORTING group -->
         <div class="cmp-grp cmp-grp-data">
-          <div class="cmp-grp-title">Reporting</div>
-          <div class="cmp-grp-sub">3 components</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Reporting</div><span class="cmp-phase-tag phase-2">Phase 2 · Intelligence</span></div></div><div class="cmp-grp-sub">3 components</div>
         </div>
         <div class="cmp-row">
           <div class="cmp-lbl">Pipeline &amp; revenue reporting</div>
@@ -1466,12 +1486,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-audience">Best for 1–5 MKT teams</div>
           <div class="compact-card-cta">Select</div>
           <ul class="compact-card-features">
-            <li><strong>WhatsApp + 1 secondary channel</strong> connected (Instagram, Messenger, or web chat)</li>
-            <li><strong>AI Agent</strong> — first-response qualification, intent detection, basic FAQ</li>
-            <li><strong>Basic lead source tagging</strong> and routing</li>
-            <li><strong>Round-robin conversation routing</strong></li>
-            <li><strong>1 nurturing automation</strong> flow for unresponded leads</li>
-            <li><strong>End-user training</strong> + SOP for lead intake and routing</li>
+            <li><strong>WhatsApp (Coexistence) + Meta Messenger</strong> connected with AI Chatbot setup</li>
+            <li><strong>AI first-response</strong> — qualification, intent detection, FAQ handling, rules-based scoring</li>
+            <li><strong>Lead capture forms</strong> + contact/lead database structure</li>
+            <li><strong>Basic source tagging</strong> + round-robin routing to agents</li>
+            <li><strong>1 nurturing flow</strong> for unresponded or cold leads</li>
+            <li><strong>End-user training</strong> + SOP for lead intake, routing and handoff</li>
+            <li><strong>Rework Master identified</strong> — internal champion included in all sessions</li>
           </ul>
           <div class="cc-success">
             <div class="cc-success-label">Success looks like</div>
@@ -1483,7 +1504,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             <div class="cc-pillar-row"><span class="cc-pillar-name">Process</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Technology</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:30%"></div></div><span class="cc-pillar-level">Basic</span></div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill none" style="width:0%"></div></div><span class="cc-pillar-level none-lbl">Not included</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:30%"></div></div><span class="cc-pillar-level">Basic</span></div>
           </div>
         </div>
         <div class="compact-card" data-tier="accel" data-product="lead" data-price="1000" data-name="Lead Ops · Accelerator" onclick="toggleCard(this)">
@@ -1497,12 +1518,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-cta">Select</div>
           <div class="cc-plus-note">Everything in Launchpad, plus:</div>
           <ul class="compact-card-features">
-            <li><strong>Full omnichannel</strong> + CTWA + CAPI integration</li>
-            <li><strong>Full lead source attribution</strong> and cost-per-lead tracking</li>
-            <li><strong>Advanced AI Agent</strong> — lead scoring and smart routing by intent</li>
-            <li><strong>Lead funnel dashboard</strong> by source and campaign</li>
-            <li><strong>Multi-stage nurturing</strong> flows per channel</li>
+            <li><strong>Full channels</strong> — WhatsApp, Meta Messenger, TikTok, Telegram + Broadcasting</li>
+            <li><strong>CTWA + CAPI</strong> — every lead traced to its ad + cost-per-lead tracking</li>
+            <li><strong>Advanced AI</strong> — multi-intent detection, smart routing by intent/language/product, lead scoring + knowledge base</li>
+            <li><strong>3–5 nurturing flows</strong> segmented by intent, source, or lead type</li>
+            <li><strong>Campaign performance dashboard</strong> + lead conversion funnel reports</li>
             <li><strong>Role-based training</strong> + 30-day post-launch chat</li>
+            <li><strong>Rework Master trained</strong> — manages channels, flows, and broadcasts independently</li>
           </ul>
           <div class="cc-success">
             <div class="cc-success-label">Success looks like</div>
@@ -1514,7 +1536,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             <div class="cc-pillar-row"><span class="cc-pillar-name">Process</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Technology</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:30%"></div></div><span class="cc-pillar-level">Basic</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
           </div>
         </div>
         <div class="compact-card" data-tier="transform" data-product="lead" data-price="3000" data-name="Lead Ops · Transform" onclick="toggleCard(this)">
@@ -1528,12 +1550,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-cta">Select</div>
           <div class="cc-plus-note">Everything in Accelerator, plus:</div>
           <ul class="compact-card-features">
-            <li><strong>Multi-market setup</strong> — separate flows per region or brand</li>
-            <li><strong>Custom AI qualification model</strong> built around your buyer and sales context</li>
+            <li><strong>Multi-market setup</strong> — separate flows per region or brand + multi-channel orchestration</li>
+            <li><strong>Custom AI qualification model</strong> built around your buyer language + continuous retraining</li>
             <li><strong>Full AI Agent</strong> — qualification, FAQ, booking, escalation, CRM handoff</li>
-            <li><strong>Custom attribution model</strong> + executive ads reporting</li>
-            <li><strong>Train-the-trainer</strong> + complete SOP library</li>
-            <li><strong>Dedicated Onboarding Manager</strong> + 60-day CS engagement</li>
+            <li><strong>Custom attribution + Budget sync</strong> — real-time ROI, ad spend synced with Rework</li>
+            <li><strong>Full attribution analytics</strong> — CPL, source ROI, lead volume forecasting</li>
+            <li><strong>Train-the-trainer</strong> + complete SOP library + 60–90 day dedicated CS</li>
+            <li><strong>Full Rework Master programme</strong> — owns AI model updates and channel expansion independently</li>
           </ul>
           <div class="cc-success">
             <div class="cc-success-label">Success looks like</div>
@@ -1606,7 +1629,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- CHANNEL SETUP group -->
         <div class="cmp-grp cmp-grp-people">
-          <div class="cmp-grp-title">Channel Setup</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Channel Setup</div></div><div class="cmp-grp-services">Communication Channels</div></div>
           <div class="cmp-grp-sub">3 components</div>
         </div>
         <div class="cmp-row">
@@ -1637,7 +1660,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="cmp-lbl">AI Agent capabilities</div>
           <div class="cmp-cell"><strong>Basic</strong> — first-response qualification, intent detection, basic FAQ</div>
           <div class="cmp-cell"><strong>Advanced</strong> — lead scoring + smart routing by intent</div>
-          <div class="cmp-cell"><strong>Full AI Agent</strong> — qualification, FAQ, booking, escalation, CRM handoff + <strong>custom AI qual model</strong></div>
+          <div class="cmp-cell"><strong>Full AI Agent</strong> — qualification, FAQ, booking, escalation, CRM handoff + <strong>custom AI qual model</strong> with continuous retraining based on outcomes</div>
         </div>
         <div class="cmp-row">
           <div class="cmp-lbl">Nurturing flows</div>
@@ -1654,7 +1677,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- ADS & SOURCE TRACKING group -->
         <div class="cmp-grp cmp-grp-tech">
-          <div class="cmp-grp-title">Ads &amp; Source Tracking</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Ads &amp; Source Tracking</div></div><div class="cmp-grp-services">Ads &amp; Campaign · Budget</div></div>
           <div class="cmp-grp-sub">2 components</div>
         </div>
         <div class="cmp-row">
@@ -1672,8 +1695,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- REPORTING group -->
         <div class="cmp-grp cmp-grp-data">
-          <div class="cmp-grp-title">Reporting</div>
-          <div class="cmp-grp-sub">2 components</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Reporting</div><span class="cmp-phase-tag phase-2">Phase 2 · Intelligence</span></div></div><div class="cmp-grp-sub">2 components</div>
         </div>
         <div class="cmp-row">
           <div class="cmp-lbl">Lead reporting</div>
@@ -1735,11 +1757,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-audience">Best for 1–10 Sales &amp; MKT teams</div>
           <div class="compact-card-cta">Select</div>
           <ul class="compact-card-features">
-            <li><strong>WhatsApp + 1 secondary channel</strong> with AI first-response qualification</li>
-            <li><strong>Lead-to-deal conversion flow</strong> — qualified leads become deals automatically</li>
-            <li><strong>Deal pipeline + existing customer follow-up</strong></li>
-            <li><strong>Basic source tagging</strong> + pipeline status reporting</li>
-            <li><strong>Training</strong> for both marketing and sales team</li>
+            <li><strong>WhatsApp (Coexistence) + Meta Messenger</strong> + AI Chatbot for first-response</li>
+            <li><strong>AI first-response</strong> — qualification, intent detection, auto-routing to sales pipeline</li>
+            <li><strong>Lead-to-deal conversion flow</strong> — qualified leads auto-convert without re-entry</li>
+            <li><strong>Pipeline + Account + Contact + Product Operations</strong> + web forms</li>
+            <li><strong>Data migrated</strong> (contacts, leads, deals, accounts) + <strong>unified funnel dashboard</strong> day one</li>
+            <li><strong>Joint training</strong> for marketing + sales + SOP for lead-to-deal handoff</li>
+            <li><strong>Rework Master identified</strong> — champion across both teams</li>
           </ul>
           <div class="cc-success">
             <div class="cc-success-label">Success looks like</div>
@@ -1750,8 +1774,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             <div class="cc-pillar-row"><span class="cc-pillar-name">People</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Process</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Technology</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:30%"></div></div><span class="cc-pillar-level">Basic</span></div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill none" style="width:0%"></div></div><span class="cc-pillar-level none-lbl">Not included</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:30%"></div></div><span class="cc-pillar-level">Basic</span></div>
           </div>
         </div>
         <div class="compact-card" data-tier="accel" data-product="revenue" data-price="1500" data-name="Revenue Ops · Accelerator" onclick="toggleCard(this)">
@@ -1765,11 +1789,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-cta">Select</div>
           <div class="cc-plus-note">Everything in Launchpad, plus:</div>
           <ul class="compact-card-features">
-            <li><strong>CTWA + CAPI + full source attribution</strong> — every lead traced to its ad</li>
-            <li><strong>Unified revenue dashboard</strong> — ad spend, lead volume, pipeline forecast in one view</li>
-            <li><strong>Advanced AI Agent</strong> — lead scoring and smart routing</li>
-            <li><strong>Quotation workflow + sales forecasting</strong></li>
-            <li><strong>Role-based training</strong> + 30-day post-launch support</li>
+            <li><strong>Full channels + CTWA + CAPI</strong> — all Lead Ops capabilities across the funnel</li>
+            <li><strong>Full Sales Operating Services</strong> — Pipeline + Account + Contact + Product + Lead Routing + Commerce (Quotes)</li>
+            <li><strong>AI</strong> — advanced qualification (Lead) + coaching layer (Sales) + smart cross-funnel routing</li>
+            <li><strong>Unified revenue dashboard</strong> — ads → leads → pipeline → forecast in one view</li>
+            <li><strong>Instant Form integration</strong> + revenue review playbook covering both teams</li>
+            <li><strong>Role-based training</strong> + 30-day post-launch chat</li>
+            <li><strong>Rework Master trained</strong> — manages both Lead + Sales systems independently</li>
           </ul>
           <div class="cc-success">
             <div class="cc-success-label">Success looks like</div>
@@ -1780,8 +1806,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             <div class="cc-pillar-row"><span class="cc-pillar-name">People</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Process</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Technology</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:30%"></div></div><span class="cc-pillar-level">Basic</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
           </div>
         </div>
         <div class="compact-card" data-tier="transform" data-product="revenue" data-price="4500" data-name="Revenue Ops · Transform" onclick="toggleCard(this)">
@@ -1795,12 +1821,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-cta">Select</div>
           <div class="cc-plus-note">Everything in Accelerator, plus:</div>
           <ul class="compact-card-features">
-            <li><strong>Multi-market setup</strong> — separate flows per region or brand</li>
-            <li><strong>Custom AI qualification model</strong> + full AI Agent</li>
-            <li><strong>AI deal health scoring</strong> — surfaces at-risk deals automatically</li>
-            <li><strong>Custom attribution model</strong> + executive revenue dashboard</li>
-            <li><strong>Train-the-trainer</strong> + complete SOP library</li>
-            <li><strong>Priority support</strong> for 90-day post-launch</li>
+            <li><strong>Multi-market / multi-entity workspace</strong> + advanced cross-system automation</li>
+            <li><strong>Custom AI qualification (Lead)</strong> + <strong>AI deal health scoring (Sales)</strong> + full attribution intelligence</li>
+            <li><strong>Custom attribution model</strong> — every closed deal traced to original ad/source/campaign</li>
+            <li><strong>Executive revenue dashboard</strong> + predictive forecasting + cohort analysis</li>
+            <li><strong>Full Lead + Sales Operating Services</strong> + Commerce (Contract Ops) + Budget sync</li>
+            <li><strong>Train-the-trainer</strong> + complete SOP library + governance framework + 60–90 day CS</li>
+            <li><strong>Full Rework Master programme</strong> — owns and extends both Lead + Sales systems</li>
           </ul>
           <div class="cc-success">
             <div class="cc-success-label">Success looks like</div>
@@ -1811,7 +1838,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             <div class="cc-pillar-row"><span class="cc-pillar-name">People</span><div class="cc-pillar-bar"><div class="cc-pillar-fill full" style="width:100%"></div></div><span class="cc-pillar-level">Advanced</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Process</span><div class="cc-pillar-bar"><div class="cc-pillar-fill full" style="width:100%"></div></div><span class="cc-pillar-level">Advanced</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Technology</span><div class="cc-pillar-bar"><div class="cc-pillar-fill full" style="width:100%"></div></div><span class="cc-pillar-level">Advanced</span></div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill full" style="width:100%"></div></div><span class="cc-pillar-level">Advanced</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
           </div>
         </div>
@@ -1874,7 +1901,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- CHANNEL & LEAD CAPTURE group -->
         <div class="cmp-grp cmp-grp-people">
-          <div class="cmp-grp-title">Channel &amp; Lead Capture</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Channel &amp; Lead Capture</div></div><div class="cmp-grp-services">Communication Channels · Ads &amp; Campaign</div></div>
           <div class="cmp-grp-sub">3 components</div>
         </div>
         <div class="cmp-row">
@@ -1898,7 +1925,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- PIPELINE & CUSTOMER MANAGEMENT group -->
         <div class="cmp-grp cmp-grp-process">
-          <div class="cmp-grp-title">Pipeline &amp; Customer Management</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Pipeline &amp; Customer Management</div></div><div class="cmp-grp-services">Sales Operating Services · Commerce Operating Services</div></div>
           <div class="cmp-grp-sub">4 components</div>
         </div>
         <div class="cmp-row">
@@ -1928,8 +1955,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- REPORTING & ATTRIBUTION group -->
         <div class="cmp-grp cmp-grp-data">
-          <div class="cmp-grp-title">Reporting &amp; Attribution</div>
-          <div class="cmp-grp-sub">3 components</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Reporting &amp; Attribution</div><span class="cmp-phase-tag phase-2">Phase 2 · Intelligence</span></div></div><div class="cmp-grp-sub">3 components</div>
         </div>
         <div class="cmp-row">
           <div class="cmp-lbl">Source attribution</div>
@@ -1990,12 +2016,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-audience">Best for 1–20 employees</div>
           <div class="compact-card-cta">Select</div>
           <ul class="compact-card-features">
-            <li><strong>Workspace structure</strong> — departments, teams, roles</li>
-            <li><strong>Task management</strong> with assignees, due dates, status</li>
-            <li><strong>1–2 request workflows</strong> with basic approval routing</li>
-            <li><strong>Basic task &amp; request tracking</strong></li>
-            <li><strong>End-user training</strong> for all departments</li>
-            <li><strong>SOP</strong> for task creation, request submission, and approval</li>
+            <li><strong>Workspace structure</strong> — departments, teams, roles + custom fields &amp; permissions</li>
+            <li><strong>1–2 workflows digitized</strong> — fine-tune existing OR rebuild from scratch</li>
+            <li><strong>Task &amp; project management</strong> + Request / Approval Management with routing</li>
+            <li><strong>Selected workflow types</strong> — order fulfillment, purchasing, payment, or admin requests</li>
+            <li><strong>Data migrated</strong> from Excel/other apps (projects, tasks, request history)</li>
+            <li><strong>End-user training</strong> for all departments + SOP for task and approval workflow</li>
+            <li><strong>Rework Master identified</strong> — internal champion included in all sessions</li>
           </ul>
           <div class="cc-success">
             <div class="cc-success-label">Success looks like</div>
@@ -2003,9 +2030,9 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           </div>
           <div class="cc-pillar-depth">
             <div class="cc-pillar-depth-label">Pillar depth</div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">People</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">Process</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">Technology</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">People</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:30%"></div></div><span class="cc-pillar-level">Basic</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">Process</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:30%"></div></div><span class="cc-pillar-level">Basic</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">Technology</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:30%"></div></div><span class="cc-pillar-level">Basic</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill none" style="width:0%"></div></div><span class="cc-pillar-level none-lbl">Not included</span></div>
           </div>
@@ -2021,12 +2048,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-cta">Select</div>
           <div class="cc-plus-note">Everything in Launchpad, plus:</div>
           <ul class="compact-card-features">
-            <li><strong>SOP digitization</strong> — SOPs become live workflows, not static documents</li>
-            <li><strong>Order fulfillment, purchasing, payment, warehouse</strong> workflows</li>
-            <li><strong>Multi-step approval</strong> with SLA tracking + escalation</li>
-            <li><strong>Operational dashboard</strong> — bottlenecks, SLA compliance, request volume</li>
-            <li><strong>Public API access</strong> + integration support (Shopify, accounting…)</li>
+            <li><strong>SOP digitization</strong> — workflows live, cross-department automation, manual handoffs eliminated</li>
+            <li><strong>Multi-step approval</strong> + SLA tracking + escalation + Expense Operations</li>
+            <li><strong>Full Operation Services</strong> — Workflow, Request, Projects, Datasets, Approval Management</li>
+            <li><strong>AI-assisted triage</strong> — routing + task prioritization (human + AI joined processes)</li>
+            <li><strong>Operational dashboard</strong> + Platform/Collaboration Services (Docs, Chat, Meetings, Bookings) + 3rd-party integration</li>
             <li><strong>Role-based training</strong> + 30-day post-launch chat</li>
+            <li><strong>Rework Master trained</strong> — manages all workflows and onboards new team members independently</li>
           </ul>
           <div class="cc-success">
             <div class="cc-success-label">Success looks like</div>
@@ -2052,12 +2080,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-cta">Select</div>
           <div class="cc-plus-note">Everything in Accelerator, plus:</div>
           <ul class="compact-card-features">
-            <li><strong>Multi-entity, multi-location</strong> configuration</li>
-            <li><strong>AI task prioritization</strong> + escalation detection</li>
-            <li><strong>Full integration architecture</strong> — ERP, Shopify, data warehouses</li>
-            <li><strong>Executive operational dashboard</strong> + custom reporting</li>
-            <li><strong>Train-the-trainer</strong> + complete SOP library</li>
-            <li><strong>Dedicated Onboarding Manager</strong> + 60-day CS engagement</li>
+            <li><strong>Multi-entity / multi-location workspace</strong> + complex conditional automation</li>
+            <li><strong>Full integration architecture</strong> — ERP, Shopify, data warehouses (Microsoft Fabric, BigQuery)</li>
+            <li><strong>AI proactive surfacing</strong> — overdue, blocked, stalled work + <strong>predictive workload &amp; capacity management</strong></li>
+            <li><strong>Executive operational dashboard</strong> + custom reporting + capacity analytics</li>
+            <li><strong>All Operation + Platform + Collaboration Services</strong> at organizational scale</li>
+            <li><strong>Train-the-trainer</strong> + complete SOP library + governance framework + 60–90 day CS</li>
+            <li><strong>Full Rework Master programme</strong> — owns multi-entity rollouts, extends independently</li>
           </ul>
           <div class="cc-success">
             <div class="cc-success-label">Success looks like</div>
@@ -2130,7 +2159,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- WORKSPACE & TASKS group -->
         <div class="cmp-grp cmp-grp-people">
-          <div class="cmp-grp-title">Workspace &amp; Tasks</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Workspace &amp; Tasks</div></div><div class="cmp-grp-services">Operation Services</div></div>
           <div class="cmp-grp-sub">3 components</div>
         </div>
         <div class="cmp-row">
@@ -2154,7 +2183,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- REQUESTS & APPROVALS group -->
         <div class="cmp-grp cmp-grp-process">
-          <div class="cmp-grp-title">Requests &amp; Approvals</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Requests &amp; Approvals</div></div><div class="cmp-grp-services">Operation Services</div></div>
           <div class="cmp-grp-sub">2 components</div>
         </div>
         <div class="cmp-row">
@@ -2172,7 +2201,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- INTEGRATIONS group -->
         <div class="cmp-grp cmp-grp-tech">
-          <div class="cmp-grp-title">Integrations</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Integrations</div></div><div class="cmp-grp-services">Platform Services · Collaboration Services</div></div>
           <div class="cmp-grp-sub">1 component</div>
         </div>
         <div class="cmp-row">
@@ -2184,8 +2213,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- REPORTING & AI group -->
         <div class="cmp-grp cmp-grp-data">
-          <div class="cmp-grp-title">Reporting &amp; AI</div>
-          <div class="cmp-grp-sub">2 components</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Reporting &amp; AI</div><span class="cmp-phase-tag phase-2">Phase 2 · Intelligence</span></div></div><div class="cmp-grp-sub">2 components</div>
         </div>
         <div class="cmp-row">
           <div class="cmp-lbl">Operational reporting</div>
@@ -2197,7 +2225,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="cmp-lbl">AI &amp; automation</div>
           <div class="cmp-cell cmp-empty">—</div>
           <div class="cmp-cell">Standard automation rules</div>
-          <div class="cmp-cell"><strong>AI task prioritization</strong> + escalation detection + scheduled report generation</div>
+          <div class="cmp-cell"><strong>AI task prioritization</strong> + escalation detection + <strong>predictive workload &amp; capacity management</strong> + scheduled report generation</div>
         </div>
 
         <!-- TRAINING & SOPs group -->
@@ -2240,12 +2268,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-audience">Best for 1–20 employees</div>
           <div class="compact-card-cta">Select</div>
           <ul class="compact-card-features">
-            <li><strong>Employee records</strong>, org structure, and document management</li>
-            <li><strong>Leave types, entitlements,</strong> and approval workflow</li>
-            <li><strong>Attendance tracking</strong> with basic reporting</li>
-            <li><strong>Basic hiring pipeline</strong> — stages, candidates, offer letters</li>
-            <li><strong>Payroll app</strong> (add-on) — salary structure, calculation, payslips</li>
-            <li><strong>End-user training</strong> + SOP for leave and hiring workflows</li>
+            <li><strong>HRIS</strong> — employee records, org structure, hierarchy + document management</li>
+            <li><strong>Leave &amp; Time-off Operations</strong> — types, policies, entitlements, approval workflow</li>
+            <li><strong>Timesheet Operations</strong> — attendance tracking with basic reporting</li>
+            <li><strong>Basic ATS</strong> — hiring pipeline, candidate stages, offer letters + Docs templates</li>
+            <li><strong>Employee data migrated</strong> from Excel/existing HR system + user roles &amp; permissions</li>
+            <li><strong>Payroll app (add-on)</strong> — basic salary, calculation, payslips + training &amp; SOP</li>
+            <li><strong>Rework Master identified</strong> — internal champion in all sessions</li>
           </ul>
           <div class="cc-success">
             <div class="cc-success-label">Success looks like</div>
@@ -2271,12 +2300,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-cta">Select</div>
           <div class="cc-plus-note">Everything in Launchpad, plus:</div>
           <ul class="compact-card-features">
-            <li><strong>Full onboarding and offboarding</strong> workflows</li>
-            <li><strong>Advanced leave</strong> — multi-policy, carry-over, accrual, leave calendar</li>
-            <li><strong>Full ATS</strong> — structured interviews, feedback, offer approval</li>
-            <li><strong>HR dashboard</strong> — headcount, leave, attendance, open positions</li>
-            <li><strong>Attendance analytics</strong> + policy enforcement</li>
-            <li><strong>Role-based training</strong> + 30-day post-launch chat</li>
+            <li><strong>Full onboarding &amp; offboarding</strong> workflows — task assignments, exit checklists, account deactivation</li>
+            <li><strong>Advanced leave</strong> — multi-policy, carry-over, accrual + leave calendar + analytics</li>
+            <li><strong>Full ATS</strong> — structured stages, scorecards, feedback, offer approval + Offer Operations</li>
+            <li><strong>Employee Contract</strong> + Hiring Operations + E-sign integrated</li>
+            <li><strong>HR dashboard</strong> — headcount, leave, attendance + hiring pipeline (time-to-hire, source effectiveness)</li>
+            <li><strong>Role-based training</strong> + 30-day post-launch chat <em>(AI coming soon)</em></li>
+            <li><strong>Rework Master trained</strong> — manages all HR workflows independently</li>
           </ul>
           <div class="cc-success">
             <div class="cc-success-label">Success looks like</div>
@@ -2288,7 +2318,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             <div class="cc-pillar-row"><span class="cc-pillar-name">Process</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Technology</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:50%"></div></div><span class="cc-pillar-level">Core</span></div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:30%"></div></div><span class="cc-pillar-level">Basic</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill coming"></div></div><span class="cc-pillar-level coming-lbl">Coming soon</span></div>
           </div>
         </div>
         <div class="compact-card" data-tier="transform" data-product="people" data-price="3000" data-name="People Ops · Transform" onclick="toggleCard(this)">
@@ -2302,12 +2332,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
           <div class="compact-card-cta">Select</div>
           <div class="cc-plus-note">Everything in Accelerator, plus:</div>
           <ul class="compact-card-features">
-            <li><strong>Multi-entity HR</strong> — separate policies per location or country</li>
-            <li><strong>Performance review cycle</strong> — goals, mid-year, appraisal, calibration</li>
-            <li><strong>AI Agent</strong> — answers policy, leave, onboarding queries via chat</li>
-            <li><strong>Executive HR dashboard</strong> + custom reporting</li>
-            <li><strong>Train-the-trainer</strong> + complete HR policy library</li>
-            <li><strong>Dedicated Onboarding Manager</strong> + 60-day CS engagement</li>
+            <li><strong>Multi-entity HR</strong> — separate policies per location/country + advanced payroll integration</li>
+            <li><strong>Performance management</strong> — review cycles, goals, <strong>360-degree feedback</strong> + structured peer/manager input</li>
+            <li><strong>Full Core HR Operations</strong> — HRIS, Timesheet, Time-off, Contract, Offer, Hiring</li>
+            <li><strong>Executive HR dashboard</strong> + predictive attrition + cross-entity people analytics</li>
+            <li><strong>Complete HR policy library</strong> + governance framework + Docs/E-sign full integration</li>
+            <li><strong>Train-the-trainer</strong> + 60–90 day dedicated CS <em>(AI Agent for HR queries — coming soon)</em></li>
+            <li><strong>Full Rework Master programme</strong> — independently manages multi-entity HR rollouts</li>
           </ul>
           <div class="cc-success">
             <div class="cc-success-label">Success looks like</div>
@@ -2319,7 +2350,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
             <div class="cc-pillar-row"><span class="cc-pillar-name">Process</span><div class="cc-pillar-bar"><div class="cc-pillar-fill full" style="width:100%"></div></div><span class="cc-pillar-level">Advanced</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Technology</span><div class="cc-pillar-bar"><div class="cc-pillar-fill full" style="width:100%"></div></div><span class="cc-pillar-level">Advanced</span></div>
             <div class="cc-pillar-row"><span class="cc-pillar-name">Data</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
-            <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill" style="width:75%"></div></div><span class="cc-pillar-level">Full</span></div>
+            <div class="cc-pillar-row"><span class="cc-pillar-name">AI Agents</span><div class="cc-pillar-bar"><div class="cc-pillar-fill coming"></div></div><span class="cc-pillar-level coming-lbl">Coming soon</span></div>
           </div>
         </div>
       </div>
@@ -2380,7 +2411,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- EMPLOYEE RECORDS group -->
         <div class="cmp-grp cmp-grp-people">
-          <div class="cmp-grp-title">Employee Records</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Employee Records</div></div><div class="cmp-grp-services">Core HR Operations</div></div>
           <div class="cmp-grp-sub">2 components</div>
         </div>
         <div class="cmp-row">
@@ -2398,7 +2429,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- LEAVE & ATTENDANCE group -->
         <div class="cmp-grp cmp-grp-process">
-          <div class="cmp-grp-title">Leave &amp; Attendance</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Leave &amp; Attendance</div></div><div class="cmp-grp-services">Core HR Operations</div></div>
           <div class="cmp-grp-sub">2 components</div>
         </div>
         <div class="cmp-row">
@@ -2416,26 +2447,25 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
 
         <!-- HIRING & PERFORMANCE group -->
         <div class="cmp-grp cmp-grp-tech">
-          <div class="cmp-grp-title">Hiring &amp; Performance</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">Hiring &amp; Performance</div></div><div class="cmp-grp-services">Core HR Operations</div></div>
           <div class="cmp-grp-sub">2 components</div>
         </div>
         <div class="cmp-row">
           <div class="cmp-lbl">Hiring (ATS)</div>
           <div class="cmp-cell"><strong>Basic pipeline</strong> — job positions, candidate stages, simple offer workflow</div>
-          <div class="cmp-cell"><strong>Full hiring workflow</strong> — req, structured stages, feedback, offer approval, candidate communication, pipeline reporting</div>
+          <div class="cmp-cell"><strong>Full hiring workflow</strong> — req, structured stages, feedback, offer approval, candidate communication + <strong>pipeline reporting</strong> (time-to-hire, source effectiveness)</div>
           <div class="cmp-cell"><strong>Advanced pipeline</strong> — multi-dept hiring, structured scoring, talent pipeline, executive hiring dashboard</div>
         </div>
         <div class="cmp-row">
           <div class="cmp-lbl">Performance management</div>
           <div class="cmp-cell cmp-empty">—</div>
           <div class="cmp-cell cmp-empty">—</div>
-          <div class="cmp-cell"><strong>Performance review cycle</strong> — goals, mid-year, appraisal, calibration + 360-degree feedback</div>
+          <div class="cmp-cell"><strong>Performance review cycle</strong> — goals, mid-year, appraisal, calibration + <strong>360-degree feedback</strong> + structured peer/manager input</div>
         </div>
 
         <!-- HR REPORTING & AI group -->
         <div class="cmp-grp cmp-grp-data">
-          <div class="cmp-grp-title">HR Reporting &amp; AI</div>
-          <div class="cmp-grp-sub">2 components</div>
+          <div class="cmp-grp-titlebar"><div class="cmp-grp-title-row"><div class="cmp-grp-title">HR Reporting &amp; AI</div><span class="cmp-phase-tag phase-2">Phase 2 · Intelligence</span></div></div><div class="cmp-grp-sub">2 components</div>
         </div>
         <div class="cmp-row">
           <div class="cmp-lbl">HR reporting</div>
