@@ -3166,6 +3166,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-fi
         <div class="finder-prod-tabs" role="tablist">
           <button class="finder-prod-tab active" data-product="sales" role="tab" onclick="switchFinderProduct('sales',this)">Sales Ops</button>
           <button class="finder-prod-tab" data-product="lead" role="tab" onclick="switchFinderProduct('lead',this)">Lead Ops</button>
+          <button class="finder-prod-tab" data-product="revenue" role="tab" onclick="switchFinderProduct('revenue',this)">Revenue Ops <span class="finder-prod-tab-badge">Bundle</span></button>
           <button class="finder-prod-tab" data-product="work" role="tab" onclick="switchFinderProduct('work',this)">Work Ops</button>
           <button class="finder-prod-tab" data-product="people" role="tab" onclick="switchFinderProduct('people',this)">People Ops</button>
         </div>
@@ -3260,20 +3261,20 @@ const QUIZZES = {
     ],
     results:{
       launchpad:{tier:'launchpad', badge:'Launchpad',
-        headline:"You're set up to start clean and move fast.",
-        body:"Your process already exists, your team is small, your leads come through direct channels, and someone on your team can manage the system. Launchpad gets you properly configured without overengineering — in 3–5 weeks.",
-        price:'$500', sessions:'3', weeks:'3–5',
-        tagline:'Get your sales team started on Rework in weeks, not months.'},
+        headline:"Every deal visible. Every customer followed up.",
+        body:"Pipeline live, customer database built, activities tracked (calls, meetings, emails, visits), existing data migrated, and basic dashboards from day one. Launchpad gets you properly configured without overengineering — in 3–4 weeks.",
+        price:'$500', sessions:'3–4', weeks:'3–4',
+        tagline:'Every deal visible. Every customer followed up.'},
       accelerator:{tier:'accelerator', badge:'Accelerator',
-        headline:"You need more than just software setup — you need it built right.",
-        body:"Accelerator gives you the consulting, migration support, and role-based training to get your team running the right way from day one.",
-        price:'$1,500', sessions:'6–8', weeks:'4–8',
-        tagline:'Build a sales machine with tailored processes and hands-on support.'},
+        headline:"Forecast revenue. Coach your team from data.",
+        body:"Multi-stage pipeline + probability + deal velocity, AI coaching that flags stalled deals and triggers follow-ups, sales forecasting + rep performance, plus Instant Form integration and pipeline review playbook.",
+        price:'$1,000', sessions:'6–8', weeks:'6–8',
+        tagline:'Forecast revenue. Coach your team from data.'},
       transform:{tier:'transform', badge:'Transform',
-        headline:"You're running a complex sales organization — it deserves a proper transformation.",
-        body:"Multiple pipelines, multiple channels, a team that needs structured training and clear SOPs. Transform gives you a dedicated Onboarding Manager, deep configuration, and full documentation to make sure your entire org operates on Rework — consistently.",
-        price:'$3,000 – $5,000', sessions:'10–15', weeks:'8–12',
-        tagline:'Redesign how your sales organization operates — from lead to revenue.'}
+        headline:"A predictable revenue operation across teams and markets.",
+        body:"Multi-team / multi-product pipeline, full key account management with customer lifecycle tracking, AI deal health scoring + Sales playbook, executive revenue dashboard. Full Rework Master programme for internal independence.",
+        price:'from $3,000', sessions:'10–15', weeks:'10–14',
+        tagline:'A predictable revenue operation across teams and markets.'}
     },
     triggerMsgs:{
       no_formal_process:"You don't have a formal process yet — our CS team will design it with you from scratch.",
@@ -3344,20 +3345,20 @@ const QUIZZES = {
     ],
     results:{
       launchpad:{tier:'launchpad', badge:'Launchpad',
-        headline:"Get chat channels live and capture leads in days, not weeks.",
-        body:"A small team, a couple of core channels, and straightforward qualification. Launchpad gets you connected, routing leads, and tagging conversations — in 2–4 weeks.",
-        price:'$300', sessions:'3', weeks:'2–4',
-        tagline:'Get chat channels live and capture leads in days, not weeks.'},
+        headline:"Never miss an inbound lead again.",
+        body:"WhatsApp (Coexistence) + Meta Messenger with AI Chatbot for first-response qualification. Lead capture forms + contact/lead database + basic source tagging. Launchpad gets you live in 3–4 weeks.",
+        price:'$300', sessions:'3–4', weeks:'3–4',
+        tagline:'Never miss an inbound lead again.'},
       accelerator:{tier:'accelerator', badge:'Accelerator',
-        headline:"Build a multi-channel lead funnel with AI qualification.",
-        body:"More channels, smarter qualification per source, and broadcast templates that won't get your number flagged. Accelerator gives you the routing, CRM mapping, and role-based training to operate a real lead funnel.",
-        price:'$1,000', sessions:'5–7', weeks:'4–6',
-        tagline:'Build a multi-channel lead funnel with AI qualification.'},
+        headline:"Know which ad drives your best leads.",
+        body:"Full channels (WhatsApp, Messenger, TikTok, Telegram, Broadcasting), CTWA + CAPI for every lead traced to its ad, advanced AI with multi-intent detection and knowledge base, 3–5 segmented nurturing flows.",
+        price:'$1,000', sessions:'6–8', weeks:'6–8',
+        tagline:'Know which ad drives your best leads.'},
       transform:{tier:'transform', badge:'Transform',
-        headline:"Operate omnichannel chat at scale across teams and regions.",
-        body:"All channels, advanced multi-team distribution, AI flows by product line or region, and a Dedicated Onboarding Manager. Transform is built for orgs running chat as a primary revenue surface — not a side channel.",
-        price:'$3,000', sessions:'8–12', weeks:'6–10',
-        tagline:'Operate omnichannel chat at scale across teams and regions.'}
+        headline:"One lead machine across all markets and channels.",
+        body:"Multi-market setup with multi-channel orchestration, custom AI qualification model with continuous retraining, custom attribution + Budget sync for real-time ROI, full Rework Master programme.",
+        price:'$3,000', sessions:'10–14', weeks:'10–14',
+        tagline:'One lead machine across all markets and channels.'}
     },
     triggerMsgs:{
       broadcast_heavy:"You're sending broadcasts — plan for a 1–3 day Meta template approval window before go-live.",
@@ -3428,25 +3429,110 @@ const QUIZZES = {
     ],
     results:{
       launchpad:{tier:'launchpad', badge:'Launchpad',
-        headline:"Digitize your first workflows and get your team aligned.",
-        body:"A small team, a handful of straightforward processes, and one person who can drive setup. Launchpad gets the core workflows live and your team trained — in 3–5 weeks.",
-        price:'$500', sessions:'3', weeks:'3–5',
-        tagline:'Digitize your first workflows and get your team aligned.'},
+        headline:"Stop managing work in WhatsApp and Excel.",
+        body:"Workspace structure (departments, teams, roles), 1–2 workflows digitized (fine-tune existing OR rebuild), task & project management with Request / Approval routing, existing data migrated. Launchpad gets your first processes off paper — in 3–4 weeks.",
+        price:'$500', sessions:'3–4', weeks:'3–4',
+        tagline:'Stop managing work in WhatsApp and Excel.'},
       accelerator:{tier:'accelerator', badge:'Accelerator',
-        headline:"Streamline operations across departments with structured workflows.",
-        body:"Multiple departments, multi-step processes that hand off between roles, and approval routing that needs to work the first time. Accelerator gives you the configuration, migration support, and role-based training to make it stick.",
-        price:'$1,500', sessions:'6–8', weeks:'4–8',
-        tagline:'Streamline operations across departments with structured workflows.'},
+        headline:"Your core operations run on documented, executable workflows.",
+        body:"SOP digitization, cross-department automation, multi-step approval with SLA tracking + escalation, full Operation Services (Workflow, Request, Projects, Datasets, Expense), AI-assisted triage + operational dashboard, Platform/Collaboration Services + 3rd-party integration.",
+        price:'$1,500', sessions:'6–8', weeks:'6–8',
+        tagline:'Your core operations run on documented, executable workflows.'},
       transform:{tier:'transform', badge:'Transform',
-        headline:"Redesign your operating system — standardize, automate, and scale.",
-        body:"A large org, complex workflows with custom objects, parallel approvals, and SSO + multi-team permissions. Transform gives you a Dedicated Onboarding Manager, deep configuration, and full SOPs — so the whole organization operates consistently on Rework.",
-        price:'$3,000 – $5,000', sessions:'10–15', weeks:'8–12',
-        tagline:'Redesign your operating system — standardize, automate, and scale.'}
+        headline:"The entire business runs on one operating system.",
+        body:"Multi-entity / multi-location workspace, complex conditional automation, full integration architecture (ERP, Shopify, data warehouses), AI proactive surfacing of overdue/blocked/stalled work + predictive workload management.",
+        price:'from $3,000', sessions:'10–15', weeks:'10–14',
+        tagline:'The entire business runs on one operating system.'}
     },
     triggerMsgs:{
       complex_approvals:"Parallel or branching approvals — we'll run joint design sessions to map every chain before configuring.",
       multi_source_migration:"Multi-source migration with deduplication — designate one data PIC on your side to validate before go-live.",
       cross_dept:"4+ departments — align department leads early to lock down workflow ownership and permissions."
+    }
+  },
+  revenue: {
+    label:'Revenue Ops', scoring:'revenue', available:true,
+    multiNoun:'channel',
+    questions:[
+      {
+        id:'team_size', type:'single',
+        q:'How many people across Marketing + Sales will use Revenue Ops?',
+        hint:'This sets your baseline package. Other answers can step you up to a bigger pack — but only if at least 3 of them point that way.',
+        options:[
+          {label:'1–10 users (Marketing + Sales)', tier:'launchpad'},
+          {label:'10–30 users', tier:'accelerator'},
+          {label:'30+ users across teams or markets', tier:'transform'},
+        ]
+      },
+      {
+        id:'ad_channels', type:'multi',
+        q:'Which paid ad channels are you running?',
+        hint:'Select all that apply. More channels means more attribution + budget sync setup.',
+        groups:[
+          {label:'Core paid channels', tagClass:'organic', tag:'Most common', type:'core', options:['Meta Ads (Facebook / Instagram)','Google Ads','TikTok Ads']},
+          {label:'Additional channels', tagClass:'digital', tag:'Added at scale', type:'ext', options:['LinkedIn Ads','Programmatic / display','Affiliate / partner channels','Organic-only (no paid ads yet)']}
+        ]
+      },
+      {
+        id:'process', type:'single',
+        q:"What's the current state of your sales process?",
+        options:[
+          {label:"We don't have a formal process", sub:"Reps work however they want — we need help building one from scratch", tier:'accelerator'},
+          {label:"We have a process in spreadsheets or people's heads", sub:"It exists, we just need to digitize what we already have", tier:'launchpad'},
+          {label:"We have a documented, complex multi-team process", sub:"Multi-stage, cross-team — needs deep configuration and redesign", tier:'transform'},
+        ]
+      },
+      {
+        id:'attribution', type:'single',
+        q:'How do you want to measure ad → deal attribution?',
+        hint:'How tightly do you need to connect ad spend to closed deals?',
+        options:[
+          {label:"Basic — see lead volume by channel", sub:"Lead-to-deal conversion + basic source tagging", tier:'launchpad'},
+          {label:"Full — CTWA + CAPI, every lead traced to its ad", sub:"Cost-per-lead + unified revenue dashboard", tier:'accelerator'},
+          {label:"Custom — multi-touch attribution + budget sync", sub:"Every closed deal traced to its original campaign", tier:'transform'},
+        ]
+      },
+      {
+        id:'migration', type:'single',
+        q:'Do you have existing data to bring into Rework?',
+        hint:'Contacts, leads, deals, or activity history from spreadsheets or previous CRM.',
+        options:[
+          {label:"No — starting completely fresh", tier:'launchpad'},
+          {label:"Yes — some data in spreadsheets or one CRM", tier:'accelerator'},
+          {label:"Yes — multiple sources with deduplication needed", tier:'transform'},
+        ]
+      },
+      {
+        id:'admin', type:'single',
+        q:'Who will own setup and ongoing management?',
+        options:[
+          {label:"A marketing or sales lead can drive it part-time", sub:"Comfortable with tools, can follow CS guidance", tier:'launchpad'},
+          {label:"We need Rework CS to do most setup, then train both teams", sub:"Hands-on configuration support across marketing + sales", tier:'accelerator'},
+          {label:"Dedicated revenue ops team — need train-the-trainer + Onboarding Manager", sub:"Multi-team, multi-market rollout", tier:'transform'},
+        ]
+      }
+    ],
+    results:{
+      launchpad:{tier:'launchpad', badge:'Launchpad',
+        headline:"Both teams live. Leads auto-convert to deals.",
+        body:"Marketing + sales in one system with WhatsApp + Meta Messenger + AI Chatbot for first-response. Lead-to-deal conversion happens automatically. Launchpad gets both teams running on one funnel — in 4–6 weeks.",
+        price:'$700', sessions:'4–5', weeks:'4–6',
+        tagline:'Leads into pipeline. No manual re-entry.'},
+      accelerator:{tier:'accelerator', badge:'Accelerator',
+        headline:"Every closed deal traced to the ad that sourced it.",
+        body:"CTWA + CAPI + full source attribution, advanced AI routing across both teams, plus a unified revenue dashboard from ad spend → leads → pipeline → forecast. Accelerator builds the connected funnel.",
+        price:'$1,500', sessions:'8–10', weeks:'8–10',
+        tagline:'Trace every closed deal back to its first ad.'},
+      transform:{tier:'transform', badge:'Transform',
+        headline:"One revenue team operating at scale.",
+        body:"Multi-market setup, custom AI qualification (Lead) + AI deal health scoring (Sales), custom attribution model + Budget sync for real-time ROI. Full Rework Master programme owns and extends both systems.",
+        price:'from $4,500', sessions:'12–15', weeks:'12–16',
+        tagline:'One revenue team. One dashboard. Every market.'}
+    },
+    triggerMsgs:{
+      no_paid_ads:"You're not running paid ads yet — Revenue Ops still works (organic + outbound leads convert to deals), but full attribution unlocks once you start.",
+      multi_source_migration:"Multi-source data migration — designate one PIC per source (CRM + ad platforms) to validate field mapping before go-live.",
+      custom_attribution:"Custom attribution model — we'll align on first-touch vs multi-touch + retention windows before configuration."
     }
   },
   people: {
@@ -3512,20 +3598,20 @@ const QUIZZES = {
     ],
     results:{
       launchpad:{tier:'launchpad', badge:'Launchpad',
-        headline:"Get HR essentials running on Rework — fast and clean.",
-        body:"A small team, core HR modules (records, time-off, contracts), and one HR lead who can drive setup. Launchpad gets you running with the essentials — in 3–5 weeks.",
-        price:'$500', sessions:'3', weeks:'3–5',
-        tagline:'Get HR essentials running on Rework — fast and clean.'},
+        headline:"HR off spreadsheets. People managed with structure.",
+        body:"HRIS + Leave & Time-off + Timesheet + basic ATS, Docs templates, employee data migrated from Excel/HR system, Payroll add-on available. Launchpad gets HR essentials running — in 3–4 weeks.",
+        price:'$500', sessions:'3–4', weeks:'3–4',
+        tagline:'HR off spreadsheets. People managed with structure.'},
       accelerator:{tier:'accelerator', badge:'Accelerator',
-        headline:"Connect the full people lifecycle — hiring, onboarding, and beyond.",
-        body:"More modules across the employee lifecycle, branded templates with e-sign, and approval routing that needs to handle real org structure. Accelerator gives you the configuration, migration support, and role-based training to operate it properly.",
-        price:'$1,500', sessions:'6–8', weeks:'4–8',
-        tagline:'Connect the full people lifecycle — hiring, onboarding, and beyond.'},
+        headline:"Own the full employee lifecycle — from offer to exit.",
+        body:"Full onboarding & offboarding workflows, advanced leave (multi-policy, carry-over, accrual, calendar, analytics), full ATS with scorecards + Offer Operations + E-sign, HR dashboard with hiring pipeline reporting (time-to-hire). (AI coming soon.)",
+        price:'$1,500', sessions:'6–8', weeks:'6–8',
+        tagline:'Own the full employee lifecycle — from offer to exit.'},
       transform:{tier:'transform', badge:'Transform',
-        headline:"HR operating system for the whole organization — built for scale.",
-        body:"A large, multi-country org with hiring + performance lifecycle, compliance review, audit trail for sensitive fields, and HRBPs across regions. Transform gives you a Dedicated Onboarding Manager, deep configuration, and full SOPs.",
-        price:'$3,000 – $5,000', sessions:'10–15', weeks:'8–12',
-        tagline:'HR operating system for the whole organization — built for scale.'}
+        headline:"A professional people function that scales with the business.",
+        body:"Multi-entity HR (separate policies per location/country), performance management with 360-degree feedback, full Core HR Operations, executive HR dashboard + predictive attrition + cross-entity analytics, complete HR policy library. (AI Agent for HR queries coming soon.)",
+        price:'from $3,000', sessions:'10–15', weeks:'10–14',
+        tagline:'A professional people function that scales with the business.'}
     },
     triggerMsgs:{
       multi_country:"Multi-country templates — we'll review against local employment law before go-live (allow extra time for legal sign-off).",
@@ -3537,9 +3623,9 @@ const QUIZZES = {
 
 /* ─── QUIZ STATE ─── */
 let currentQuizProduct = 'sales';
-let qAnswersByProduct = {sales:{}, lead:{}, work:{}, people:{}};
-let q2DigitalByProduct = {sales:0, lead:0, work:0, people:0};
-let q2NeedsLeadsByProduct = {sales:false, lead:false, work:false, people:false};
+let qAnswersByProduct = {sales:{}, lead:{}, revenue:{}, work:{}, people:{}};
+let q2DigitalByProduct = {sales:0, lead:0, revenue:0, work:0, people:0};
+let q2NeedsLeadsByProduct = {sales:false, lead:false, revenue:false, work:false, people:false};
 // Aliases that always point at the active product's state. Reassigned on switch.
 let qAnswers = qAnswersByProduct.sales;
 let q2Digital = 0;
@@ -3551,7 +3637,7 @@ function activeMultiNoun(){ return activeQuiz().multiNoun || 'item'; }
 
 function initQuiz(){
   // Reset state for all products
-  ['sales','lead','work','people'].forEach(p => {
+  ['sales','lead','revenue','work','people'].forEach(p => {
     qAnswersByProduct[p] = {};
     q2DigitalByProduct[p] = 0;
     q2NeedsLeadsByProduct[p] = false;
@@ -3780,6 +3866,23 @@ function calcResult(){
     if(qAnswers.templates?.tier === 'transform') triggers.push('multi_country');
     if(qAnswers.migration?.tier === 'transform') triggers.push('multi_source_hr');
     if((qAnswers.modules?.checked && Object.keys(qAnswers.modules.checked).length >= 7)) triggers.push('many_modules');
+  } else if(quiz.scoring === 'revenue'){
+    // Paid ads detection — running paid ads strongly correlates with needing CTWA+CAPI attribution (Accelerator)
+    const channels = qAnswers.ad_channels?.checked || {};
+    const channelKeys = Object.keys(channels);
+    const hasOrganicOnly = channelKeys.length === 0 || (channelKeys.length === 1 && channelKeys.some(k => /Organic-only/i.test(k)));
+    const hasPaidAds = channelKeys.length > 0 && !hasOrganicOnly;
+    if(hasPaidAds){
+      scores.accelerator++; // running paid ads → needs ad-to-deal attribution = Accelerator capability
+    }
+    // 3+ paid channels across multiple platforms → multi-market signal, push toward Transform
+    const paidCount = channelKeys.filter(k => !/Organic-only/i.test(k)).length;
+    if(paidCount >= 3){
+      scores.transform++;
+    }
+    if(hasOrganicOnly) triggers.push('no_paid_ads');
+    if(qAnswers.migration?.tier === 'transform') triggers.push('multi_source_migration');
+    if(qAnswers.attribution?.tier === 'transform') triggers.push('custom_attribution');
   }
 
   // ── UPGRADE RULE: from baseline, stay unless ≥3 of the 5 non-team votes point
@@ -3826,7 +3929,8 @@ function renderResult(){
   // Per-product gate copy (the size-bucket name shown in the small-team note)
   const teamSizeLabels = {
     sales:{small:'1–10 sales teams'},
-    lead:{small:'1–5 user setups'},
+    lead:{small:'1–5 MKT teams'},
+    revenue:{small:'1–10 user (Marketing + Sales) teams'},
     work:{small:'1–20 employee orgs'},
     people:{small:'1–20 employee orgs'}
   };
@@ -3860,12 +3964,12 @@ function renderResult(){
     }
   }
 
-  // Cross-sell note: Sales finder suggests pairing with Lead Ops; Lead finder suggests pairing with Sales Ops when CRM sync requested
+  // Cross-sell note: Sales/Lead finder suggests Revenue Ops bundle when both ad-driven + sales pipeline are needed
   let crossSellNote = '';
   if(quiz.scoring === 'sales' && q2NeedsLeads){
-    crossSellNote = `<div class="qrp-leads-note">💡 <span>Pair with <strong>Lead Ops</strong> — channel setup included at no extra cost in Accelerator & Transform.</span></div>`;
+    crossSellNote = `<div class="qrp-leads-note">💡 <span>Consider <strong>Revenue Ops bundle</strong> — Lead + Sales in one connected system, leads auto-convert to deals.</span></div>`;
   } else if(quiz.scoring === 'lead' && (qAnswers.crm?.tier === 'accelerator' || qAnswers.crm?.tier === 'transform')){
-    crossSellNote = `<div class="qrp-leads-note">💡 <span>Pair with <strong>Sales Ops</strong> — bundled CRM mapping makes the Lead → Sales handoff clean from day one.</span></div>`;
+    crossSellNote = `<div class="qrp-leads-note">💡 <span>Consider <strong>Revenue Ops bundle</strong> — Lead + Sales together with built-in lead-to-deal flow.</span></div>`;
   }
 
   const priceNote = r.price === 'Custom' ? 'Pricing on request' : 'One-time fee';
@@ -3943,7 +4047,7 @@ function switchPkg(product, btn){
 // Map a packages-section product to a finder-internal product. Work/People route
 // to their placeholder tabs; Sales/Lead route to their real quizzes.
 function resolveFinderProduct(p){
-  return (p === 'sales' || p === 'lead' || p === 'work' || p === 'people') ? p : 'sales';
+  return (p === 'sales' || p === 'lead' || p === 'revenue' || p === 'work' || p === 'people') ? p : 'sales';
 }
 
 function switchFinderProduct(product, btn){
