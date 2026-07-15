@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Testimonials & Customer Success Squad — Rework</title>
+<meta name="description" content="What our customers say + meet the Customer Success Squad delivering their implementations.">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/assets/rework_logo.svg">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://success.rework.com/testimonials">
+<meta property="og:title" content="Testimonials & Customer Success Squad — Rework">
+<meta property="og:description" content="Customer stories + the Customer Success Squad behind every implementation.">
+<meta property="og:image" content="https://success.rework.com/assets/thumbnail.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Testimonials & Customer Success Squad — Rework">
+<meta name="twitter:description" content="Customer stories + the Customer Success Squad behind every implementation.">
+<meta name="twitter:image" content="https://success.rework.com/assets/thumbnail.png">
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0A0F1E;--blue:#3B82F6;--blue-neon:#60A5FA;--purple:#8B5CF6;--purple-neon:#A78BFA;--green:#10B981;--cyan:#22D3EE;--g50:#F8FAFC;--g100:#F1F5F9;--g200:#E2E8F0;--g300:#CBD5E1;--g400:#94A3B8;--g500:#64748B;--g600:#475569;--g700:#334155;--g800:#1E293B;--g900:#0F172A;--white:#FFF;--radius:12px;--radius-lg:16px;--grid:rgba(148,163,184,0.07)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.94);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:9px;font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--white);text-decoration:none;letter-spacing:-.3px}
+.nav-logo-img{width:32px;height:32px;display:block;flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-link{color:var(--g400);font-size:13px;font-weight:500;text-decoration:none;transition:color .2s}
+.nav-link:hover{color:var(--white)}
+.nav-link.active{color:var(--white)}
+.nav-cta{padding:9px 20px;background:linear-gradient(135deg,var(--blue),var(--purple));color:var(--white);border-radius:9px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;white-space:nowrap;box-shadow:0 2px 12px rgba(59,130,246,0.35)}
+.nav-cta:hover{background:linear-gradient(135deg,var(--blue-neon),var(--purple));box-shadow:0 6px 20px rgba(59,130,246,0.55);transform:translateY(-1px)}
+
+/* HERO */
+.hero{background:var(--navy);padding:56px 24px 64px;text-align:center;position:relative;overflow:hidden;z-index:1}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.06) 1px,transparent 1px);background-size:48px 48px}
+.hero::after{content:'';position:absolute;top:-40%;left:-10%;width:120%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(59,130,246,0.2) 0%,transparent 55%),radial-gradient(ellipse at 75% 30%,rgba(139,92,246,0.14) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(34,211,238,0.08) 0%,transparent 40%)}
+.hero-inner{position:relative;z-index:1;max-width:900px;margin:0 auto}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.25);border-radius:100px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--blue-neon);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:44px;font-weight:800;color:var(--white);line-height:1.12;margin-bottom:14px;letter-spacing:-0.8px}
+.hero h1 .accent{background:linear-gradient(135deg,var(--blue-neon),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:15px;color:var(--g400);max-width:640px;margin:0 auto;line-height:1.65}
+
+/* SECTION */
+.section{padding:72px 24px;position:relative;z-index:1}
+.section-inner{max-width:1140px;margin:0 auto}
+.section-label{display:inline-block;font-size:12px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
+.section-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:800;color:var(--navy);margin-bottom:10px;line-height:1.15;letter-spacing:-0.5px}
+.section-sub{font-size:16px;color:var(--g700);max-width:640px;line-height:1.65;margin-bottom:36px}
+
+/* TESTIMONIALS */
+#testimonials{background:var(--white)}
+.testimonial-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
+.testimonial-card{background:var(--white);border:1px solid var(--g200);border-radius:var(--radius-lg);padding:28px;transition:all .25s;display:flex;flex-direction:column;position:relative}
+.testimonial-card:hover{border-color:rgba(59,130,246,0.35);box-shadow:0 8px 32px rgba(59,130,246,0.08);transform:translateY(-2px)}
+.testimonial-quote-mark{position:absolute;top:16px;right:20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:56px;line-height:1;color:var(--g200);font-weight:800}
+.testimonial-quote{font-size:15px;color:var(--g700);line-height:1.65;margin-bottom:24px;flex:1;font-style:italic}
+.testimonial-quote::before{content:'"'}
+.testimonial-quote::after{content:'"'}
+.testimonial-author{display:flex;align-items:center;gap:12px;padding-top:20px;border-top:1px solid var(--g100)}
+.testimonial-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--purple));color:var(--white);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;flex-shrink:0;overflow:hidden}
+.testimonial-avatar img{width:100%;height:100%;object-fit:cover}
+.testimonial-meta{flex:1;min-width:0}
+.testimonial-name{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:var(--navy);font-size:14px;line-height:1.3}
+.testimonial-role{font-size:12px;color:var(--g500);margin-top:2px}
+.testimonial-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.testimonial-tag{background:var(--g100);color:var(--g600);font-size:10px;font-weight:600;padding:3px 8px;border-radius:100px;letter-spacing:0.3px;text-transform:uppercase}
+
+/* MASTERS */
+#masters{background:var(--g50)}
+.masters-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.master-card{background:var(--white);border:1px solid var(--g200);border-radius:var(--radius-lg);padding:28px;text-align:center;transition:all .25s}
+.master-card:hover{border-color:rgba(139,92,246,0.35);box-shadow:0 8px 32px rgba(139,92,246,0.08);transform:translateY(-2px)}
+.master-photo{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue));color:var(--white);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:32px;margin:0 auto 16px;overflow:hidden;box-shadow:0 8px 24px rgba(139,92,246,0.2)}
+.master-photo img{width:100%;height:100%;object-fit:cover}
+.master-name{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:var(--navy);font-size:18px;letter-spacing:-0.3px}
+.master-title{font-size:13px;color:var(--blue);font-weight:600;margin-top:4px}
+.master-bio{font-size:13px;color:var(--g600);line-height:1.6;margin-top:14px;text-align:left}
+.master-specialties{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--g100)}
+.master-specialty{background:rgba(59,130,246,0.08);color:var(--blue);font-size:11px;font-weight:600;padding:4px 10px;border-radius:100px;letter-spacing:0.2px}
+.master-stats{display:flex;justify-content:center;gap:20px;margin-top:16px;padding-top:16px;border-top:1px solid var(--g100)}
+.master-stat{text-align:center}
+.master-stat-val{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:var(--navy);font-size:20px;line-height:1}
+.master-stat-lbl{font-size:10px;color:var(--g500);font-weight:600;margin-top:4px;letter-spacing:0.4px;text-transform:uppercase}
+.master-card{cursor:pointer}
+.master-bio strong{color:var(--navy);font-weight:700}
+.master-card-stats-row{display:flex;justify-content:center;gap:14px;margin-top:14px;padding:10px 0;border-top:1px solid var(--g100);border-bottom:1px solid var(--g100)}
+.master-card-stat{display:flex;flex-direction:column;align-items:center;gap:2px}
+.master-card-stat-val{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:var(--navy);font-size:15px;line-height:1}
+.master-card-stat-lbl{font-size:9.5px;color:var(--g500);font-weight:600;letter-spacing:0.4px;text-transform:uppercase}
+.master-bio{font-size:13px;color:var(--g600);line-height:1.6;margin-top:14px;text-align:left}
+.master-card-cta{margin-top:16px;padding-top:16px;border-top:1px solid var(--g100);font-size:12px;font-weight:700;color:var(--blue);letter-spacing:0.3px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:4px}
+.master-card:hover .master-card-cta{color:var(--purple)}
+
+/* MEMBER MODAL */
+.member-modal{position:fixed;inset:0;background:rgba(10,15,30,0.75);backdrop-filter:blur(8px);display:none;align-items:flex-start;justify-content:center;z-index:200;padding:40px 20px;overflow-y:auto}
+.member-modal.open{display:flex}
+.member-modal-card{background:var(--white);border-radius:20px;max-width:820px;width:100%;position:relative;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.4);animation:mmpop .22s ease-out}
+@keyframes mmpop{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.member-modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:var(--g100);border:none;color:var(--g600);font-size:24px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:all .2s}
+.member-modal-close:hover{background:var(--g200);color:var(--g900);transform:rotate(90deg)}
+.member-modal-head{display:flex;align-items:flex-start;gap:24px;padding:36px 36px 28px;background:linear-gradient(135deg,rgba(139,92,246,0.06),rgba(59,130,246,0.06));border-bottom:1px solid var(--g100)}
+.member-modal-photo{width:104px;height:104px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue));color:var(--white);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:36px;flex-shrink:0;overflow:hidden;box-shadow:0 8px 24px rgba(139,92,246,0.25)}
+.member-modal-photo img{width:100%;height:100%;object-fit:cover}
+.member-modal-meta{flex:1;min-width:0;padding-top:8px}
+.member-modal-name{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:var(--navy);font-size:26px;letter-spacing:-0.5px;line-height:1.15}
+.member-modal-title{font-size:14px;color:var(--blue);font-weight:700;margin-top:4px}
+.member-modal-specialties{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.member-modal-specialties .master-specialty{margin:0}
+.member-modal-body{padding:24px 36px 36px}
+.member-modal-bio{font-size:15px;color:var(--g700);line-height:1.7}
+.member-modal-stats{display:flex;gap:36px;margin-top:24px;padding:20px 0;border-top:1px solid var(--g100);border-bottom:1px solid var(--g100)}
+.member-modal-stats .master-stat{text-align:left}
+.member-modal-stats .master-stat-val{font-size:24px}
+.member-modal-gallery-wrap{margin-top:24px}
+.member-modal-gallery-label{font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--g500);margin-bottom:14px}
+.member-modal-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.member-modal-gallery-item{aspect-ratio:4/3;border-radius:10px;background:linear-gradient(135deg,var(--g100),var(--g200));display:flex;align-items:center;justify-content:center;color:var(--g400);font-size:11px;font-weight:600;overflow:hidden;position:relative;cursor:pointer;transition:all .2s}
+.member-modal-gallery-item:hover{transform:scale(1.02);box-shadow:0 6px 20px rgba(0,0,0,0.12)}
+.member-modal-gallery-item img{width:100%;height:100%;object-fit:cover;display:block}
+.member-modal-gallery-item .placeholder-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8px}
+.member-modal-gallery-item .placeholder-label span:first-child{font-size:20px;margin-bottom:4px;opacity:0.6}
+.member-modal-gallery-hint{font-size:12px;color:var(--g400);margin-top:12px;font-style:italic}
+
+/* Gallery lightbox (nested modal) */
+.member-lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.92);display:none;align-items:center;justify-content:center;z-index:250;padding:40px;cursor:zoom-out}
+.member-lightbox.open{display:flex}
+.member-lightbox img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px}
+
+body.modal-open{overflow:hidden}
+
+/* CTA */
+.cta{background:var(--navy);padding:64px 24px;text-align:center;position:relative;overflow:hidden;z-index:1}
+.cta::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.06) 1px,transparent 1px);background-size:48px 48px}
+.cta::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(59,130,246,0.14) 0%,transparent 60%)}
+.cta-inner{position:relative;z-index:1;max-width:640px;margin:0 auto}
+.cta h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--white);margin-bottom:12px;letter-spacing:-0.5px}
+.cta p{font-size:15px;color:var(--g400);margin-bottom:24px}
+.btn-primary{display:inline-block;padding:14px 30px;background:linear-gradient(135deg,var(--blue),var(--purple));color:var(--white);border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;transition:all .25s;box-shadow:0 6px 24px rgba(59,130,246,0.45)}
+.btn-primary:hover{box-shadow:0 12px 36px rgba(59,130,246,0.6);transform:translateY(-3px);background:linear-gradient(135deg,var(--blue-neon),var(--purple))}
+
+/* FOOTER */
+footer{background:var(--g900);color:var(--g400);text-align:center;padding:24px;font-size:12px;position:relative;z-index:1}
+footer a{color:var(--g300);text-decoration:none}
+footer a:hover{color:var(--white)}
+
+@media(max-width:640px){
+  .hero h1{font-size:32px}
+  .section-title{font-size:26px}
+  nav{padding:0 16px}
+  .nav-links{gap:14px}
+  .nav-link{font-size:12px}
+}
+
+/* PAGE TABS */
+.page-tabs{background:var(--white);border-bottom:1px solid var(--g200);position:sticky;top:56px;z-index:50;padding:0 24px;box-shadow:0 1px 0 var(--g200)}
+.page-tabs-inner{max-width:1140px;margin:0 auto;display:flex;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.page-tabs-inner::-webkit-scrollbar{display:none}
+.page-tab{padding:18px 22px;background:transparent;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--g500);cursor:pointer;position:relative;transition:color .2s;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-1px;letter-spacing:-0.1px}
+.page-tab:hover{color:var(--navy)}
+.page-tab.active{color:var(--navy);border-bottom-color:var(--blue);font-weight:700}
+
+/* PAGE PANELS */
+.page-panel{display:none}
+.page-panel.active{display:block}
+
+/* Panel opening headers — prominent visual anchor per tab */
+.page-panel .section{padding-top:64px;padding-bottom:64px}
+.page-panel .section-inner > .section-label{font-size:11.5px;letter-spacing:1.6px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);padding:5px 12px;border-radius:100px;color:var(--blue);display:inline-block}
+.page-panel .section-inner > .section-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:42px;font-weight:800;letter-spacing:-0.9px;line-height:1.1;margin:16px 0 14px;color:var(--navy)}
+.page-panel .section-inner > .section-title .accent{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.page-panel .section-inner > .section-sub{font-size:17px;line-height:1.6;color:var(--g600);max-width:640px;margin-bottom:44px}
+
+/* Video panel keeps its dark treatment but scales the header */
+.vt-section .section-inner > .section-label{background:rgba(96,165,250,0.14);border-color:rgba(96,165,250,0.3);color:var(--blue-neon)}
+.vt-section .section-inner > .section-title{color:var(--white)}
+.vt-section .section-inner > .section-title .accent{background:linear-gradient(135deg,var(--blue-neon),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.vt-section .section-inner > .section-sub{color:var(--g400)}
+
+@media(max-width:640px){
+  .page-panel .section-inner > .section-title{font-size:30px}
+}
+
+/* REWORK MASTERS GALLERY (customer PIC quote cards) */
+.rm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.rm-card{background:var(--white);border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:all .25s;display:flex;flex-direction:column;border:1px solid var(--g100)}
+.rm-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,0.12)}
+.rm-card-body{padding:26px 24px 20px;min-height:280px;position:relative;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.rm-card-body::before{content:'"';position:absolute;top:8px;left:20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:44px;font-weight:800;line-height:1;opacity:0.35}
+.rm-quote{font-size:14px;line-height:1.55;margin-top:32px;font-weight:500;position:relative;z-index:1}
+.rm-quote strong{font-weight:700}
+.rm-footer{margin-top:22px;display:flex;align-items:flex-end;justify-content:space-between;gap:14px;position:relative;z-index:1}
+.rm-attribution{flex:1;min-width:0}
+.rm-name{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;letter-spacing:-0.1px;text-transform:uppercase;line-height:1.15}
+.rm-role{font-size:11px;font-weight:600;margin-top:3px;opacity:0.78;line-height:1.35}
+.rm-photo{width:72px;height:72px;border-radius:50%;overflow:hidden;flex-shrink:0;background:rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:22px;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+.rm-photo img{width:100%;height:100%;object-fit:cover}
+.rm-brand{position:absolute;bottom:10px;left:22px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:10px;opacity:0.55;letter-spacing:0.3px;z-index:1}
+.rm-linkedin{padding:12px 24px;font-size:12px;color:var(--g500);border-top:1px solid var(--g100);display:flex;align-items:center;justify-content:space-between;text-decoration:none;font-weight:600;background:var(--white);transition:color .2s}
+.rm-linkedin:hover{color:#0A66C2}
+.rm-linkedin svg{width:14px;height:14px;flex-shrink:0}
+
+/* Image-based Rework Masters card */
+.rm-card-image .rm-image-wrap{cursor:zoom-in;overflow:hidden;background:var(--g100)}
+.rm-card-image .rm-image-wrap img{width:100%;height:auto;display:block;transition:transform .3s ease}
+.rm-card-image .rm-image-wrap:hover img{transform:scale(1.02)}
+
+/* Color tones for RM cards */
+.rm-tone-cream .rm-card-body{background:linear-gradient(135deg,#FEF3C7,#FBBF24);color:#7C2D12}
+.rm-tone-blue .rm-card-body{background:linear-gradient(135deg,#60A5FA,#1E40AF);color:#FFF}
+.rm-tone-purple .rm-card-body{background:linear-gradient(135deg,#8B5CF6,#4C1D95);color:#FFF}
+.rm-tone-yellow .rm-card-body{background:linear-gradient(135deg,#FDE047,#EAB308);color:#713F12}
+.rm-tone-pink .rm-card-body{background:linear-gradient(135deg,#F9A8D4,#DB2777);color:#FFF}
+.rm-tone-green .rm-card-body{background:linear-gradient(135deg,#86EFAC,#059669);color:#FFF}
+.rm-tone-dark .rm-card-body{background:linear-gradient(135deg,#334155,#0F172A);color:#FFF}
+.rm-tone-teal .rm-card-body{background:linear-gradient(135deg,#5EEAD4,#0D9488);color:#FFF}
+
+/* VIDEO TESTIMONIALS PANEL */
+.vt-section{background:var(--navy);color:var(--white);position:relative;overflow:hidden;padding:72px 24px 80px}
+.vt-section::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.06) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.vt-section::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(59,130,246,0.15) 0%,transparent 55%),radial-gradient(ellipse at 80% 70%,rgba(139,92,246,0.12) 0%,transparent 55%);pointer-events:none}
+.vt-section .section-inner{position:relative;z-index:1}
+.vt-section .section-label{color:var(--blue-neon)}
+.vt-section .section-title{color:var(--white)}
+.vt-section .section-sub{color:var(--g400)}
+.vt-list{display:flex;flex-direction:column;gap:56px;margin-top:44px}
+.vt-row{display:grid;grid-template-columns:5fr 6fr;gap:40px;align-items:center}
+.vt-row.reverse{grid-template-columns:6fr 5fr}
+.vt-row.reverse .vt-video{order:2}
+.vt-row.reverse .vt-content{order:1}
+@media(max-width:820px){.vt-row,.vt-row.reverse{grid-template-columns:1fr}.vt-row.reverse .vt-video,.vt-row.reverse .vt-content{order:0}}
+.vt-video{aspect-ratio:16/10;background:linear-gradient(135deg,#334155,#0F172A);border-radius:14px;position:relative;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:all .25s}
+.vt-video:hover{border-color:rgba(96,165,250,0.4);box-shadow:0 20px 60px rgba(59,130,246,0.25);transform:translateY(-2px)}
+.vt-video img{width:100%;height:100%;object-fit:cover;display:block}
+.vt-video-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,0.15) 0%,rgba(0,0,0,0.4) 100%);transition:background .25s}
+.vt-video:hover .vt-video-overlay{background:linear-gradient(180deg,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.3) 100%)}
+.vt-play-btn{width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,0.95);display:flex;align-items:center;justify-content:center;color:var(--navy);transition:transform .25s;box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+.vt-video:hover .vt-play-btn{transform:scale(1.1)}
+.vt-play-btn svg{width:26px;height:26px;margin-left:4px}
+.vt-video-title{position:absolute;top:22px;left:22px;right:22px;color:var(--white);font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:22px;line-height:1.15;letter-spacing:-0.3px;text-shadow:0 2px 12px rgba(0,0,0,0.55);z-index:2}
+.vt-content{position:relative;padding-left:8px}
+.vt-content::before{content:'"';position:absolute;top:-32px;left:-8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:120px;line-height:1;color:rgba(96,165,250,0.14);font-weight:800;pointer-events:none}
+.vt-quote{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;line-height:1.4;color:var(--white);font-weight:700;letter-spacing:-0.3px;position:relative;z-index:1}
+.vt-author{margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1);position:relative;z-index:1}
+.vt-author-name{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--white);font-size:14px;letter-spacing:0.2px}
+.vt-author-role{font-size:13px;color:var(--blue-neon);margin-top:3px;font-weight:500}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/assets/rework_logo.svg" alt="Rework" class="nav-logo-img">
+    Rework
+  </a>
+  <div class="nav-links">
+    <a href="/" class="nav-link">Implementation</a>
+    <a href="/#pro-services" class="nav-link">Professional Services</a>
+    <a href="/testimonials" class="nav-link active">Testimonials</a>
+    <a href="/#cta-final" class="nav-cta">Talk to us →</a>
+  </div>
+</nav>
+
+<!-- PAGE TABS -->
+<div class="page-tabs">
+  <div class="page-tabs-inner">
+    <button class="page-tab active" onclick="switchPanel('masters',this)">🏆 Rework Masters</button>
+    <button class="page-tab" onclick="switchPanel('videos',this)">🎥 Customer Testimonials</button>
+    <button class="page-tab" onclick="switchPanel('squad',this)">👥 Customer Success Squad</button>
+  </div>
+</div>
+
+<!-- PANEL 1: REWORK MASTERS (customer PIC quote gallery) -->
+<div class="page-panel active" id="panel-masters">
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-label">Rework Masters</div>
+      <h2 class="section-title">Voices from the <span class="accent">customers we serve</span></h2>
+      <p class="section-sub">See what makes Rework loved by teams and leaders across Southeast Asia — in their own words.</p>
+
+      <div class="rm-grid" id="rm-grid">
+        <!-- Cards rendered by JS from window.REWORK_MASTERS below -->
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- PANEL 2: CUSTOMER TESTIMONIALS (video stories) -->
+<div class="page-panel" id="panel-videos">
+  <section class="section vt-section">
+    <div class="section-inner">
+      <div class="section-label">Customer Testimonials</div>
+      <h2 class="section-title">Hear it <span class="accent">directly</span> from our customers</h2>
+      <p class="section-sub">On-camera stories from the leaders and teams who chose Rework — how they scoped it, launched it, and what changed after.</p>
+
+      <div class="vt-list" id="vt-list">
+        <!-- Rows rendered by JS from window.VIDEO_TESTIMONIALS below -->
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- PANEL 3: CUSTOMER SUCCESS SQUAD -->
+<div class="page-panel" id="panel-squad">
+<section class="section" id="masters">
+  <div class="section-inner">
+    <div class="section-label">Customer Success Squad</div>
+    <h2 class="section-title">The squad <span class="accent">delivering</span> your implementation</h2>
+    <p class="section-sub">Every implementation is led by a member of Rework's Customer Success Squad — senior CS consultants who own your project from Sales handoff through go-live and post-launch adoption. Tap any profile to see their story and the customers they've worked with.</p>
+
+    <div class="masters-grid" id="squad-grid">
+      <!-- Cards rendered by JS from window.SQUAD data below -->
+    </div>
+  </div>
+</section>
+
+<!-- MEMBER DETAIL MODAL -->
+<div class="member-modal" id="member-modal" onclick="if(event.target===this)closeMember()">
+  <div class="member-modal-card">
+    <button class="member-modal-close" onclick="closeMember()" aria-label="Close">×</button>
+    <div class="member-modal-head">
+      <div class="member-modal-photo" id="mm-photo"></div>
+      <div class="member-modal-meta">
+        <div class="member-modal-name" id="mm-name"></div>
+        <div class="member-modal-title" id="mm-title"></div>
+        <div class="member-modal-specialties" id="mm-specialties"></div>
+      </div>
+    </div>
+    <div class="member-modal-body">
+      <p class="member-modal-bio" id="mm-bio"></p>
+      <div class="member-modal-stats" id="mm-stats"></div>
+      <div class="member-modal-gallery-wrap">
+        <div class="member-modal-gallery-label">Customers & projects</div>
+        <div class="member-modal-gallery" id="mm-gallery"></div>
+        <p class="member-modal-gallery-hint" id="mm-gallery-hint" style="display:none">Photos coming soon.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /panel-squad -->
+
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-inner">
+    <h2>Ready to work with a Rework Master?</h2>
+    <p>Book a scoping call. We'll match your project with the consultant whose specialty fits your team.</p>
+    <a href="/#cta-final" class="btn-primary">Talk to us →</a>
+  </div>
+</section>
+
+<footer>
+  © Rework — <a href="/">Implementation Services</a>
+</footer>
+
+<!-- Gallery lightbox -->
+<div class="member-lightbox" id="member-lightbox" onclick="closeLightbox()"><img id="member-lightbox-img" alt=""></div>
+
+<script>
+/* ─── TAB SWITCHING ──────────────────────────────────── */
+function switchPanel(id, btn){
+  document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+id).classList.add('active');
+  window.scrollTo({top: document.querySelector('.page-tabs').offsetTop - 56, behavior:'smooth'});
+}
+
+/* ─── REWORK MASTERS (customer PIC gallery) ──────────────
+   Two card types are supported:
+
+   1) IMAGE CARD — use when you have a pre-designed testimonial
+      graphic (social-media card export). Set:
+        { type:'image', image:'/path/to/card.png',
+          alt:'Customer name', linkedin:'https://...' }
+
+   2) QUOTE CARD (default) — colored gradient with quote + photo.
+      Set: { name, role, quote, photo (or initials), tone, linkedin }
+      Tones: cream, blue, purple, yellow, pink, green, dark, teal
+─────────────────────────────────────────────────────────── */
+window.REWORK_MASTERS = [
+  { type:'image', image:'/testimonials/rework%20masters/Bliss%20Helper.png', alt:'Bliss Helper — customer testimonial', linkedin:'#' },
+  { type:'image', image:'/testimonials/rework%20masters/JMR%20SSRA.png', alt:'JMR SSRA — customer testimonial', linkedin:'#' },
+  { type:'image', image:'/testimonials/rework%20masters/Coerpa.png', alt:'Coerpa — customer testimonial', linkedin:'#' },
+  { type:'image', image:'/testimonials/rework%20masters/Inzsef.png', alt:'Inzsef — customer testimonial', linkedin:'#' },
+  { type:'image', image:'/testimonials/rework%20masters/Koon%20Ken%20Metal.png', alt:'Koon Ken Metal — customer testimonial', linkedin:'#' },
+  { type:'image', image:'/testimonials/rework%20masters/Maslow.png', alt:'Maslow — customer testimonial', linkedin:'#' },
+  { type:'image', image:'/testimonials/rework%20masters/Rock%20Maestro.png', alt:'Rock Maestro — customer testimonial', linkedin:'#' },
+  { type:'image', image:'/testimonials/rework%20masters/USEM.png', alt:'USEM — customer testimonial', linkedin:'#' }
+];
+
+/* ─── VIDEO TESTIMONIALS ─────────────────────────────────
+   To use real videos: set `videoUrl` to your video link
+   (YouTube, Vimeo, or self-hosted). `thumbnail` accepts an
+   image URL for the video cover. `title` shows as text
+   overlay on the thumbnail.
+─────────────────────────────────────────────────────────── */
+window.VIDEO_TESTIMONIALS = [
+  {
+    thumbnail: '/testimonials/testimonials/Rhansted.png',
+    quote: 'To most people, a lot may look like plain, empty soil. But for us, every property is gold. It\'s just waiting for the right idea, the right timing, and the right tenant mix.',
+    author: 'Ar. Rhansted',
+    role: 'CEO of Rhansted Architects',
+    videoUrl: '#'
+  },
+  {
+    thumbnail: '/testimonials/testimonials/Dexterton.png',
+    quote: 'We\'re not working toward an endpoint — we\'re here for the long, infinite game.',
+    author: 'Audrey Go',
+    role: 'CEO of Dexterton',
+    videoUrl: '#'
+  },
+  {
+    thumbnail: '/testimonials/testimonials/PCS.png',
+    quote: 'Even though we\'re a supplier, we don\'t just deliver materials — we work side by side with contractors from start to finish.',
+    author: 'Karl Ong',
+    role: 'Head of PCS Formworks',
+    videoUrl: '#'
+  },
+  {
+    thumbnail: '/testimonials/testimonials/JMR%20SSRA.png',
+    quote: 'Our recruiters are matchmakers, not gatekeepers. Every placement is a story about a team we understood deeply before we ever sent a candidate.',
+    author: 'JMR SSRA',
+    role: 'Strategic Search & Recruitment Agency',
+    videoUrl: '#'
+  }
+];
+
+/* ─── RENDER REWORK MASTERS ──────────────────────────── */
+function renderReworkMasters(){
+  const grid = document.getElementById('rm-grid');
+  if(!grid) return;
+  const linkedinSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>';
+  grid.innerHTML = window.REWORK_MASTERS.map(m => {
+    if(m.type === 'image'){
+      return `
+        <div class="rm-card rm-card-image">
+          <div class="rm-image-wrap" onclick="openLightbox('${m.image}')">
+            <img src="${m.image}" alt="${m.alt || 'Customer testimonial'}">
+          </div>
+          <a class="rm-linkedin" href="${m.linkedin}" target="_blank" rel="noopener">
+            View on LinkedIn
+            ${linkedinSvg}
+          </a>
+        </div>
+      `;
+    }
+    return `
+      <div class="rm-card rm-tone-${m.tone}">
+        <div class="rm-card-body">
+          <p class="rm-quote">${m.quote}</p>
+          <div class="rm-footer">
+            <div class="rm-attribution">
+              <div class="rm-name">${m.name}</div>
+              <div class="rm-role">${m.role}</div>
+            </div>
+            <div class="rm-photo">${m.photo ? `<img src="${m.photo}" alt="${m.name}">` : m.initials}</div>
+          </div>
+          <div class="rm-brand">✈ Rework</div>
+        </div>
+        <a class="rm-linkedin" href="${m.linkedin}" target="_blank" rel="noopener">
+          View on LinkedIn
+          ${linkedinSvg}
+        </a>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ─── RENDER VIDEO TESTIMONIALS ──────────────────────── */
+function renderVideoTestimonials(){
+  const list = document.getElementById('vt-list');
+  if(!list) return;
+  list.innerHTML = window.VIDEO_TESTIMONIALS.map((v, i) => `
+    <div class="vt-row${i % 2 ? ' reverse' : ''}">
+      <div class="vt-video" onclick="openVideo('${v.videoUrl}')">
+        ${v.thumbnail ? `<img src="${v.thumbnail}" alt="${v.author}">` : ''}
+        ${v.title ? `<div class="vt-video-title">${v.title}</div>` : ''}
+        <div class="vt-video-overlay">
+          <div class="vt-play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg></div>
+        </div>
+      </div>
+      <div class="vt-content">
+        <p class="vt-quote">${v.quote}</p>
+        <div class="vt-author">
+          <div class="vt-author-name">${v.author}</div>
+          <div class="vt-author-role">${v.role}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+function openVideo(url){
+  if(url && url !== '#') window.open(url, '_blank');
+  else alert('Video coming soon.');
+}
+
+renderReworkMasters();
+renderVideoTestimonials();
+
+/* ─── SQUAD DATA ─────────────────────────────────────────
+   To drop in a real photo: replace `photo: null` with a path
+   like `photo: '/testimonials/photos/tracy.jpg'`.
+   To drop in gallery images: put files in /testimonials/gallery/
+   and list their paths in the `gallery` array below.
+─────────────────────────────────────────────────────────── */
+window.SQUAD = [
+  {
+    id: 'tracy',
+    name: 'Tracy Nguyen',
+    title: 'Head of Customer Success',
+    initials: 'TN',
+    photo: '/testimonials/cs%20photos/tracy.jpg',
+    bioShort: 'Leads Rework\'s Customer Success team across APAC — Vietnam, Malaysia, Philippines. 7+ years in B2B SaaS implementation, <strong>60+ launches</strong> shipped, currently driving the Rework × Compass Mind Asia training partnership.',
+    bioFull: 'Leads Rework\'s Customer Success team across APAC. Owns strategic accounts and drives the productization of Rework\'s implementation offerings — turning ad-hoc scoping into the standardized menu Sales uses today. Currently leading the Rework × Compass Mind Asia training partnership rollout for the Malaysian market. 7+ years in B2B SaaS implementation. Vietnamese, bilingual (Vietnamese + English).',
+    specialties: ['Strategic Accounts', 'Implementation Productization', 'APAC Partnerships'],
+    stats: [{val:'7+ yrs', lbl:'in CS'}, {val:'60+', lbl:'launches'}, {val:'4.9★', lbl:'CSAT'}],
+    gallery: []
+  },
+  {
+    id: 'kevin',
+    name: 'Kevin Kim',
+    title: 'Senior CS Manager · Framework Lead',
+    initials: 'KK',
+    photo: '/testimonials/cs%20photos/kevinkim.jpg',
+    bioShort: 'Author of Rework\'s implementation framework — the <strong>5-pillar model</strong> and <strong>15-package taxonomy</strong> every CS engagement runs on today. 7+ years in the field, 45+ launches from Malaysia to South Africa.',
+    bioFull: 'Senior Customer Success Manager and author of Rework\'s implementation framework — the 5-pillar model (People · Process · Tech · Data · AI) and the 15-package taxonomy that shapes every CS engagement today. Deep cross-product expertise across Sales Ops, Work Ops, and People Ops. Has presented Rework in markets from Malaysia to South Africa, and mentors junior CS members on scoping and delivery discipline.',
+    specialties: ['Implementation Framework', 'Sales Ops', 'Cross-Border Deals', 'CS Enablement'],
+    stats: [{val:'7+ yrs', lbl:'in CS'}, {val:'45+', lbl:'launches'}, {val:'4.9★', lbl:'CSAT'}],
+    gallery: []
+  },
+  {
+    id: 'linh',
+    name: 'Linh Ngo',
+    title: 'Customer Success Manager · Sales Ops',
+    initials: 'LN',
+    photo: '/testimonials/cs%20photos/linhngo.jpg',
+    bioShort: 'Sales Ops specialist for SMB and mid-market teams across Vietnam. <strong>25+ pipelines</strong> delivered — every workflow validated with real recent deals before sign-off. Zero go-lives without a full dry-run.',
+    bioFull: 'Customer Success Manager focused on Sales Ops implementations for SMB and mid-market teams across Vietnam. Style is hands-on and dry-run-first — every pipeline, automation, and routing rule is walked through with real recent deals before the team signs off. Comfortable working with sales leaders who\'ve never used a CRM before. 25+ pipelines delivered.',
+    specialties: ['Sales Ops', 'Mid-Market', 'Pipeline Design'],
+    stats: [{val:'3+ yrs', lbl:'in CS'}, {val:'25+', lbl:'launches'}, {val:'4.8★', lbl:'CSAT'}],
+    gallery: []
+  },
+  {
+    id: 'hana',
+    name: 'Hana Nguyen',
+    title: 'Customer Success Manager · People Ops',
+    initials: 'HN',
+    photo: '/testimonials/cs%20photos/hananguyen.jpg',
+    bioShort: 'People Ops (HRM) specialist. 2+ years with HR leaders on payroll, timesheet formulas, and cross-team approvals — <strong>22+ HRM launches</strong>. Adoption-first: nothing ships until HRBPs can run month-end unassisted.',
+    bioFull: 'Customer Success Manager specializing in People Ops (HRM) implementations. Works closely with HR leaders and HRBPs on payroll rules, timesheet formulas, performance workflows, and cross-team approvals. Adoption-first delivery mindset — nothing ships until real HR users can run their own month-end without help. 22+ HRM launches across SEA.',
+    specialties: ['People Ops', 'HRM', 'Payroll & Timesheet', 'Adoption'],
+    stats: [{val:'2+ yrs', lbl:'in CS'}, {val:'22+', lbl:'launches'}, {val:'4.9★', lbl:'CSAT'}],
+    gallery: []
+  },
+  {
+    id: 'michael',
+    name: 'Michael Le',
+    title: 'Customer Success Manager · Work Ops',
+    initials: 'ML',
+    photo: '/testimonials/cs%20photos/michaelle.jpg',
+    bioShort: 'Work Ops specialist for retail, logistics, and multi-site operations. <strong>28+ workflow digitization projects</strong> across SEA — turns WhatsApp-and-Excel chaos into one clean system teams actually use.',
+    bioFull: 'Customer Success Manager with deep Work Ops expertise. Delivers workflow digitization projects for retail chains, logistics operators, and multi-site operations across SEA. Style: map the messy reality first (WhatsApp groups, Excel logs, manual approvals), then design the cleanest possible replacement — no theoretical workflows, only what the team will actually use. 28+ workflow projects shipped.',
+    specialties: ['Work Ops', 'Multi-Site Ops', 'Retail & Logistics', 'Process Digitization'],
+    stats: [{val:'1+ yr', lbl:'in CS'}, {val:'28+', lbl:'launches'}, {val:'4.8★', lbl:'CSAT'}],
+    gallery: []
+  },
+  {
+    id: 'harlyn',
+    name: 'Harlyn Nguyen',
+    title: 'Customer Success Manager · Multi-Product',
+    initials: 'HN',
+    photo: '/testimonials/cs%20photos/harlyn.jpg',
+    bioShort: 'Owns SMB accounts across all <strong>4 Rework product suites</strong>, end-to-end from Sales handoff to Month 3 activation. <strong>15+ launches</strong> this year, emerging AI Agents specialty.',
+    bioFull: 'Customer Success Manager covering onboarding across all four Rework product suites — Sales Ops, Lead Ops, Work Ops, People Ops. Owns SMB accounts end-to-end from Sales handoff through Month 3 activation, and increasingly picks up AI Agents integrations as they enter the standard scope. Emerging specialty: helping first-time-CRM teams land their initial 30-day quick wins.',
+    specialties: ['Multi-Product', 'SMB Onboarding', 'AI Agents', 'Quick-Win Delivery'],
+    stats: [{val:'3+ yrs', lbl:'in CS'}, {val:'15+', lbl:'launches'}, {val:'4.8★', lbl:'CSAT'}],
+    gallery: []
+  }
+];
+
+/* ─── RENDER SQUAD GRID ──────────────────────────────── */
+function renderSquad(){
+  const grid = document.getElementById('squad-grid');
+  grid.innerHTML = window.SQUAD.map(m => `
+    <div class="master-card" onclick="openMember('${m.id}')">
+      <div class="master-photo">${m.photo ? `<img src="${m.photo}" alt="${m.name}">` : m.initials}</div>
+      <div class="master-name">${m.name}</div>
+      <div class="master-title">${m.title}</div>
+      <div class="master-card-stats-row">
+        ${m.stats.map(s => `<div class="master-card-stat"><span class="master-card-stat-val">${s.val}</span><span class="master-card-stat-lbl">${s.lbl}</span></div>`).join('')}
+      </div>
+      <p class="master-bio">${m.bioShort}</p>
+      <div class="master-specialties">
+        ${m.specialties.slice(0,3).map(s => `<span class="master-specialty">${s}</span>`).join('')}
+      </div>
+      <div class="master-card-cta">View profile →</div>
+    </div>
+  `).join('');
+}
+renderSquad();
+
+/* ─── MODAL OPEN / CLOSE ─────────────────────────────── */
+function openMember(id){
+  const m = window.SQUAD.find(x => x.id === id);
+  if(!m) return;
+  document.getElementById('mm-photo').innerHTML = m.photo ? `<img src="${m.photo}" alt="${m.name}">` : m.initials;
+  document.getElementById('mm-name').textContent = m.name;
+  document.getElementById('mm-title').textContent = m.title;
+  document.getElementById('mm-specialties').innerHTML =
+    m.specialties.map(s => `<span class="master-specialty">${s}</span>`).join('');
+  document.getElementById('mm-bio').textContent = m.bioFull;
+  document.getElementById('mm-stats').innerHTML =
+    m.stats.map(s => `<div class="master-stat"><div class="master-stat-val">${s.val}</div><div class="master-stat-lbl">${s.lbl}</div></div>`).join('');
+  const gal = document.getElementById('mm-gallery');
+  const hint = document.getElementById('mm-gallery-hint');
+  if(m.gallery && m.gallery.length){
+    gal.innerHTML = m.gallery.map((src,i) => `<div class="member-modal-gallery-item" onclick="openLightbox('${src}')"><img src="${src}" alt="${m.name} project ${i+1}"></div>`).join('');
+    gal.style.display = 'grid';
+    hint.style.display = 'none';
+  } else {
+    // Empty state: 4 placeholder tiles
+    gal.innerHTML = Array.from({length:4}).map((_,i) => `<div class="member-modal-gallery-item"><div class="placeholder-label"><span>📷</span><span>Project ${i+1}</span></div></div>`).join('');
+    gal.style.display = 'grid';
+    hint.style.display = 'block';
+  }
+  document.getElementById('member-modal').classList.add('open');
+  document.body.classList.add('modal-open');
+}
+function closeMember(){
+  document.getElementById('member-modal').classList.remove('open');
+  document.body.classList.remove('modal-open');
+}
+function openLightbox(src){
+  document.getElementById('member-lightbox-img').src = src;
+  document.getElementById('member-lightbox').classList.add('open');
+}
+function closeLightbox(){
+  document.getElementById('member-lightbox').classList.remove('open');
+}
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){
+    if(document.getElementById('member-lightbox').classList.contains('open')) closeLightbox();
+    else if(document.getElementById('member-modal').classList.contains('open')) closeMember();
+  }
+});
+</script>
+
+</body>
+</html>
