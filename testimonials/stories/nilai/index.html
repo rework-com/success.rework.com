@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nilai University — Customer Success Story · Rework</title>
+<meta name="description" content="How Nilai University moved from Salesforce to Rework CRM and went live in 10 days across student admissions.">
+
+<!-- ⚠️ PREVIEW / DRAFT — NOT APPROVED FOR PUBLIC RELEASE
+     Pending: Mr Goh's recorded interview (scheduled), real pull-quote,
+     video URL, Mr Goh's photo, Nilai logo, and Mr Goh's written sign-off.
+     REMOVE the robots noindex tag below only after the customer approves. -->
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0A0F1E;--navy2:#111834;--blue:#3B82F6;--blue-neon:#60A5FA;--purple:#8B5CF6;--purple-neon:#A78BFA;--cyan:#22D3EE;--green:#10B981;--red:#EF4444;--g50:#F8FAFC;--g100:#F1F5F9;--g200:#E2E8F0;--g300:#CBD5E1;--g400:#94A3B8;--g500:#64748B;--g600:#475569;--g700:#334155;--g800:#1E293B;--g900:#0F172A;--white:#FFF;--radius:12px;--radius-lg:16px;--grid:rgba(148,163,184,0.07)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* ── COMPACT TOP BAR (nav + back merged) ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,.94);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.08);padding:0 28px;height:52px;display:flex;align-items:center;justify-content:space-between}
+.nav-l{display:flex;align-items:center;gap:18px}
+.nav-logo{display:flex;align-items:center;gap:8px;font-family:'Plus Jakarta Sans';font-size:18px;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-.3px}
+.nav-logo svg{width:23px;height:23px}
+.nav-back{color:var(--g400);font-size:12.5px;font-weight:600;text-decoration:none;padding-left:18px;border-left:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:6px}
+.nav-back:hover{color:#fff}
+.nav-r{display:flex;align-items:center;gap:20px}
+.nav-link{color:var(--g400);font-size:12.5px;font-weight:500;text-decoration:none}
+.nav-link:hover{color:#fff}
+.nav-cta{padding:8px 18px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border-radius:8px;font-size:12.5px;font-weight:700;text-decoration:none;box-shadow:0 2px 12px rgba(59,130,246,.35)}
+
+/* ── HERO (video-first) ── */
+.hero{background:linear-gradient(135deg,var(--navy),var(--navy2));position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(96,165,250,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(96,165,250,.05) 1px,transparent 1px);background-size:44px 44px}
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 15% 25%,rgba(59,130,246,.24) 0%,transparent 55%),radial-gradient(ellipse at 88% 80%,rgba(139,92,246,.2) 0%,transparent 55%)}
+.hero-inner{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:38px 28px 44px;display:grid;grid-template-columns:1fr 1.15fr;gap:44px;align-items:center}
+.hero-logo{height:34px;display:inline-flex;align-items:center;padding:0 14px;border-radius:9px;background:rgba(255,255,255,.95);font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;color:var(--navy);margin-bottom:16px}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tag{background:rgba(96,165,250,.14);color:var(--blue-neon);font-size:10.5px;font-weight:700;padding:5px 12px;border-radius:100px;letter-spacing:.5px;text-transform:uppercase;border:1px solid rgba(96,165,250,.28)}
+.hero h1{font-family:'Plus Jakarta Sans';font-weight:800;font-size:38px;line-height:1.08;letter-spacing:-1px;color:#fff}
+.hero h1 .accent{background:linear-gradient(135deg,var(--blue-neon),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:15px;color:var(--g300);margin-top:14px;line-height:1.6}
+
+/* speaker box */
+.speaker{margin-top:22px;display:inline-flex;align-items:center;gap:13px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:13px;padding:11px 16px 11px 12px}
+.sp-avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue));display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans';font-weight:800;color:#fff;font-size:16px;overflow:hidden;flex-shrink:0}
+.sp-avatar img{width:100%;height:100%;object-fit:cover}
+.sp-meta .sp-lbl{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--blue-neon);margin-bottom:2px}
+.sp-meta .sp-name{font-family:'Plus Jakarta Sans';font-weight:800;color:#fff;font-size:15px;line-height:1.15}
+.sp-meta .sp-role{font-size:12px;color:var(--g400);margin-top:1px}
+
+/* hero video */
+.hero-video{aspect-ratio:16/10;background:linear-gradient(135deg,#334155,#0F172A);border-radius:var(--radius-lg);position:relative;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,.1);box-shadow:0 24px 70px rgba(0,0,0,.5)}
+.hero-video img{width:100%;height:100%;object-fit:cover;display:block}
+.hv-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.42));transition:background .2s}
+.hero-video:hover .hv-ov{background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.32))}
+.play{width:78px;height:78px;border-radius:50%;background:rgba(255,255,255,.96);display:flex;align-items:center;justify-content:center;color:var(--navy);box-shadow:0 12px 40px rgba(0,0,0,.45);transition:transform .2s}
+.hero-video:hover .play{transform:scale(1.08)}
+.play svg{width:28px;height:28px;margin-left:5px}
+.hv-badge{position:absolute;top:16px;left:16px;display:flex;align-items:center;gap:7px;background:rgba(10,15,30,.66);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:100px}
+.hv-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px rgba(239,68,68,.3)}
+.hv-cap{position:absolute;left:18px;bottom:16px;color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:16px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+
+/* ── METRICS ── */
+.metrics{max-width:1080px;margin:-26px auto 0;padding:0 28px;position:relative;z-index:5}
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.metric{background:#fff;border:1px solid var(--g200);border-radius:var(--radius-lg);padding:22px 24px;box-shadow:0 12px 34px rgba(15,23,42,.1)}
+.metric-v{font-family:'Plus Jakarta Sans';font-weight:800;font-size:36px;line-height:1;letter-spacing:-1px;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.metric-l{font-size:13px;color:var(--g600);margin-top:9px;font-weight:500;line-height:1.4}
+
+/* ── QUOTE ── */
+.quote-band{max-width:1080px;margin:52px auto 0;padding:0 28px}
+.quote-card{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:20px;padding:44px 48px;position:relative;overflow:hidden}
+.quote-card::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(59,130,246,.2) 0%,transparent 55%),radial-gradient(ellipse at 85% 90%,rgba(139,92,246,.16) 0%,transparent 55%)}
+.qm{position:relative;z-index:1;font-family:'Plus Jakarta Sans';font-size:72px;line-height:.5;color:rgba(96,165,250,.32);font-weight:800}
+.quote-card p{position:relative;z-index:1;font-family:'Plus Jakarta Sans';font-weight:700;font-size:24px;line-height:1.42;color:#fff;letter-spacing:-.4px;margin:14px 0 24px;max-width:840px}
+.qa{position:relative;z-index:1;display:inline-flex;align-items:center;gap:14px}
+.qa-photo{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue));display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans';font-weight:800;color:#fff;font-size:17px;overflow:hidden}
+.qa-photo img{width:100%;height:100%;object-fit:cover}
+.qa-name{font-family:'Plus Jakarta Sans';font-weight:800;color:#fff;font-size:15px}
+.qa-role{font-size:13px;color:var(--blue-neon);margin-top:2px}
+
+/* ── STORY as boxes ── */
+.story{max-width:1080px;margin:56px auto 0;padding:0 28px}
+.story-head{text-align:center;margin-bottom:28px}
+.story-head .lbl{font-size:12px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:var(--blue)}
+.story-head h2{font-family:'Plus Jakarta Sans';font-weight:800;font-size:28px;letter-spacing:-.6px;color:var(--navy);margin-top:8px}
+.story-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.sbox{background:#fff;border:1px solid var(--g200);border-radius:var(--radius-lg);padding:0;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 20px rgba(15,23,42,.05)}
+.sbox-top{padding:18px 22px 14px;position:relative}
+.sbox-top::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.sbox.challenge .sbox-top::before{background:linear-gradient(90deg,var(--red),#F97316)}
+.sbox.transform .sbox-top::before{background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.sbox.impact .sbox-top::before{background:linear-gradient(90deg,var(--green),#0D9488)}
+.sbox-badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.sbox.challenge .sbox-badge{color:var(--red)}
+.sbox.transform .sbox-badge{color:var(--blue)}
+.sbox.impact .sbox-badge{color:var(--green)}
+.sbox-badge .ic{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff}
+.sbox.challenge .sbox-badge .ic{background:linear-gradient(135deg,var(--red),#F97316)}
+.sbox.transform .sbox-badge .ic{background:linear-gradient(135deg,var(--blue),var(--cyan))}
+.sbox.impact .sbox-badge .ic{background:linear-gradient(135deg,var(--green),#0D9488)}
+.sbox h3{font-family:'Plus Jakarta Sans';font-weight:800;font-size:18px;color:var(--navy);line-height:1.2;letter-spacing:-.3px}
+.sbox-intro{font-size:13px;color:var(--g600);padding:0 22px 14px;line-height:1.55}
+.sbox-list{list-style:none;padding:14px 22px 22px;border-top:1px solid var(--g100);margin-top:auto;display:flex;flex-direction:column;gap:9px}
+.sbox-list li{font-size:12.5px;color:var(--g700);padding-left:22px;position:relative;line-height:1.4}
+.sbox-list li::before{content:'';position:absolute;left:0;top:6px;width:8px;height:8px;border-radius:3px}
+.sbox.challenge .sbox-list li::before{background:var(--red)}
+.sbox.transform .sbox-list li::before{background:var(--blue)}
+.sbox.impact .sbox-list li::before{background:var(--green)}
+.sbox-list li b{color:var(--navy);font-weight:700}
+
+/* ── CTA ── */
+.cta{max-width:1080px;margin:56px auto;padding:0 28px}
+.cta-card{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:20px;padding:48px 28px;text-align:center;position:relative;overflow:hidden}
+.cta-card::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(59,130,246,.2) 0%,transparent 60%)}
+.cta-card h2{position:relative;z-index:1;font-family:'Plus Jakarta Sans';font-weight:800;font-size:28px;color:#fff;letter-spacing:-.6px;margin-bottom:10px}
+.cta-card p{position:relative;z-index:1;font-size:15px;color:var(--g400);margin-bottom:24px}
+.btn{position:relative;z-index:1;display:inline-block;padding:14px 32px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 6px 24px rgba(59,130,246,.45)}
+
+footer{background:var(--g900);color:var(--g400);text-align:center;padding:22px;font-size:12px}
+footer a{color:var(--g300);text-decoration:none}
+
+@media(max-width:820px){
+  .hero-inner{grid-template-columns:1fr;gap:28px}
+  .hero h1{font-size:30px}
+  .metrics-grid,.story-grid{grid-template-columns:1fr}
+  .metrics{margin-top:24px}
+  .quote-card p{font-size:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- COMPACT TOP BAR -->
+<nav>
+  <div class="nav-l">
+    <a href="/" class="nav-logo"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 0C21 0 25.5 1.5 28 4C30.5 6.5 32 11 32 16C32 21 30.7 25.3 28 28C25.3 30.7 21 32 16 32C11 32 6.5 30.5 4 28C1.5 25.5 0 21 0 16C0 11 1.5 6.5 4 4C6.5 1.5 11 0 16 0ZM19 9L8 13C7.6 13.1 7 14 7 15C7 15.7 8.3 16 9.3 16H16L17.3 22.7C17.7 24 18.7 24.7 19.3 24.7C20 24.7 20.5 23.6 20.7 22.7L23 11C23.5 8 21 8 19 9Z" fill="white"/></svg>Rework</a>
+    <a href="/testimonials" class="nav-back">← Success Stories</a>
+  </div>
+  <div class="nav-r">
+    <a href="/" class="nav-link">Implementation</a>
+    <a href="/#cta" class="nav-cta">Talk to us →</a>
+  </div>
+</nav>
+
+<!-- HERO — video-first -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-logo"><!-- <img src="nilai-logo.png" style="height:22px"> -->Nilai University</div>
+      <div class="tags">
+        <span class="tag">Higher Education</span>
+        <span class="tag">Student Admissions</span>
+        <span class="tag">Malaysia</span>
+      </div>
+      <h1>From Salesforce to a CRM that <span class="accent">actually works</span></h1>
+      <p class="hero-sub">How Nilai University migrated ~22,000 admissions leads off Salesforce and went live on Rework CRM in just 10 days — without disrupting a single intake.</p>
+      <div class="speaker">
+        <div class="sp-avatar"><!-- <img src="mr-goh.jpg" alt="Mr Goh"> -->MG</div>
+        <div class="sp-meta">
+          <div class="sp-lbl">Featured speaker</div>
+          <div class="sp-name">Mr Goh</div>
+          <div class="sp-role">Marketing Manager · Nilai University</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-video" onclick="/* set video URL */">
+      <!-- <img src="thumbnail.jpg" alt="Nilai University testimonial"> -->
+      <div class="hv-badge"><span class="dot"></span> 2-min story</div>
+      <div class="hv-ov"><div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg></div></div>
+      <div class="hv-cap">Watch Mr Goh's story ▸</div>
+    </div>
+  </div>
+</header>
+
+<!-- METRICS -->
+<section class="metrics">
+  <div class="metrics-grid">
+    <div class="metric"><div class="metric-v">10 days</div><div class="metric-l">From signed contract to go-live</div></div>
+    <div class="metric"><div class="metric-v">~22,000</div><div class="metric-l">Admissions leads migrated cleanly</div></div>
+    <div class="metric"><div class="metric-v">700</div><div class="metric-l">Active students managed end-to-end</div></div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-band">
+  <div class="quote-card">
+    <div class="qm">"</div>
+    <p>[Insert Mr Goh's standout on-camera line here — the one sentence that captures why Rework beat Salesforce for the admissions team.]</p>
+    <div class="qa">
+      <div class="qa-photo"><!-- <img src="mr-goh.jpg" alt="Mr Goh"> -->MG</div>
+      <div>
+        <div class="qa-name">Mr Goh</div>
+        <div class="qa-role">Marketing Manager · Nilai University</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY as boxes -->
+<section class="story">
+  <div class="story-head">
+    <div class="lbl">The Journey</div>
+    <h2>Challenge → Transformation → Impact</h2>
+  </div>
+  <div class="story-grid">
+    <div class="sbox challenge">
+      <div class="sbox-top">
+        <div class="sbox-badge"><span class="ic">!</span> The Challenge</div>
+        <h3>A CRM that fought the admissions team</h3>
+      </div>
+      <p class="sbox-intro">Salesforce was built for enterprise sales, not education intakes — too heavy for how Nilai actually worked.</p>
+      <ul class="sbox-list">
+        <li><b>Over-engineered</b> for a student-admissions workflow</li>
+        <li><b>Slow to change</b> — every tweak needed a specialist</li>
+        <li><b>22,000 leads</b> locked in a system they'd outgrown</li>
+        <li><b>Cost &amp; complexity</b> that didn't match the need</li>
+      </ul>
+    </div>
+    <div class="sbox transform">
+      <div class="sbox-top">
+        <div class="sbox-badge"><span class="ic">⇄</span> The Transformation</div>
+        <h3>A purpose-fit CRM, live in 10 days</h3>
+      </div>
+      <p class="sbox-intro">Rework's CS team mapped Nilai's real process first, then built the CRM around it — migrating every lead before the next intake.</p>
+      <ul class="sbox-list">
+        <li><b>~22,000 leads migrated</b> cleanly off Salesforce</li>
+        <li><b>10-day go-live</b> from contract to production</li>
+        <li>Pipeline <b>shaped around their process</b></li>
+        <li>A system the team can <b>adjust themselves</b></li>
+      </ul>
+    </div>
+    <div class="sbox impact">
+      <div class="sbox-top">
+        <div class="sbox-badge"><span class="ic">✓</span> The Impact</div>
+        <h3>A CRM the team actually wants to use</h3>
+      </div>
+      <p class="sbox-intro">Nilai now runs 700 active students on a platform that fits — faster to work in and easier to change.</p>
+      <ul class="sbox-list">
+        <li><b>700 students</b> managed end-to-end in one place</li>
+        <li><b>Self-serve changes</b> without specialist gatekeepers</li>
+        <li>A clean foundation for <b>every future intake</b></li>
+        <li>A team that would <b>never go back</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-card">
+    <h2>Ready for a CRM that fits your team?</h2>
+    <p>Book a scoping call — we'll map your process before we build anything, just like we did for Nilai.</p>
+    <a href="/#cta" class="btn">Talk to us →</a>
+  </div>
+</section>
+
+<footer>© Rework — <a href="/testimonials">Customer Success Stories</a></footer>
+
+</body>
+</html>
