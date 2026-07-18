@@ -63,6 +63,24 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,.94);backdrop-fil
 .hv-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px rgba(239,68,68,.3)}
 .hv-cap{position:absolute;left:18px;bottom:16px;color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:16px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
 
+/* ── VIDEO MODAL (theater + dockable mini-player) ── */
+.vm-overlay{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(5,8,18,.82);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.vm-overlay.open{display:flex}
+.vm-player{position:relative;width:min(92vw,calc(82vh * 16/9));aspect-ratio:16/9;background:#000;border-radius:14px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.6);transition:width .28s ease}
+.vm-frame{position:absolute;inset:0}
+.vm-frame iframe{width:100%;height:100%;border:0;display:block}
+.vm-btn{position:absolute;top:10px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(10,15,30,.7);color:#fff;font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:background .2s}
+.vm-btn:hover{background:rgba(10,15,30,.96)}
+.vm-close{right:10px}
+.vm-expand{right:52px;display:none}
+.vm-hint{position:absolute;left:0;right:0;bottom:-30px;text-align:center;color:var(--g400);font-size:12px;font-weight:500}
+/* docked = corner mini-player, page stays readable */
+.vm-overlay.docked{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;pointer-events:none;padding:0;align-items:flex-end;justify-content:flex-end}
+.vm-overlay.docked .vm-player{pointer-events:auto;width:min(380px,82vw);margin:0 20px 20px 0;box-shadow:0 16px 50px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.14)}
+.vm-overlay.docked .vm-expand{display:flex}
+.vm-overlay.docked .vm-hint{display:none}
+@media(max-width:640px){.vm-overlay.docked .vm-player{width:min(300px,88vw);margin:0 12px 12px 0}}
+
 /* ── METRICS ── */
 .metrics{max-width:1080px;margin:-26px auto 0;padding:0 28px;position:relative;z-index:5}
 .metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -176,7 +194,7 @@ footer a{color:var(--g300);text-decoration:none}
         </div>
       </div>
     </div>
-    <div class="hero-video" data-yt="aqCbjIfwAnQ" onclick="playVideo(this)">
+    <div class="hero-video" data-yt="aqCbjIfwAnQ" onclick="openVideoModal()">
       <img src="https://i.ytimg.com/vi/aqCbjIfwAnQ/maxresdefault.jpg" alt="Nilai University — Rework Customer Spotlight">
       <div class="hv-badge"><span class="dot"></span> Full interview</div>
       <div class="hv-ov"><div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg></div></div>
@@ -278,11 +296,35 @@ footer a{color:var(--g300);text-decoration:none}
 
 <footer>© Rework — <a href="/testimonials">Customer Success Stories</a></footer>
 
+<!-- Video modal (theater + dockable mini-player) -->
+<div class="vm-overlay" id="vidModal" aria-hidden="true">
+  <div class="vm-player" id="vmPlayer">
+    <div class="vm-frame" id="vmFrame"></div>
+    <button class="vm-btn vm-expand" id="vmExpand" title="Expand" aria-label="Expand video">⤢</button>
+    <button class="vm-btn vm-close" id="vmClose" title="Close" aria-label="Close video">✕</button>
+    <div class="vm-hint">Click outside to keep watching while you read ↓</div>
+  </div>
+</div>
+
 <script>
-function playVideo(el){
-  var id=el.getAttribute('data-yt');
-  el.innerHTML='<iframe style="position:absolute;inset:0;width:100%;height:100%;border:0" src="https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0&playsinline=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="Rework Customer Spotlight | Nilai University"></iframe>';
+/* Video modal: open big, click outside to dock to a corner mini-player
+   (keeps playing so you can read), ✕ to close, ⤢ to re-expand */
+var YT_ID='aqCbjIfwAnQ';
+var vm=document.getElementById('vidModal'), vmFrame=document.getElementById('vmFrame');
+function openVideoModal(){
+  if(!vmFrame.querySelector('iframe')){
+    vmFrame.innerHTML='<iframe src="https://www.youtube.com/embed/'+YT_ID+'?autoplay=1&rel=0&playsinline=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="Rework Customer Spotlight | Nilai University"></iframe>';
+  }
+  vm.classList.remove('docked'); vm.classList.add('open');
+  document.body.style.overflow='hidden';
 }
+function dockVideo(){ vm.classList.add('docked'); document.body.style.overflow=''; }
+function expandVideo(){ vm.classList.remove('docked'); document.body.style.overflow='hidden'; }
+function closeVideo(){ vm.classList.remove('open','docked'); vmFrame.innerHTML=''; document.body.style.overflow=''; }
+vm.addEventListener('click', function(e){ if(e.target===vm && !vm.classList.contains('docked')) dockVideo(); });
+document.getElementById('vmClose').onclick=closeVideo;
+document.getElementById('vmExpand').onclick=expandVideo;
+document.addEventListener('keydown', function(e){ if(e.key==='Escape' && vm.classList.contains('open')) closeVideo(); });
 
 /* Quote carousel — auto-advance every 5s, click dots, pause on hover */
 (function(){
