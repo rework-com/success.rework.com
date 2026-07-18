@@ -79,6 +79,15 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,.94);backdrop-fil
 .qa{position:relative;z-index:1;display:inline-flex;align-items:center;gap:14px}
 .qa-photo{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue));display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans';font-weight:800;color:#fff;font-size:17px;overflow:hidden}
 .qa-photo img{width:100%;height:100%;object-fit:cover}
+.q-viewport{overflow:hidden;position:relative;z-index:1}
+.q-track{display:flex;align-items:flex-start;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.q-slide{min-width:100%;flex:0 0 100%;font-family:'Plus Jakarta Sans';font-weight:700;font-size:24px;line-height:1.42;color:#fff;letter-spacing:-.4px;margin:14px 0 24px;padding-right:10px}
+.q-bottom{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.q-dots{display:flex;gap:8px}
+.q-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.25);border:none;padding:0;cursor:pointer;transition:all .25s}
+.q-dot.active{width:22px;border-radius:100px;background:var(--blue-neon)}
+.q-dot:hover{background:rgba(255,255,255,.55)}
+@media(max-width:720px){.q-slide{font-size:20px}}
 .qa-name{font-family:'Plus Jakarta Sans';font-weight:800;color:#fff;font-size:15px}
 .qa-role{font-size:13px;color:var(--blue-neon);margin-top:2px}
 
@@ -190,13 +199,21 @@ footer a{color:var(--g300);text-decoration:none}
 <section class="quote-band">
   <div class="quote-card">
     <div class="qm">"</div>
-    <p>Whenever we need help, Rework is right there — even late at night. That's a level of support we'd never had before.</p>
-    <div class="qa">
-      <div class="qa-photo"><!-- <img src="goh.jpg" alt="Goh Thean Howe"> -->GT</div>
-      <div>
-        <div class="qa-name">Goh Thean Howe</div>
-        <div class="qa-role">Digital Channel Manager · Nilai University</div>
+    <div class="q-viewport">
+      <div class="q-track" id="qTrack">
+        <p class="q-slide">Whenever we need help, Rework is right there — even late at night. That's a level of support we'd never had before.</p>
+        <p class="q-slide">An update that used to take hours now takes minutes — our admin walks into the boss's office smiling, because the numbers finally tally and you can trust the report.</p>
       </div>
+    </div>
+    <div class="q-bottom">
+      <div class="qa">
+        <div class="qa-photo"><!-- <img src="goh.jpg" alt="Goh Thean Howe"> -->GT</div>
+        <div>
+          <div class="qa-name">Goh Thean Howe</div>
+          <div class="qa-role">Digital Channel Manager · Nilai University</div>
+        </div>
+      </div>
+      <div class="q-dots" id="qDots"></div>
     </div>
   </div>
 </section>
@@ -266,6 +283,34 @@ function playVideo(el){
   var id=el.getAttribute('data-yt');
   el.innerHTML='<iframe style="position:absolute;inset:0;width:100%;height:100%;border:0" src="https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0&playsinline=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="Rework Customer Spotlight | Nilai University"></iframe>';
 }
+
+/* Quote carousel — auto-advance every 5s, click dots, pause on hover */
+(function(){
+  var track=document.getElementById('qTrack');
+  if(!track) return;
+  var slides=track.children.length;
+  var dotsWrap=document.getElementById('qDots');
+  var i=0, timer=null;
+  function go(n){
+    i=(n+slides)%slides;
+    track.style.transform='translateX(-'+(i*100)+'%)';
+    var dots=dotsWrap.children;
+    for(var k=0;k<dots.length;k++) dots[k].className='q-dot'+(k===i?' active':'');
+  }
+  function start(){ timer=setInterval(function(){ go(i+1); },5000); }
+  function reset(){ clearInterval(timer); start(); }
+  for(var d=0; d<slides; d++){ (function(d){
+    var b=document.createElement('button');
+    b.className='q-dot'+(d===0?' active':'');
+    b.setAttribute('aria-label','Show quote '+(d+1));
+    b.onclick=function(){ go(d); reset(); };
+    dotsWrap.appendChild(b);
+  })(d); }
+  start();
+  var card=track.closest('.quote-card');
+  card.addEventListener('mouseenter',function(){ clearInterval(timer); });
+  card.addEventListener('mouseleave',reset);
+})();
 </script>
 
 </body>
