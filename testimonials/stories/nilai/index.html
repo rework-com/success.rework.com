@@ -165,8 +165,8 @@ footer a{color:var(--g300);text-decoration:none}
         </div>
       </div>
     </div>
-    <div class="hero-video" onclick="/* set video URL */">
-      <!-- <img src="thumbnail.jpg" alt="Nilai University testimonial"> -->
+    <div class="hero-video" data-yt="aqCbjIfwAnQ" onclick="playVideo(this)">
+      <img src="https://i.ytimg.com/vi/aqCbjIfwAnQ/maxresdefault.jpg" alt="Nilai University — Rework Customer Spotlight">
       <div class="hv-badge"><span class="dot"></span> 2-min story</div>
       <div class="hv-ov"><div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg></div></div>
       <div class="hv-cap">Watch Mr Goh's story ▸</div>
@@ -257,6 +257,13 @@ footer a{color:var(--g300);text-decoration:none}
 </section>
 
 <footer>© Rework — <a href="/testimonials">Customer Success Stories</a></footer>
+
+<script>
+function playVideo(el){
+  var id=el.getAttribute('data-yt');
+  el.innerHTML='<iframe style="position:absolute;inset:0;width:100%;height:100%;border:0" src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="Rework Customer Spotlight | Nilai University"></iframe>';
+}
+</script>
 
 </body>
 </html>
