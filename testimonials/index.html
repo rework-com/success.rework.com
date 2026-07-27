@@ -254,6 +254,37 @@ footer a:hover{color:var(--white)}
 .vt-author{margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1);position:relative;z-index:1}
 .vt-author-name{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--white);font-size:14px;letter-spacing:0.2px}
 .vt-author-role{font-size:13px;color:var(--blue-neon);margin-top:3px;font-weight:500}
+
+/* CUSTOMER TESTIMONIALS — video-clip cards */
+.ct-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;margin-top:44px}
+.ct-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none}
+.ct-card.live{cursor:pointer;transition:all .25s}
+.ct-card.live:hover{border-color:rgba(96,165,250,.4);box-shadow:0 16px 44px rgba(59,130,246,.18);transform:translateY(-3px)}
+.ct-thumb{aspect-ratio:16/9;position:relative;overflow:hidden;background:linear-gradient(135deg,#334155,#0F172A)}
+.ct-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.ct-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.42));transition:background .25s}
+.ct-card.live:hover .ct-ov{background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.3))}
+.ct-play{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;color:var(--navy);box-shadow:0 10px 30px rgba(0,0,0,.4);transition:transform .25s}
+.ct-card.live:hover .ct-play{transform:scale(1.1)}
+.ct-play svg{width:22px;height:22px;margin-left:3px}
+.ct-badge{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:6px;background:rgba(10,15,30,.66);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:10.5px;font-weight:700;padding:5px 11px;border-radius:100px}
+.ct-badge .dot{width:6px;height:6px;border-radius:50%;background:#EF4444}
+.ct-body{padding:18px 18px 20px;flex:1;display:flex;flex-direction:column}
+.ct-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:#fff;font-size:16px;line-height:1.3;letter-spacing:-.2px}
+.ct-meta{color:var(--blue-neon);font-size:12.5px;font-weight:600;margin-top:8px}
+.ct-cta{margin-top:auto;padding-top:14px;font-size:12.5px;font-weight:700;color:#fff;opacity:.9}
+.ct-card.soon{opacity:.7;border-style:dashed}
+.ct-thumb-soon{aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:repeating-linear-gradient(45deg,rgba(255,255,255,.02),rgba(255,255,255,.02) 12px,rgba(255,255,255,.045) 12px,rgba(255,255,255,.045) 24px);color:var(--g500)}
+.ct-thumb-soon .ic{font-size:26px;opacity:.5}
+.ct-thumb-soon span{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+
+/* DX LEADERS — read affordances on reused vt-row layout */
+a.vt-row{text-decoration:none;color:inherit}
+a.vt-row:hover .vt-quote{color:var(--blue-neon);transition:color .2s}
+.vt-read-pill{padding:11px 20px;border-radius:100px;background:rgba(255,255,255,.95);color:var(--navy);font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.4);transition:transform .25s}
+a.vt-row:hover .vt-read-pill{transform:scale(1.05)}
+.dx-eyebrow{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--blue-neon);margin-bottom:14px}
+.dx-readlink{display:inline-flex;align-items:center;gap:6px;margin-top:18px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13px;color:var(--blue-neon)}
 </style>
 </head>
 <body>
@@ -276,6 +307,7 @@ footer a:hover{color:var(--white)}
   <div class="page-tabs-inner">
     <button class="page-tab active" onclick="switchPanel('masters',this)">🏆 Rework Masters</button>
     <button class="page-tab" onclick="switchPanel('videos',this)">🎥 Customer Testimonials</button>
+    <button class="page-tab" onclick="switchPanel('dxleaders',this)">📰 DX Leaders</button>
     <button class="page-tab" onclick="switchPanel('squad',this)">👥 Customer Success Squad</button>
   </div>
 </div>
@@ -295,16 +327,31 @@ footer a:hover{color:var(--white)}
   </section>
 </div>
 
-<!-- PANEL 2: CUSTOMER TESTIMONIALS (video stories) -->
+<!-- PANEL 2: CUSTOMER TESTIMONIALS (video clips) -->
 <div class="page-panel" id="panel-videos">
   <section class="section vt-section">
     <div class="section-inner">
       <div class="section-label">Customer Testimonials</div>
       <h2 class="section-title">Hear it <span class="accent">directly</span> from our customers</h2>
-      <p class="section-sub">On-camera stories from the leaders and teams who chose Rework — how they scoped it, launched it, and what changed after.</p>
+      <p class="section-sub">Short video stories from the customers who chose Rework — in their own words. Starting with Nilai University, with more on the way.</p>
 
-      <div class="vt-list" id="vt-list">
-        <!-- Rows rendered by JS from window.VIDEO_TESTIMONIALS below -->
+      <div class="ct-grid" id="ct-grid">
+        <!-- Cards rendered by JS from window.CUSTOMER_VIDEOS below -->
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- PANEL 3: DX LEADERS (in-depth magazine stories) -->
+<div class="page-panel" id="panel-dxleaders">
+  <section class="section vt-section">
+    <div class="section-inner">
+      <div class="section-label">DX Leaders</div>
+      <h2 class="section-title">Stories from <span class="accent">digital-transformation</span> leaders</h2>
+      <p class="section-sub">Long-form interviews with the founders and executives reinventing how their companies work — and the part Rework plays in it.</p>
+
+      <div class="vt-list" id="dx-list">
+        <!-- Rows rendered by JS from window.DX_LEADERS below -->
       </div>
     </div>
   </section>
@@ -398,41 +445,59 @@ window.REWORK_MASTERS = [
   { type:'image', image:'/testimonials/rework%20masters/USEM.png', alt:'USEM — customer testimonial', linkedin:'#' }
 ];
 
-/* ─── VIDEO TESTIMONIALS ─────────────────────────────────
-   To use real videos: set `videoUrl` to your video link
-   (YouTube, Vimeo, or self-hosted). `thumbnail` accepts an
-   image URL for the video cover. `title` shows as text
-   overlay on the thumbnail.
+/* ─── DX LEADERS (in-depth magazine stories) ─────────────
+   Each card links out to the full article on dxleaders.rework.com.
 ─────────────────────────────────────────────────────────── */
-window.VIDEO_TESTIMONIALS = [
-  {
-    thumbnail: '/testimonials/testimonials/Rhansted.png',
-    quote: 'To most people, a lot may look like plain, empty soil. But for us, every property is gold. It\'s just waiting for the right idea, the right timing, and the right tenant mix.',
-    author: 'Ar. Rhansted',
-    role: 'CEO of Rhansted Architects',
-    videoUrl: '#'
-  },
+window.DX_LEADERS = [
   {
     thumbnail: '/testimonials/testimonials/Dexterton.png',
-    quote: 'We\'re not working toward an endpoint — we\'re here for the long, infinite game.',
+    eyebrow: 'Retail · Home Fixtures',
+    title: 'Rebuilding a legacy: how Dexterton became a customer-centric business',
     author: 'Audrey Go',
     role: 'CEO of Dexterton',
-    videoUrl: '#'
-  },
-  {
-    thumbnail: '/testimonials/testimonials/PCS.png',
-    quote: 'Even though we\'re a supplier, we don\'t just deliver materials — we work side by side with contractors from start to finish.',
-    author: 'Karl Ong',
-    role: 'Head of PCS Formworks',
-    videoUrl: '#'
+    url: 'https://dxleaders.rework.com/dexterton-customer-centric/'
   },
   {
     thumbnail: '/testimonials/testimonials/JMR%20SSRA.png',
-    quote: 'Our recruiters are matchmakers, not gatekeepers. Every placement is a story about a team we understood deeply before we ever sent a candidate.',
-    author: 'JMR SSRA',
-    role: 'Strategic Search & Recruitment Agency',
-    videoUrl: '#'
+    eyebrow: 'Recruitment',
+    title: 'Inside the people-first approach of JMR SSRA',
+    author: 'Aisha Castro',
+    role: 'Senior Vice President, JMR SSRA',
+    url: 'https://dxleaders.rework.com/jmr-ssra-customer-centric/'
+  },
+  {
+    thumbnail: '/testimonials/testimonials/PCS.png',
+    eyebrow: 'Construction Materials',
+    title: 'Understanding before delivering: a new standard from PCS Formworks',
+    author: 'Karl Ong',
+    role: 'Deputy Head of PCS Formworks',
+    url: 'https://dxleaders.rework.com/pcs-formworks-customer-centric/'
+  },
+  {
+    thumbnail: '/testimonials/testimonials/Rhansted.png',
+    eyebrow: 'Architecture',
+    title: 'Always excited: how Rhansted Architects brings value to every build',
+    author: 'Ar. Rhansted',
+    role: 'CEO of Rhansted Architects',
+    url: 'https://dxleaders.rework.com/rhansted-architects/'
   }
+];
+
+/* ─── CUSTOMER VIDEO TESTIMONIALS ────────────────────────
+   `href` links to the full story page. Set `soon:true` for an
+   upcoming placeholder card.
+─────────────────────────────────────────────────────────── */
+window.CUSTOMER_VIDEOS = [
+  {
+    thumbnail: 'https://i.ytimg.com/vi/aqCbjIfwAnQ/maxresdefault.jpg',
+    badge: 'Full interview',
+    title: 'From Salesforce to a CRM that actually works',
+    meta: 'Goh Thean Howe · Nilai University',
+    href: '/testimonials/stories/nilai/'
+  },
+  { soon: true, meta: 'Recording soon' },
+  { soon: true, meta: 'Recording soon' },
+  { soon: true, meta: 'Recording soon' }
 ];
 
 /* ─── RENDER REWORK MASTERS ──────────────────────────── */
@@ -476,36 +541,66 @@ function renderReworkMasters(){
   }).join('');
 }
 
-/* ─── RENDER VIDEO TESTIMONIALS ──────────────────────── */
-function renderVideoTestimonials(){
-  const list = document.getElementById('vt-list');
+/* ─── RENDER DX LEADERS (magazine story rows) ─────────── */
+function renderDXLeaders(){
+  const list = document.getElementById('dx-list');
   if(!list) return;
-  list.innerHTML = window.VIDEO_TESTIMONIALS.map((v, i) => `
-    <div class="vt-row${i % 2 ? ' reverse' : ''}">
-      <div class="vt-video" onclick="openVideo('${v.videoUrl}')">
-        ${v.thumbnail ? `<img src="${v.thumbnail}" alt="${v.author}">` : ''}
-        ${v.title ? `<div class="vt-video-title">${v.title}</div>` : ''}
+  list.innerHTML = window.DX_LEADERS.map((v, i) => `
+    <a class="vt-row${i % 2 ? ' reverse' : ''}" href="${v.url}" target="_blank" rel="noopener">
+      <div class="vt-video">
+        ${v.thumbnail ? `<img src="${v.thumbnail}" alt="${v.title}">` : ''}
         <div class="vt-video-overlay">
-          <div class="vt-play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg></div>
+          <div class="vt-read-pill">Read the story →</div>
         </div>
       </div>
       <div class="vt-content">
-        <p class="vt-quote">${v.quote}</p>
+        ${v.eyebrow ? `<div class="dx-eyebrow">${v.eyebrow}</div>` : ''}
+        <p class="vt-quote">${v.title}</p>
         <div class="vt-author">
           <div class="vt-author-name">${v.author}</div>
           <div class="vt-author-role">${v.role}</div>
         </div>
+        <span class="dx-readlink">Read full story →</span>
       </div>
-    </div>
+    </a>
   `).join('');
 }
-function openVideo(url){
-  if(url && url !== '#') window.open(url, '_blank');
-  else alert('Video coming soon.');
+
+/* ─── RENDER CUSTOMER VIDEO TESTIMONIALS ─────────────── */
+function renderCustomerVideos(){
+  const grid = document.getElementById('ct-grid');
+  if(!grid) return;
+  const playSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>';
+  grid.innerHTML = window.CUSTOMER_VIDEOS.map(v => {
+    if(v.soon){
+      return `
+        <div class="ct-card soon">
+          <div class="ct-thumb-soon"><span class="ic">🎬</span><span>Upcoming</span></div>
+          <div class="ct-body">
+            <div class="ct-title" style="opacity:.7">New customer story</div>
+            <div class="ct-meta" style="color:var(--g500)">${v.meta || 'Coming soon'}</div>
+          </div>
+        </div>`;
+    }
+    return `
+      <a class="ct-card live" href="${v.href}">
+        <div class="ct-thumb">
+          <img src="${v.thumbnail}" alt="${v.title}">
+          ${v.badge ? `<div class="ct-badge"><span class="dot"></span> ${v.badge}</div>` : ''}
+          <div class="ct-ov"><div class="ct-play">${playSvg}</div></div>
+        </div>
+        <div class="ct-body">
+          <div class="ct-title">${v.title}</div>
+          <div class="ct-meta">${v.meta}</div>
+          <div class="ct-cta">Watch the story →</div>
+        </div>
+      </a>`;
+  }).join('');
 }
 
 renderReworkMasters();
-renderVideoTestimonials();
+renderDXLeaders();
+renderCustomerVideos();
 
 /* ─── SQUAD DATA ─────────────────────────────────────────
    To drop in a real photo: replace `photo: null` with a path
