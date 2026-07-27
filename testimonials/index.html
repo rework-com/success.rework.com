@@ -277,6 +277,26 @@ footer a:hover{color:var(--white)}
 .ct-thumb-soon{aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:repeating-linear-gradient(45deg,rgba(255,255,255,.02),rgba(255,255,255,.02) 12px,rgba(255,255,255,.045) 12px,rgba(255,255,255,.045) 24px);color:var(--g500)}
 .ct-thumb-soon .ic{font-size:26px;opacity:.5}
 .ct-thumb-soon span{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+/* Featured single video */
+.ct-wrap{margin-top:44px}
+.ct-feature{max-width:900px;margin:0 auto}
+.ctf-video{aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:18px;cursor:pointer;background:linear-gradient(135deg,#334155,#0F172A);border:1px solid rgba(255,255,255,.1);box-shadow:0 24px 70px rgba(0,0,0,.5);transition:box-shadow .25s}
+.ctf-video:hover{box-shadow:0 28px 80px rgba(59,130,246,.28)}
+.ctf-video img{width:100%;height:100%;object-fit:cover;display:block}
+.ct-play-lg{width:84px;height:84px}
+.ct-play-lg svg{width:30px;height:30px;margin-left:4px}
+.ctf-info{text-align:center;margin-top:26px}
+.ctf-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:#fff;font-size:26px;letter-spacing:-.4px;line-height:1.2}
+.ctf-meta{color:var(--blue-neon);font-size:14px;font-weight:600;margin-top:10px}
+.ctf-link{display:inline-block;margin-top:16px;color:#fff;font-weight:700;font-size:13px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:2px}
+.ctf-link:hover{border-color:#fff}
+.ct-upcoming{max-width:900px;margin:48px auto 0;text-align:center}
+.ctu-label{font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--g500);margin-bottom:16px}
+.ctu-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ctu-card{aspect-ratio:16/9;border:1px dashed rgba(255,255,255,.16);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--g500);background:rgba(255,255,255,.02)}
+.ctu-card .ic{font-size:22px;opacity:.5}
+.ctu-card span:last-child{font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+@media(max-width:640px){.ctf-title{font-size:21px}.ctu-row{grid-template-columns:1fr}}
 
 /* DX LEADERS — read affordances on reused vt-row layout */
 a.vt-row{text-decoration:none;color:inherit}
@@ -335,8 +355,8 @@ a.vt-row:hover .vt-read-pill{transform:scale(1.05)}
       <h2 class="section-title">Hear it <span class="accent">directly</span> from our customers</h2>
       <p class="section-sub">Short video stories from the customers who chose Rework — in their own words. Starting with Nilai University, with more on the way.</p>
 
-      <div class="ct-grid" id="ct-grid">
-        <!-- Cards rendered by JS from window.CUSTOMER_VIDEOS below -->
+      <div class="ct-wrap" id="ct-wrap">
+        <!-- Featured video + upcoming rendered by JS from window.CUSTOMER_VIDEOS below -->
       </div>
     </div>
   </section>
@@ -442,7 +462,11 @@ window.REWORK_MASTERS = [
   { type:'image', image:'/testimonials/rework%20masters/Koon%20Ken%20Metal.webp', alt:'Koon Ken Metal & Engineering — customer testimonial', linkedin:'https://www.linkedin.com/posts/rework-com_operationalexcellence-digitaltransformation-activity-7342826250073161728-pDRg' },
   { type:'image', image:'/testimonials/rework%20masters/Maslow.webp', alt:'Maslow T&C — customer testimonial', linkedin:'https://www.linkedin.com/posts/rework-com_operationalexcellence-digitaltransformation-activity-7339135750505934852-rA6F' },
   { type:'image', image:'/testimonials/rework%20masters/Rock%20Maestro.webp', alt:'Rock Maestro — customer testimonial', linkedin:'https://www.linkedin.com/posts/rework-com_operationalexcellence-digitaltransformation-activity-7340652156489764864-euwp' },
-  { type:'image', image:'/testimonials/rework%20masters/USEM.webp', alt:'United Solar Energy Malaysia — customer testimonial', linkedin:'https://www.linkedin.com/posts/rework-com_operationalexcellence-digitaltransformation-activity-7335964792152608768-_SDM' }
+  { type:'image', image:'/testimonials/rework%20masters/USEM.webp', alt:'United Solar Energy Malaysia — customer testimonial', linkedin:'https://www.linkedin.com/posts/rework-com_operationalexcellence-digitaltransformation-activity-7335964792152608768-_SDM' },
+  { type:'image', image:'/testimonials/rework%20masters/Dexterton.webp', alt:'Dexterton — customer testimonial', linkedin:'' },
+  { type:'image', image:'/testimonials/rework%20masters/CompassMind.webp', alt:'Compass Mind Asia — customer testimonial', linkedin:'' },
+  { type:'image', image:'/testimonials/rework%20masters/Maraj.webp', alt:'Maraj Energy — customer testimonial', linkedin:'https://www.linkedin.com/posts/rework-com_operationalexcellence-digitaltransformation-activity-7338098322433286147-fsG_' },
+  { type:'image', image:'/testimonials/rework%20masters/Pixajoy.webp', alt:'Pixajoy — customer testimonial', linkedin:'https://www.linkedin.com/posts/rework-com_operationalexcellence-digitaltransformation-activity-7338499673805991936-sS1y' }
 ];
 
 /* ─── DX LEADERS (in-depth magazine stories) ─────────────
@@ -489,15 +513,16 @@ window.DX_LEADERS = [
 ─────────────────────────────────────────────────────────── */
 window.CUSTOMER_VIDEOS = [
   {
-    thumbnail: 'https://i.ytimg.com/vi/aqCbjIfwAnQ/maxresdefault.jpg',
+    yt: 'lXr9TRmSODA',
+    thumbnail: 'https://i.ytimg.com/vi/lXr9TRmSODA/maxresdefault.jpg',
     badge: 'Full interview',
     title: 'From Salesforce to a CRM that actually works',
-    meta: 'Goh Thean Howe · Nilai University',
+    meta: 'Goh Thean Howe · Digital Channel Manager · Nilai University',
     href: '/testimonials/stories/nilai/'
   },
-  { soon: true, meta: 'Recording soon' },
-  { soon: true, meta: 'Recording soon' },
-  { soon: true, meta: 'Recording soon' }
+  { soon: true },
+  { soon: true },
+  { soon: true }
 ];
 
 /* ─── RENDER REWORK MASTERS ──────────────────────────── */
@@ -512,10 +537,10 @@ function renderReworkMasters(){
           <div class="rm-image-wrap" onclick="openLightbox('${m.image}')">
             <img src="${m.image}" alt="${m.alt || 'Customer testimonial'}" loading="lazy" decoding="async">
           </div>
-          <a class="rm-linkedin" href="${m.linkedin}" target="_blank" rel="noopener">
+          ${(m.linkedin && m.linkedin !== '#') ? `<a class="rm-linkedin" href="${m.linkedin}" target="_blank" rel="noopener">
             View on LinkedIn
             ${linkedinSvg}
-          </a>
+          </a>` : ''}
         </div>
       `;
     }
@@ -568,34 +593,38 @@ function renderDXLeaders(){
 
 /* ─── RENDER CUSTOMER VIDEO TESTIMONIALS ─────────────── */
 function renderCustomerVideos(){
-  const grid = document.getElementById('ct-grid');
-  if(!grid) return;
+  const wrap = document.getElementById('ct-wrap');
+  if(!wrap) return;
   const playSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>';
-  grid.innerHTML = window.CUSTOMER_VIDEOS.map(v => {
-    if(v.soon){
-      return `
-        <div class="ct-card soon">
-          <div class="ct-thumb-soon"><span class="ic">🎬</span><span>Upcoming</span></div>
-          <div class="ct-body">
-            <div class="ct-title" style="opacity:.7">New customer story</div>
-            <div class="ct-meta" style="color:var(--g500)">${v.meta || 'Coming soon'}</div>
-          </div>
-        </div>`;
-    }
-    return `
-      <a class="ct-card live" href="${v.href}">
-        <div class="ct-thumb">
-          <img src="${v.thumbnail}" alt="${v.title}" loading="lazy" decoding="async">
-          ${v.badge ? `<div class="ct-badge"><span class="dot"></span> ${v.badge}</div>` : ''}
-          <div class="ct-ov"><div class="ct-play">${playSvg}</div></div>
+  const vids = window.CUSTOMER_VIDEOS;
+  const feat = vids.find(v => !v.soon);
+  const soon = vids.filter(v => v.soon);
+  let html = '';
+  if(feat){
+    html += `
+      <div class="ct-feature">
+        <div class="ctf-video" data-yt="${feat.yt}" onclick="playCT(this)">
+          <img src="${feat.thumbnail}" alt="${feat.title}" loading="lazy" decoding="async">
+          ${feat.badge ? `<div class="ct-badge"><span class="dot"></span> ${feat.badge}</div>` : ''}
+          <div class="ct-ov"><div class="ct-play ct-play-lg">${playSvg}</div></div>
         </div>
-        <div class="ct-body">
-          <div class="ct-title">${v.title}</div>
-          <div class="ct-meta">${v.meta}</div>
-          <div class="ct-cta">Watch the story →</div>
+        <div class="ctf-info">
+          <div class="ctf-title">${feat.title}</div>
+          <div class="ctf-meta">${feat.meta}</div>
+          ${feat.href ? `<a class="ctf-link" href="${feat.href}">Read the full story →</a>` : ''}
         </div>
-      </a>`;
-  }).join('');
+      </div>`;
+  }
+  if(soon.length){
+    html += `<div class="ct-upcoming"><div class="ctu-label">More customer stories on the way</div><div class="ctu-row">` +
+      soon.map(() => `<div class="ctu-card"><span class="ic">🎬</span><span>Upcoming</span></div>`).join('') +
+      `</div></div>`;
+  }
+  wrap.innerHTML = html;
+}
+function playCT(el){
+  var id = el.getAttribute('data-yt');
+  el.innerHTML = '<iframe style="position:absolute;inset:0;width:100%;height:100%;border:0" src="https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0&playsinline=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="Nilai University — Rework Customer Spotlight"></iframe>';
 }
 
 renderReworkMasters();
@@ -680,6 +709,18 @@ window.SQUAD = [
     specialties: ['Multi-Product', 'SMB Onboarding', 'AI Agents', 'Quick-Win Delivery'],
     stats: [{val:'3+ yrs', lbl:'in CS'}, {val:'15+', lbl:'launches'}, {val:'4.8★', lbl:'CSAT'}],
     gallery: []
+  },
+  {
+    id: 'sylvie',
+    name: 'Sylvie Do',
+    title: 'Customer Success Associate · CRM',
+    initials: 'SD',
+    photo: '/testimonials/cs%20photos/sylviedo.webp',
+    bioShort: 'Customer Success Associate focused on the <strong>CRM (Sales Ops)</strong> side of implementations. ~1 year guiding customers through CRM onboarding, data migration, and pipeline setup.',
+    bioFull: 'Customer Success Associate on the Sales Ops / CRM team. Over her first year she has supported customers through CRM onboarding, lead and contact migration, pipeline and automation setup, and hands-on user training — making sure teams are comfortable in the system before go-live. Detail-oriented and close to the day-to-day of how sales teams actually work.',
+    specialties: ['CRM / Sales Ops', 'Onboarding', 'Data Migration'],
+    stats: [{val:'~1 yr', lbl:'in CS'}, {val:'CRM', lbl:'focus area'}],
+    gallery: []
   }
 ];
 
@@ -688,7 +729,7 @@ function renderSquad(){
   const grid = document.getElementById('squad-grid');
   grid.innerHTML = window.SQUAD.map(m => `
     <div class="master-card" onclick="openMember('${m.id}')">
-      <div class="master-photo">${m.photo ? `<img src="${m.photo}" alt="${m.name}">` : m.initials}</div>
+      <div class="master-photo">${m.photo ? `<img src="${m.photo}" alt="${m.name}" loading="lazy" decoding="async">` : m.initials}</div>
       <div class="master-name">${m.name}</div>
       <div class="master-title">${m.title}</div>
       <div class="master-card-stats-row">
