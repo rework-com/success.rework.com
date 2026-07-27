@@ -435,14 +435,14 @@ function switchPanel(id, btn){
       Tones: cream, blue, purple, yellow, pink, green, dark, teal
 ─────────────────────────────────────────────────────────── */
 window.REWORK_MASTERS = [
-  { type:'image', image:'/testimonials/rework%20masters/Bliss%20Helper.png', alt:'Bliss Helper — customer testimonial', linkedin:'#' },
-  { type:'image', image:'/testimonials/rework%20masters/JMR%20SSRA.png', alt:'JMR SSRA — customer testimonial', linkedin:'#' },
-  { type:'image', image:'/testimonials/rework%20masters/Coerpa.png', alt:'Coerpa — customer testimonial', linkedin:'#' },
-  { type:'image', image:'/testimonials/rework%20masters/Inzsef.png', alt:'Inzsef — customer testimonial', linkedin:'#' },
-  { type:'image', image:'/testimonials/rework%20masters/Koon%20Ken%20Metal.png', alt:'Koon Ken Metal — customer testimonial', linkedin:'#' },
-  { type:'image', image:'/testimonials/rework%20masters/Maslow.png', alt:'Maslow — customer testimonial', linkedin:'#' },
-  { type:'image', image:'/testimonials/rework%20masters/Rock%20Maestro.png', alt:'Rock Maestro — customer testimonial', linkedin:'#' },
-  { type:'image', image:'/testimonials/rework%20masters/USEM.png', alt:'USEM — customer testimonial', linkedin:'#' }
+  { type:'image', image:'/testimonials/rework%20masters/Bliss%20Helper.webp', alt:'Bliss Helper — customer testimonial', linkedin:'https://www.linkedin.com/posts/rework-com_operationalexcellence-digitaltransformation-activity-7340231345723359232-a71X' },
+  { type:'image', image:'/testimonials/rework%20masters/JMR%20SSRA.webp', alt:'JMR SSRA — customer testimonial', linkedin:'https://www.linkedin.com/posts/rework-com_operationalexcellence-digitaltransformation-activity-7344204649685557251-9uqo' },
+  { type:'image', image:'/testimonials/rework%20masters/Coerpa.webp', alt:'Coerpa — customer testimonial', linkedin:'https://www.linkedin.com/posts/rework-com_operationalexcellence-digitaltransformation-activity-7336652428051718144-pJ_-' },
+  { type:'image', image:'/testimonials/rework%20masters/Inzsef.webp', alt:'Inzsef Design — customer testimonial', linkedin:'https://www.linkedin.com/posts/rework-com_operationalexcellence-digitaltransformation-activity-7339509087245692928-we21' },
+  { type:'image', image:'/testimonials/rework%20masters/Koon%20Ken%20Metal.webp', alt:'Koon Ken Metal & Engineering — customer testimonial', linkedin:'https://www.linkedin.com/posts/rework-com_operationalexcellence-digitaltransformation-activity-7342826250073161728-pDRg' },
+  { type:'image', image:'/testimonials/rework%20masters/Maslow.webp', alt:'Maslow T&C — customer testimonial', linkedin:'https://www.linkedin.com/posts/rework-com_operationalexcellence-digitaltransformation-activity-7339135750505934852-rA6F' },
+  { type:'image', image:'/testimonials/rework%20masters/Rock%20Maestro.webp', alt:'Rock Maestro — customer testimonial', linkedin:'https://www.linkedin.com/posts/rework-com_operationalexcellence-digitaltransformation-activity-7340652156489764864-euwp' },
+  { type:'image', image:'/testimonials/rework%20masters/USEM.webp', alt:'United Solar Energy Malaysia — customer testimonial', linkedin:'https://www.linkedin.com/posts/rework-com_operationalexcellence-digitaltransformation-activity-7335964792152608768-_SDM' }
 ];
 
 /* ─── DX LEADERS (in-depth magazine stories) ─────────────
@@ -450,7 +450,7 @@ window.REWORK_MASTERS = [
 ─────────────────────────────────────────────────────────── */
 window.DX_LEADERS = [
   {
-    thumbnail: '/testimonials/testimonials/Dexterton.png',
+    thumbnail: '/testimonials/testimonials/Dexterton.webp',
     eyebrow: 'Retail · Home Fixtures',
     title: 'Rebuilding a legacy: how Dexterton became a customer-centric business',
     author: 'Audrey Go',
@@ -458,7 +458,7 @@ window.DX_LEADERS = [
     url: 'https://dxleaders.rework.com/dexterton-customer-centric/'
   },
   {
-    thumbnail: '/testimonials/testimonials/JMR%20SSRA.png',
+    thumbnail: '/testimonials/testimonials/JMR%20SSRA.webp',
     eyebrow: 'Recruitment',
     title: 'Inside the people-first approach of JMR SSRA',
     author: 'Aisha Castro',
@@ -466,7 +466,7 @@ window.DX_LEADERS = [
     url: 'https://dxleaders.rework.com/jmr-ssra-customer-centric/'
   },
   {
-    thumbnail: '/testimonials/testimonials/PCS.png',
+    thumbnail: '/testimonials/testimonials/PCS.webp',
     eyebrow: 'Construction Materials',
     title: 'Understanding before delivering: a new standard from PCS Formworks',
     author: 'Karl Ong',
@@ -474,7 +474,7 @@ window.DX_LEADERS = [
     url: 'https://dxleaders.rework.com/pcs-formworks-customer-centric/'
   },
   {
-    thumbnail: '/testimonials/testimonials/Rhansted.png',
+    thumbnail: '/testimonials/testimonials/Rhansted.webp',
     eyebrow: 'Architecture',
     title: 'Always excited: how Rhansted Architects brings value to every build',
     author: 'Ar. Rhansted',
@@ -510,7 +510,7 @@ function renderReworkMasters(){
       return `
         <div class="rm-card rm-card-image">
           <div class="rm-image-wrap" onclick="openLightbox('${m.image}')">
-            <img src="${m.image}" alt="${m.alt || 'Customer testimonial'}">
+            <img src="${m.image}" alt="${m.alt || 'Customer testimonial'}" loading="lazy" decoding="async">
           </div>
           <a class="rm-linkedin" href="${m.linkedin}" target="_blank" rel="noopener">
             View on LinkedIn
@@ -548,7 +548,7 @@ function renderDXLeaders(){
   list.innerHTML = window.DX_LEADERS.map((v, i) => `
     <a class="vt-row${i % 2 ? ' reverse' : ''}" href="${v.url}" target="_blank" rel="noopener">
       <div class="vt-video">
-        ${v.thumbnail ? `<img src="${v.thumbnail}" alt="${v.title}">` : ''}
+        ${v.thumbnail ? `<img src="${v.thumbnail}" alt="${v.title}" loading="lazy" decoding="async">` : ''}
         <div class="vt-video-overlay">
           <div class="vt-read-pill">Read the story →</div>
         </div>
@@ -585,7 +585,7 @@ function renderCustomerVideos(){
     return `
       <a class="ct-card live" href="${v.href}">
         <div class="ct-thumb">
-          <img src="${v.thumbnail}" alt="${v.title}">
+          <img src="${v.thumbnail}" alt="${v.title}" loading="lazy" decoding="async">
           ${v.badge ? `<div class="ct-badge"><span class="dot"></span> ${v.badge}</div>` : ''}
           <div class="ct-ov"><div class="ct-play">${playSvg}</div></div>
         </div>
