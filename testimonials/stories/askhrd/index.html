@@ -76,15 +76,6 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,.94);backdrop-fil
 .hv-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px rgba(239,68,68,.3)}
 .hv-cap{position:absolute;left:18px;bottom:16px;color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:16px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
 
-/* hero video — "film not published yet" resting state.
-   Set YT_ID in the script at the bottom and this swaps to the real player. */
-.hero-video.pending{cursor:default;background:linear-gradient(135deg,#1E293B,#0B1120)}
-.hero-video.pending::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(96,165,250,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(96,165,250,.06) 1px,transparent 1px);background-size:34px 34px}
-.hv-pending{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px}
-.hv-pending .ic{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:26px}
-.hv-pending .t{font-family:'Plus Jakarta Sans';font-weight:800;font-size:17px;color:#fff;letter-spacing:-.2px}
-.hv-pending .s{font-size:13px;color:var(--g400);max-width:290px;line-height:1.5}
-
 /* ── VIDEO MODAL (theater + dockable mini-player) ── */
 .vm-overlay{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(5,8,18,.82);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .vm-overlay.open{display:flex}
@@ -216,12 +207,12 @@ footer a{color:var(--g300);text-decoration:none}
         </div>
       </div>
     </div>
-    <div class="hero-video pending" id="heroVideo">
-      <div class="hv-pending">
-        <div class="ic">🎬</div>
-        <div class="t">Video interview coming soon</div>
-        <div class="s">We filmed this conversation with Dr. Adeva in Kuala Lumpur. The full clip lands here shortly — the story is below in the meantime.</div>
-      </div>
+    <div class="hero-video" data-yt="VsB5c56KvQg" onclick="openVideoModal()">
+      <img src="https://i.ytimg.com/vi/VsB5c56KvQg/maxresdefault.jpg" alt="ASK HRD Malaysia — Rework Customer Spotlight">
+      <div class="hv-badge"><span class="dot"></span> Full interview</div>
+      <div class="hv-ov"><div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg></div></div>
+      <div class="hv-cap">Watch Dr. Adeva's story ▸</div>
+      <a href="https://www.youtube.com/watch?v=VsB5c56KvQg" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="position:absolute;right:14px;bottom:14px;z-index:3;display:inline-flex;align-items:center;gap:5px;background:rgba(10,15,30,.72);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:600;padding:6px 11px;border-radius:100px;text-decoration:none">Watch on YouTube ↗</a>
     </div>
   </div>
 </header>
@@ -330,32 +321,11 @@ footer a{color:var(--g300);text-decoration:none}
 </div>
 
 <script>
-/* ── ONE-LINE SWITCH ──────────────────────────────────────
-   Drop the YouTube ID in here when the interview is published.
-   Empty string = the "coming soon" resting state in the hero.
-─────────────────────────────────────────────────────────── */
-var YT_ID = '';
-
-/* Build the real player tile once YT_ID is set. */
-(function(){
-  var box = document.getElementById('heroVideo');
-  if(!box || !YT_ID) return;
-  box.classList.remove('pending');
-  box.setAttribute('data-yt', YT_ID);
-  box.innerHTML =
-    '<img src="https://i.ytimg.com/vi/'+YT_ID+'/maxresdefault.jpg" alt="ASK HRD Malaysia — Rework Customer Spotlight">'+
-    '<div class="hv-badge"><span class="dot"></span> Full interview</div>'+
-    '<div class="hv-ov"><div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg></div></div>'+
-    '<div class="hv-cap">Watch Dr. Adeva\'s story ▸</div>'+
-    '<a href="https://www.youtube.com/watch?v='+YT_ID+'" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="position:absolute;right:14px;bottom:14px;z-index:3;display:inline-flex;align-items:center;gap:5px;background:rgba(10,15,30,.72);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:600;padding:6px 11px;border-radius:100px;text-decoration:none">Watch on YouTube ↗</a>';
-  box.onclick = openVideoModal;
-})();
-
 /* Video modal: open big, click outside to dock to a corner mini-player
    (keeps playing so you can read), ✕ to close, ⤢ to re-expand */
+var YT_ID='VsB5c56KvQg';
 var vm=document.getElementById('vidModal'), vmFrame=document.getElementById('vmFrame');
 function openVideoModal(){
-  if(!YT_ID) return;
   if(!vmFrame.querySelector('iframe')){
     vmFrame.innerHTML='<iframe src="https://www.youtube.com/embed/'+YT_ID+'?autoplay=1&rel=0&playsinline=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="Rework Customer Spotlight | ASK HRD Malaysia"></iframe>';
   }

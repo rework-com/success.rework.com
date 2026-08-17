@@ -517,10 +517,11 @@ window.DX_LEADERS = [
 /* ─── CUSTOMER TESTIMONIALS ───────────────────────────────
    Every customer gets an equal card. Each entry needs a
    `thumbnail`, `title`, `meta` and `href`.
-     • add `yt`      → the thumb becomes an inline player
+     • add `yt`        → the thumb becomes an inline player
      • add `soon:true` → dashed "in production" placeholder
-   Stories with no video yet use a branded card.jpg tile, so
-   they carry the same visual weight as the filmed ones.
+   For a story published before its video is cut, drop `yt` and
+   point `thumbnail` at a branded tile so it keeps the same
+   visual weight (see git history for the card.jpg generator).
 ─────────────────────────────────────────────────────────── */
 window.CUSTOMER_VIDEOS = [
   {
@@ -532,15 +533,17 @@ window.CUSTOMER_VIDEOS = [
     href: '/testimonials/stories/nilai/'
   },
   {
-    thumbnail: '/testimonials/stories/askhrd/card.jpg',
-    badge: 'Customer story',
+    yt: 'VsB5c56KvQg',
+    thumbnail: 'https://i.ytimg.com/vi/VsB5c56KvQg/maxresdefault.jpg',
+    badge: 'Full interview',
     title: 'A client database that tells the truth',
     meta: 'Dr. Adeva Sankuni · CEO · ASK HRD Malaysia',
     href: '/testimonials/stories/askhrd/'
   },
   {
-    thumbnail: '/testimonials/stories/nuh/card.jpg',
-    badge: 'Customer story',
+    yt: 'ZGEJmLaO6zE',
+    thumbnail: 'https://i.ytimg.com/vi/ZGEJmLaO6zE/maxresdefault.jpg',
+    badge: 'Full interview',
     title: 'Five channels in, one pipeline out',
     meta: 'Muhammad Afnan · Digital Marketing · Nuh Travel &amp; Tours',
     href: '/testimonials/stories/nuh/'
