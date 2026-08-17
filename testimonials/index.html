@@ -296,6 +296,12 @@ footer a:hover{color:var(--white)}
 .ctu-card{aspect-ratio:16/9;border:1px dashed rgba(255,255,255,.16);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--g500);background:rgba(255,255,255,.02)}
 .ctu-card .ic{font-size:22px;opacity:.5}
 .ctu-card span:last-child{font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+/* a published story that has no video yet — solid, clickable */
+.ctu-card.story{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:var(--g300);text-decoration:none;text-align:left;align-items:flex-start;justify-content:flex-end;gap:4px;padding:16px 18px;transition:border-color .25s,background .25s,transform .25s}
+.ctu-card.story:hover{border-color:rgba(96,165,250,.55);background:rgba(96,165,250,.09);transform:translateY(-2px)}
+.ctu-card.story .st-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14.5px;color:#fff;line-height:1.25;letter-spacing:-.2px}
+.ctu-card.story .st-meta{font-size:11.5px;color:var(--g400);line-height:1.35}
+.ctu-card.story .st-link{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--blue-neon);margin-top:4px}
 @media(max-width:640px){.ctf-title{font-size:21px}.ctu-row{grid-template-columns:1fr}}
 
 /* DX LEADERS — read affordances on reused vt-row layout */
@@ -353,7 +359,7 @@ a.vt-row:hover .vt-read-pill{transform:scale(1.05)}
     <div class="section-inner">
       <div class="section-label">Customer Testimonials</div>
       <h2 class="section-title">Hear it <span class="accent">directly</span> from our customers</h2>
-      <p class="section-sub">Short video stories from the customers who chose Rework — in their own words. Starting with Nilai University, with more on the way.</p>
+      <p class="section-sub">Short video stories from the customers who chose Rework — in their own words. Nilai University and ASK HRD Malaysia so far, with more on the way.</p>
 
       <div class="ct-wrap" id="ct-wrap">
         <!-- Featured video + upcoming rendered by JS from window.CUSTOMER_VIDEOS below -->
@@ -529,8 +535,11 @@ window.DX_LEADERS = [
 ];
 
 /* ─── CUSTOMER VIDEO TESTIMONIALS ────────────────────────
-   `href` links to the full story page. Set `soon:true` for an
-   upcoming placeholder card.
+   Three kinds of entry:
+     • has `yt`      → the big featured player (first one wins)
+     • `story:true`  → published story page, video not cut yet
+     • `soon:true`   → dashed "upcoming" placeholder
+   `href` links to the full story page.
 ─────────────────────────────────────────────────────────── */
 window.CUSTOMER_VIDEOS = [
   {
@@ -541,7 +550,12 @@ window.CUSTOMER_VIDEOS = [
     meta: 'Goh Thean Howe · Digital Channel Manager · Nilai University',
     href: '/testimonials/stories/nilai/'
   },
-  { soon: true },
+  {
+    story: true,
+    title: 'A client database that tells the truth',
+    meta: 'Dr. Adeva Sankuni · CEO · ASK HRD Malaysia',
+    href: '/testimonials/stories/askhrd/'
+  },
   { soon: true },
   { soon: true }
 ];
@@ -618,8 +632,9 @@ function renderCustomerVideos(){
   if(!wrap) return;
   const playSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>';
   const vids = window.CUSTOMER_VIDEOS;
-  const feat = vids.find(v => !v.soon);
-  const soon = vids.filter(v => v.soon);
+  const feat    = vids.find(v => v.yt);
+  const stories = vids.filter(v => v.story);
+  const soon    = vids.filter(v => v.soon);
   let html = '';
   if(feat){
     html += `
@@ -636,8 +651,13 @@ function renderCustomerVideos(){
         </div>
       </div>`;
   }
-  if(soon.length){
-    html += `<div class="ct-upcoming"><div class="ctu-label">More customer stories on the way</div><div class="ctu-row">` +
+  if(stories.length || soon.length){
+    html += `<div class="ct-upcoming"><div class="ctu-label">${stories.length ? 'More customer stories' : 'More customer stories on the way'}</div><div class="ctu-row">` +
+      stories.map(s => `<a class="ctu-card story" href="${s.href}">
+          <div class="st-title">${s.title}</div>
+          <div class="st-meta">${s.meta}</div>
+          <div class="st-link">Read the story →</div>
+        </a>`).join('') +
       soon.map(() => `<div class="ctu-card"><span class="ic">🎬</span><span>Upcoming</span></div>`).join('') +
       `</div></div>`;
   }
