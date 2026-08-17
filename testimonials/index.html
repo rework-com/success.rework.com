@@ -255,54 +255,34 @@ footer a:hover{color:var(--white)}
 .vt-author-name{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--white);font-size:14px;letter-spacing:0.2px}
 .vt-author-role{font-size:13px;color:var(--blue-neon);margin-top:3px;font-weight:500}
 
-/* CUSTOMER TESTIMONIALS — video-clip cards */
-.ct-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;margin-top:44px}
-.ct-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none}
-.ct-card.live{cursor:pointer;transition:all .25s}
-.ct-card.live:hover{border-color:rgba(96,165,250,.4);box-shadow:0 16px 44px rgba(59,130,246,.18);transform:translateY(-3px)}
+/* CUSTOMER TESTIMONIALS — equal-weight story cards, one per customer */
+.ct-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px;align-items:stretch}
+.ct-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;transition:border-color .25s,box-shadow .25s,transform .25s}
+.ct-card:hover{border-color:rgba(96,165,250,.42);box-shadow:0 16px 44px rgba(59,130,246,.18);transform:translateY(-3px)}
 .ct-thumb{aspect-ratio:16/9;position:relative;overflow:hidden;background:linear-gradient(135deg,#334155,#0F172A)}
+.ct-thumb.playable{cursor:pointer}
 .ct-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .ct-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.42));transition:background .25s}
-.ct-card.live:hover .ct-ov{background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.3))}
+.ct-card:hover .ct-ov{background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.3))}
 .ct-play{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;color:var(--navy);box-shadow:0 10px 30px rgba(0,0,0,.4);transition:transform .25s}
-.ct-card.live:hover .ct-play{transform:scale(1.1)}
+.ct-card:hover .ct-play{transform:scale(1.1)}
 .ct-play svg{width:22px;height:22px;margin-left:3px}
-.ct-badge{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:6px;background:rgba(10,15,30,.66);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:10.5px;font-weight:700;padding:5px 11px;border-radius:100px}
+.ct-badge{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:6px;background:rgba(10,15,30,.66);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:10.5px;font-weight:700;padding:5px 11px;border-radius:100px;z-index:1}
 .ct-badge .dot{width:6px;height:6px;border-radius:50%;background:#EF4444}
+.ct-badge.alt .dot{background:var(--blue-neon)}
 .ct-body{padding:18px 18px 20px;flex:1;display:flex;flex-direction:column}
-.ct-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:#fff;font-size:16px;line-height:1.3;letter-spacing:-.2px}
-.ct-meta{color:var(--blue-neon);font-size:12.5px;font-weight:600;margin-top:8px}
-.ct-cta{margin-top:auto;padding-top:14px;font-size:12.5px;font-weight:700;color:#fff;opacity:.9}
+.ct-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:#fff;font-size:17px;line-height:1.28;letter-spacing:-.3px}
+.ct-meta{color:var(--blue-neon);font-size:12.5px;font-weight:600;margin-top:9px;line-height:1.45}
+.ct-cta{margin-top:auto;padding-top:16px;font-size:12.5px;font-weight:700;color:#fff;text-decoration:none;opacity:.9}
+.ct-card:hover .ct-cta{opacity:1}
+a.ct-cta:hover{text-decoration:underline}
 .ct-card.soon{opacity:.7;border-style:dashed}
+.ct-card.soon:hover{transform:none;box-shadow:none;border-color:rgba(255,255,255,.1)}
 .ct-thumb-soon{aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:repeating-linear-gradient(45deg,rgba(255,255,255,.02),rgba(255,255,255,.02) 12px,rgba(255,255,255,.045) 12px,rgba(255,255,255,.045) 24px);color:var(--g500)}
 .ct-thumb-soon .ic{font-size:26px;opacity:.5}
 .ct-thumb-soon span{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-/* Featured single video */
-.ct-wrap{margin-top:44px}
-.ct-feature{max-width:900px;margin:0 auto}
-.ctf-video{aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:18px;cursor:pointer;background:linear-gradient(135deg,#334155,#0F172A);border:1px solid rgba(255,255,255,.1);box-shadow:0 24px 70px rgba(0,0,0,.5);transition:box-shadow .25s}
-.ctf-video:hover{box-shadow:0 28px 80px rgba(59,130,246,.28)}
-.ctf-video img{width:100%;height:100%;object-fit:cover;display:block}
-.ct-play-lg{width:84px;height:84px}
-.ct-play-lg svg{width:30px;height:30px;margin-left:4px}
-.ctf-info{text-align:center;margin-top:26px}
-.ctf-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:#fff;font-size:26px;letter-spacing:-.4px;line-height:1.2}
-.ctf-meta{color:var(--blue-neon);font-size:14px;font-weight:600;margin-top:10px}
-.ctf-link{display:inline-block;margin-top:16px;color:#fff;font-weight:700;font-size:13px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:2px}
-.ctf-link:hover{border-color:#fff}
-.ct-upcoming{max-width:900px;margin:48px auto 0;text-align:center}
-.ctu-label{font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--g500);margin-bottom:16px}
-.ctu-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.ctu-card{aspect-ratio:16/9;border:1px dashed rgba(255,255,255,.16);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--g500);background:rgba(255,255,255,.02)}
-.ctu-card .ic{font-size:22px;opacity:.5}
-.ctu-card span:last-child{font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-/* a published story that has no video yet — solid, clickable */
-.ctu-card.story{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:var(--g300);text-decoration:none;text-align:left;align-items:flex-start;justify-content:flex-end;gap:4px;padding:16px 18px;transition:border-color .25s,background .25s,transform .25s}
-.ctu-card.story:hover{border-color:rgba(96,165,250,.55);background:rgba(96,165,250,.09);transform:translateY(-2px)}
-.ctu-card.story .st-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14.5px;color:#fff;line-height:1.25;letter-spacing:-.2px}
-.ctu-card.story .st-meta{font-size:11.5px;color:var(--g400);line-height:1.35}
-.ctu-card.story .st-link{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--blue-neon);margin-top:4px}
-@media(max-width:640px){.ctf-title{font-size:21px}.ctu-row{grid-template-columns:1fr}}
+@media(max-width:1000px){.ct-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.ct-grid{grid-template-columns:1fr}}
 
 /* DX LEADERS — read affordances on reused vt-row layout */
 a.vt-row{text-decoration:none;color:inherit}
@@ -361,8 +341,8 @@ a.vt-row:hover .vt-read-pill{transform:scale(1.05)}
       <h2 class="section-title">Hear it <span class="accent">directly</span> from our customers</h2>
       <p class="section-sub">Short video stories from the customers who chose Rework — in their own words. Nilai University, ASK HRD Malaysia and Nuh Travel &amp; Tours so far, with more on the way.</p>
 
-      <div class="ct-wrap" id="ct-wrap">
-        <!-- Featured video + upcoming rendered by JS from window.CUSTOMER_VIDEOS below -->
+      <div class="ct-grid" id="ct-grid">
+        <!-- Cards rendered by JS from window.CUSTOMER_VIDEOS below -->
       </div>
     </div>
   </section>
@@ -534,12 +514,13 @@ window.DX_LEADERS = [
   }
 ];
 
-/* ─── CUSTOMER VIDEO TESTIMONIALS ────────────────────────
-   Three kinds of entry:
-     • has `yt`      → the big featured player (first one wins)
-     • `story:true`  → published story page, video not cut yet
-     • `soon:true`   → dashed "upcoming" placeholder
-   `href` links to the full story page.
+/* ─── CUSTOMER TESTIMONIALS ───────────────────────────────
+   Every customer gets an equal card. Each entry needs a
+   `thumbnail`, `title`, `meta` and `href`.
+     • add `yt`      → the thumb becomes an inline player
+     • add `soon:true` → dashed "in production" placeholder
+   Stories with no video yet use a branded card.jpg tile, so
+   they carry the same visual weight as the filmed ones.
 ─────────────────────────────────────────────────────────── */
 window.CUSTOMER_VIDEOS = [
   {
@@ -551,18 +532,19 @@ window.CUSTOMER_VIDEOS = [
     href: '/testimonials/stories/nilai/'
   },
   {
-    story: true,
+    thumbnail: '/testimonials/stories/askhrd/card.jpg',
+    badge: 'Customer story',
     title: 'A client database that tells the truth',
     meta: 'Dr. Adeva Sankuni · CEO · ASK HRD Malaysia',
     href: '/testimonials/stories/askhrd/'
   },
   {
-    story: true,
+    thumbnail: '/testimonials/stories/nuh/card.jpg',
+    badge: 'Customer story',
     title: 'Five channels in, one pipeline out',
     meta: 'Muhammad Afnan · Digital Marketing · Nuh Travel &amp; Tours',
     href: '/testimonials/stories/nuh/'
-  },
-  { soon: true }
+  }
 ];
 
 /* ─── RENDER REWORK MASTERS ──────────────────────────── */
@@ -631,46 +613,65 @@ function renderDXLeaders(){
   `).join('');
 }
 
-/* ─── RENDER CUSTOMER VIDEO TESTIMONIALS ─────────────── */
+/* ─── RENDER CUSTOMER TESTIMONIALS ───────────────────────
+   One card per customer, all the same size. A card with `yt`
+   plays inline (so it can't be an <a> — the body link is);
+   a card without one is a single link to its story page.
+─────────────────────────────────────────────────────────── */
 function renderCustomerVideos(){
-  const wrap = document.getElementById('ct-wrap');
-  if(!wrap) return;
+  const grid = document.getElementById('ct-grid');
+  if(!grid) return;
   const playSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>';
-  const vids = window.CUSTOMER_VIDEOS;
-  const feat    = vids.find(v => v.yt);
-  const stories = vids.filter(v => v.story);
-  const soon    = vids.filter(v => v.soon);
-  let html = '';
-  if(feat){
-    html += `
-      <div class="ct-feature">
-        <div class="ctf-video" data-yt="${feat.yt}" onclick="playCT(this)">
-          <img src="${feat.thumbnail}" alt="${feat.title}" loading="lazy" decoding="async">
-          ${feat.badge ? `<div class="ct-badge"><span class="dot"></span> ${feat.badge}</div>` : ''}
-          <div class="ct-ov"><div class="ct-play ct-play-lg">${playSvg}</div></div>
-        </div>
-        <div class="ctf-info">
-          <div class="ctf-title">${feat.title}</div>
-          <div class="ctf-meta">${feat.meta}</div>
-          ${feat.href ? `<a class="ctf-link" href="${feat.href}">Read the full story →</a>` : ''}
-        </div>
+
+  grid.innerHTML = window.CUSTOMER_VIDEOS.map(v => {
+    if(v.soon){
+      return `
+        <div class="ct-card soon">
+          <div class="ct-thumb-soon"><span class="ic">🎬</span><span>Upcoming</span></div>
+          <div class="ct-body">
+            <div class="ct-title">More on the way</div>
+            <div class="ct-meta">A new customer story is in production</div>
+          </div>
+        </div>`;
+    }
+    const badge = `<div class="ct-badge${v.yt ? '' : ' alt'}"><span class="dot"></span> ${v.badge || (v.yt ? 'Full interview' : 'Customer story')}</div>`;
+    const playAttrs = v.yt
+      ? ` playable" data-yt="${v.yt}" data-title="${v.title.replace(/"/g,'&quot;')}" onclick="playCT(this)`
+      : '';
+    const thumb = `
+      <div class="ct-thumb${playAttrs}">
+        <img src="${v.thumbnail}" alt="${v.title}" loading="lazy" decoding="async">
+        ${badge}
+        ${v.yt ? `<div class="ct-ov"><div class="ct-play">${playSvg}</div></div>` : ''}
       </div>`;
-  }
-  if(stories.length || soon.length){
-    html += `<div class="ct-upcoming"><div class="ctu-label">${stories.length ? 'More customer stories' : 'More customer stories on the way'}</div><div class="ctu-row">` +
-      stories.map(s => `<a class="ctu-card story" href="${s.href}">
-          <div class="st-title">${s.title}</div>
-          <div class="st-meta">${s.meta}</div>
-          <div class="st-link">Read the story →</div>
-        </a>`).join('') +
-      soon.map(() => `<div class="ctu-card"><span class="ic">🎬</span><span>Upcoming</span></div>`).join('') +
-      `</div></div>`;
-  }
-  wrap.innerHTML = html;
+    const head = `
+        <div class="ct-title">${v.title}</div>
+        <div class="ct-meta">${v.meta}</div>`;
+
+    // Video card: the thumb swaps itself for an iframe, so the card
+    // can't wrap everything in an <a> — only the CTA links out.
+    if(v.yt){
+      return `
+        <div class="ct-card">
+          ${thumb}
+          <div class="ct-body">${head}
+            <a class="ct-cta" href="${v.href}">Read the full story →</a>
+          </div>
+        </div>`;
+    }
+    return `
+      <a class="ct-card" href="${v.href}">
+        ${thumb}
+        <div class="ct-body">${head}
+          <span class="ct-cta">Read the full story →</span>
+        </div>
+      </a>`;
+  }).join('');
 }
 function playCT(el){
   var id = el.getAttribute('data-yt');
-  el.innerHTML = '<iframe style="position:absolute;inset:0;width:100%;height:100%;border:0" src="https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0&playsinline=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="Nilai University — Rework Customer Spotlight"></iframe>';
+  var title = el.getAttribute('data-title') || 'Rework Customer Spotlight';
+  el.innerHTML = '<iframe style="position:absolute;inset:0;width:100%;height:100%;border:0" src="https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0&playsinline=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="'+title+'"></iframe>';
 }
 
 renderReworkMasters();
