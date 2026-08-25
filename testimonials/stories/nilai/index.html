@@ -73,6 +73,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,.94);backdrop-fil
 .hero-video:hover .play{transform:scale(1.08)}
 .play svg{width:28px;height:28px;margin-left:5px}
 .hv-badge{position:absolute;top:16px;left:16px;display:flex;align-items:center;gap:7px;background:rgba(10,15,30,.66);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:100px}
+.hv-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px rgba(239,68,68,.3)}
 .hv-cap{position:absolute;left:18px;bottom:16px;color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:16px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
 
 /* ── VIDEO MODAL (theater + dockable mini-player) ── */
@@ -208,7 +209,7 @@ footer a{color:var(--g300);text-decoration:none}
     </div>
     <div class="hero-video" data-yt="lXr9TRmSODA" onclick="openVideoModal()">
       <img src="https://i.ytimg.com/vi/lXr9TRmSODA/maxresdefault.jpg" alt="Nilai University — Rework Customer Spotlight">
-      <div class="hv-badge">8:29</div>
+      <div class="hv-badge"><span class="dot"></span> 8:29</div>
       <div class="hv-ov"><div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg></div></div>
       <div class="hv-cap">Watch Goh's story ▸</div>
       <a href="https://www.youtube.com/watch?v=lXr9TRmSODA" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="position:absolute;right:14px;bottom:14px;z-index:3;display:inline-flex;align-items:center;gap:5px;background:rgba(10,15,30,.72);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:600;padding:6px 11px;border-radius:100px;text-decoration:none">Watch on YouTube ↗</a>

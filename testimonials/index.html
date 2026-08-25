@@ -269,9 +269,7 @@ footer a:hover{color:var(--white)}
 .ct-card:hover .ct-play{transform:scale(1.1)}
 .ct-play svg{width:22px;height:22px;margin-left:3px}
 .ct-badge{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:6px;background:rgba(10,15,30,.66);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:10.5px;font-weight:700;padding:5px 11px;border-radius:100px;z-index:1}
-.ct-logo{position:absolute;top:12px;right:12px;height:28px;display:flex;align-items:center;justify-content:center;padding:0 9px;border-radius:7px;background:rgba(255,255,255,.94);box-shadow:0 2px 10px rgba(0,0,0,.3);z-index:2}
-.ct-logo img{height:16px;width:auto;display:block}
-.ct-logo .txt{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:11.5px;color:var(--navy);letter-spacing:-.2px;white-space:nowrap}
+.ct-badge .dot{width:6px;height:6px;border-radius:50%;background:#EF4444}
 .ct-body{padding:18px 18px 20px;flex:1;display:flex;flex-direction:column}
 .ct-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:#fff;font-size:17px;line-height:1.28;letter-spacing:-.3px}
 .ct-meta{color:var(--blue-neon);font-size:12.5px;font-weight:600;margin-top:9px;line-height:1.45}
@@ -532,7 +530,6 @@ window.CUSTOMER_VIDEOS = [
     badge: '8:29',
     title: 'From Salesforce to a CRM that actually works',
     meta: 'Goh Thean Howe · Digital Channel Manager · Nilai University',
-    logo: '/testimonials/stories/nilai/ea-inst-logo-nilai.png',
     href: '/testimonials/stories/nilai/'
   },
   {
@@ -541,7 +538,6 @@ window.CUSTOMER_VIDEOS = [
     badge: '3:56',
     title: 'A client database that tells the truth',
     meta: 'Dr. Adeva Sankuni · CEO · ASK HRD Malaysia',
-    logo: '/testimonials/stories/askhrd/logo-askhrd.png',
     href: '/testimonials/stories/askhrd/'
   },
   {
@@ -550,7 +546,6 @@ window.CUSTOMER_VIDEOS = [
     badge: '3:44',
     title: 'Five channels in, one pipeline out',
     meta: 'Muhammad Afnan · Digital Marketing · Nuh Travel &amp; Tours',
-    logo: '/testimonials/stories/nuh/logo-nuh.png',
     href: '/testimonials/stories/nuh/'
   },
   {
@@ -559,7 +554,6 @@ window.CUSTOMER_VIDEOS = [
     badge: '5:08',
     title: 'From 10-day approvals to work that keeps moving',
     meta: 'Gape Mojanaga · Digital Manager · KLBP Investments',
-    logoText: 'KLBP',
     href: '/testimonials/stories/klbp/'
   },
   {
@@ -568,7 +562,6 @@ window.CUSTOMER_VIDEOS = [
     badge: '4:13',
     title: 'Nearly 3× qualified leads, +44% units sold in 2 months',
     meta: 'Tin Taller · Marketing Manager · TriMotors',
-    logo: '/testimonials/stories/trimotors/logo-trimotors.png',
     href: '/testimonials/stories/trimotors/'
   }
 ];
@@ -663,15 +656,11 @@ function renderCustomerVideos(){
           </div>
         </div>`;
     }
-    const badge = v.badge ? `<div class="ct-badge${v.yt ? '' : ' alt'}">${v.badge}</div>` : '';
-    const logo = v.logo
-      ? `<div class="ct-logo"><img src="${v.logo}" alt="" loading="lazy" decoding="async"></div>`
-      : (v.logoText ? `<div class="ct-logo"><span class="txt">${v.logoText}</span></div>` : '');
+    const badge = v.badge ? `<div class="ct-badge${v.yt ? '' : ' alt'}"><span class="dot"></span> ${v.badge}</div>` : '';
     const thumb = `
       <div class="ct-thumb">
         <img src="${v.thumbnail}" alt="${v.title}" loading="lazy" decoding="async">
         ${badge}
-        ${logo}
         ${v.yt ? `<div class="ct-ov"><div class="ct-play">${playSvg}</div></div>` : ''}
       </div>`;
     const head = `
