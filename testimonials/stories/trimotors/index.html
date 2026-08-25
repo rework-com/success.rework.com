@@ -10,7 +10,7 @@
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Rework">
 <meta property="og:url" content="https://success.rework.com/testimonials/stories/trimotors/">
-<meta property="og:title" content="TriMotors — Nearly 3× purchase applications, +44% units sold">
+<meta property="og:title" content="TriMotors — Nearly 3× qualified leads, +44% units sold in 2 months">
 <meta property="og:description" content="How TriMotors took its leads team from manual spreadsheet transfers to a real-time funnel — purchase applications up 189% and units sold up 44% in two months.">
 <meta property="og:image" content="https://success.rework.com/testimonials/stories/trimotors/og.jpg">
 <meta property="og:image:secure_url" content="https://success.rework.com/testimonials/stories/trimotors/og.jpg">
@@ -21,7 +21,7 @@
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="TriMotors — Nearly 3× purchase applications, +44% units sold">
+<meta name="twitter:title" content="TriMotors — Nearly 3× qualified leads, +44% units sold in 2 months">
 <meta name="twitter:description" content="How TriMotors took its leads team from manual spreadsheet transfers to a real-time funnel — purchase applications up 189% and units sold up 44% in two months.">
 <meta name="twitter:image" content="https://success.rework.com/testimonials/stories/trimotors/og.jpg">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
@@ -78,16 +78,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,.94);backdrop-fil
 .hv-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px rgba(239,68,68,.3)}
 .hv-cap{position:absolute;left:18px;bottom:16px;color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:16px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
 
-/* hero video — "film not published yet" resting state.
-   Set YT_ID in the script at the bottom and this swaps to the real player. */
-.hero-video.pending{cursor:default;background:linear-gradient(135deg,#1E293B,#0B1120)}
-.hero-video.pending::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(96,165,250,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(96,165,250,.06) 1px,transparent 1px);background-size:34px 34px}
-.hv-pending{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px}
-.hv-pending .ic{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:26px}
-.hv-pending .t{font-family:'Plus Jakarta Sans';font-weight:800;font-size:17px;color:#fff;letter-spacing:-.2px}
-.hv-pending .s{font-size:13px;color:var(--g400);max-width:290px;line-height:1.5}
-
-/* ── VIDEO MODAL (theater + dockable mini-player) ── */
+/* ── VIDEO MODAL/* ── VIDEO MODAL (theater + dockable mini-player) ── */
 .vm-overlay{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(5,8,18,.82);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .vm-overlay.open{display:flex}
 .vm-player{position:relative;width:min(92vw,calc(82vh * 16/9));aspect-ratio:16/9;background:#000;border-radius:14px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.6);transition:width .28s ease}
@@ -210,7 +201,7 @@ footer a{color:var(--g300);text-decoration:none}
         <span class="tag">Leads Management</span>
         <span class="tag">Philippines</span>
       </div>
-      <h1>Nearly 3× purchase applications, <span class="accent">+44% units sold</span></h1>
+      <h1>Nearly 3× qualified leads, <span class="accent">+44% units sold</span> in 2 months</h1>
       <p class="hero-sub">TriMotors is the exclusive distributor of Bajaj 3-wheelers in the Philippines. Two months after go-live on Rework, its leads team had nearly tripled the purchase applications it hands over to dealers — and lifted units sold by 44%.</p>
       <div class="speaker">
         <div class="sp-avatar"><!-- <img src="tin.jpg" alt="Tin Taller"> -->TT</div>
@@ -221,12 +212,12 @@ footer a{color:var(--g300);text-decoration:none}
         </div>
       </div>
     </div>
-    <div class="hero-video pending" id="heroVideo">
-      <div class="hv-pending">
-        <div class="ic">🎬</div>
-        <div class="t">Video interview coming soon</div>
-        <div class="s">We spoke with Tin about scaling a leads team, real-time reporting and tracing Meta ads through to sales. The full clip lands here shortly.</div>
-      </div>
+    <div class="hero-video" data-yt="BiXWbmiOcFg" onclick="openVideoModal()">
+      <img src="https://i.ytimg.com/vi/BiXWbmiOcFg/maxresdefault.jpg" alt="TriMotors — Rework Customer Spotlight">
+      <div class="hv-badge"><span class="dot"></span> Full interview</div>
+      <div class="hv-ov"><div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg></div></div>
+      <div class="hv-cap">Watch Tin’s story ▸</div>
+      <a href="https://www.youtube.com/watch?v=BiXWbmiOcFg" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="position:absolute;right:14px;bottom:14px;z-index:3;display:inline-flex;align-items:center;gap:5px;background:rgba(10,15,30,.72);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:600;padding:6px 11px;border-radius:100px;text-decoration:none">Watch on YouTube ↗</a>
     </div>
   </div>
 </header>
@@ -336,35 +327,12 @@ footer a{color:var(--g300);text-decoration:none}
 </div>
 
 <script>
-/* ── ONE-LINE SWITCH ──────────────────────────────────────
-   Drop the YouTube ID in here when the interview is published.
-   Empty string = the "coming soon" resting state in the hero.
-   Once it is set, also replace the pending markup in the hero
-   with static markup (see the nilai / askhrd / nuh pages) so
-   the placeholder copy does not stay in the served HTML.
-─────────────────────────────────────────────────────────── */
-var YT_ID = '';
-
-/* Build the real player tile once YT_ID is set. */
-(function(){
-  var box = document.getElementById('heroVideo');
-  if(!box || !YT_ID) return;
-  box.classList.remove('pending');
-  box.setAttribute('data-yt', YT_ID);
-  box.innerHTML =
-    '<img src="https://i.ytimg.com/vi/'+YT_ID+'/maxresdefault.jpg" alt="TriMotors — Rework Customer Spotlight">'+
-    '<div class="hv-badge"><span class="dot"></span> Full interview</div>'+
-    '<div class="hv-ov"><div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg></div></div>'+
-    '<div class="hv-cap">Watch Tin\'s story ▸</div>'+
-    '<a href="https://www.youtube.com/watch?v='+YT_ID+'" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="position:absolute;right:14px;bottom:14px;z-index:3;display:inline-flex;align-items:center;gap:5px;background:rgba(10,15,30,.72);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:600;padding:6px 11px;border-radius:100px;text-decoration:none">Watch on YouTube ↗</a>';
-  box.onclick = openVideoModal;
-})();
+var YT_ID='BiXWbmiOcFg';
 
 /* Video modal: open big, click outside to dock to a corner mini-player
    (keeps playing so you can read), ✕ to close, ⤢ to re-expand */
 var vm=document.getElementById('vidModal'), vmFrame=document.getElementById('vmFrame');
 function openVideoModal(){
-  if(!YT_ID) return;
   if(!vmFrame.querySelector('iframe')){
     vmFrame.innerHTML='<iframe src="https://www.youtube.com/embed/'+YT_ID+'?autoplay=1&rel=0&playsinline=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="Rework Customer Spotlight | TriMotors"></iframe>';
   }
