@@ -262,7 +262,6 @@ footer a:hover{color:var(--white)}
 .ct-card{flex:0 1 calc(33.333% - 15px);min-width:0;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;transition:border-color .25s,box-shadow .25s,transform .25s}
 .ct-card:hover{border-color:rgba(96,165,250,.42);box-shadow:0 16px 44px rgba(59,130,246,.18);transform:translateY(-3px)}
 .ct-thumb{aspect-ratio:16/9;position:relative;overflow:hidden;background:linear-gradient(135deg,#334155,#0F172A)}
-.ct-thumb.playable{cursor:pointer}
 .ct-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .ct-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.42));transition:background .25s}
 .ct-card:hover .ct-ov{background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.3))}
@@ -270,6 +269,9 @@ footer a:hover{color:var(--white)}
 .ct-card:hover .ct-play{transform:scale(1.1)}
 .ct-play svg{width:22px;height:22px;margin-left:3px}
 .ct-badge{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:6px;background:rgba(10,15,30,.66);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:10.5px;font-weight:700;padding:5px 11px;border-radius:100px;z-index:1}
+.ct-logo{position:absolute;top:12px;right:12px;height:28px;display:flex;align-items:center;justify-content:center;padding:0 9px;border-radius:7px;background:rgba(255,255,255,.94);box-shadow:0 2px 10px rgba(0,0,0,.3);z-index:2}
+.ct-logo img{height:16px;width:auto;display:block}
+.ct-logo .txt{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:11.5px;color:var(--navy);letter-spacing:-.2px;white-space:nowrap}
 .ct-body{padding:18px 18px 20px;flex:1;display:flex;flex-direction:column}
 .ct-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:#fff;font-size:17px;line-height:1.28;letter-spacing:-.3px}
 .ct-meta{color:var(--blue-neon);font-size:12.5px;font-weight:600;margin-top:9px;line-height:1.45}
@@ -530,6 +532,7 @@ window.CUSTOMER_VIDEOS = [
     badge: '8:29',
     title: 'From Salesforce to a CRM that actually works',
     meta: 'Goh Thean Howe · Digital Channel Manager · Nilai University',
+    logo: '/testimonials/stories/nilai/ea-inst-logo-nilai.png',
     href: '/testimonials/stories/nilai/'
   },
   {
@@ -538,6 +541,7 @@ window.CUSTOMER_VIDEOS = [
     badge: '3:56',
     title: 'A client database that tells the truth',
     meta: 'Dr. Adeva Sankuni · CEO · ASK HRD Malaysia',
+    logo: '/testimonials/stories/askhrd/logo-askhrd.png',
     href: '/testimonials/stories/askhrd/'
   },
   {
@@ -546,6 +550,7 @@ window.CUSTOMER_VIDEOS = [
     badge: '3:44',
     title: 'Five channels in, one pipeline out',
     meta: 'Muhammad Afnan · Digital Marketing · Nuh Travel &amp; Tours',
+    logo: '/testimonials/stories/nuh/logo-nuh.png',
     href: '/testimonials/stories/nuh/'
   },
   {
@@ -554,6 +559,7 @@ window.CUSTOMER_VIDEOS = [
     badge: '5:08',
     title: 'From 10-day approvals to work that keeps moving',
     meta: 'Gape Mojanaga · Digital Manager · KLBP Investments',
+    logoText: 'KLBP',
     href: '/testimonials/stories/klbp/'
   },
   {
@@ -562,6 +568,7 @@ window.CUSTOMER_VIDEOS = [
     badge: '4:13',
     title: 'Nearly 3× qualified leads, +44% units sold in 2 months',
     meta: 'Tin Taller · Marketing Manager · TriMotors',
+    logo: '/testimonials/stories/trimotors/logo-trimotors.png',
     href: '/testimonials/stories/trimotors/'
   }
 ];
@@ -633,9 +640,12 @@ function renderDXLeaders(){
 }
 
 /* ─── RENDER CUSTOMER TESTIMONIALS ───────────────────────
-   One card per customer, all the same size. A card with `yt`
-   plays inline (so it can't be an <a> — the body link is);
-   a card without one is a single link to its story page.
+   One card per customer, all the same size, and the WHOLE card is
+   the link — clicking anywhere opens that story, not just the CTA.
+   That is why the thumb no longer plays inline: the story page leads
+   with the same video in a theater player, so there is one
+   destination rather than two behaviours competing for one click.
+   The play glyph stays purely as a cue that the story has a video.
 ─────────────────────────────────────────────────────────── */
 function renderCustomerVideos(){
   const grid = document.getElementById('ct-grid');
@@ -654,30 +664,20 @@ function renderCustomerVideos(){
         </div>`;
     }
     const badge = v.badge ? `<div class="ct-badge${v.yt ? '' : ' alt'}">${v.badge}</div>` : '';
-    const playAttrs = v.yt
-      ? ` playable" data-yt="${v.yt}" data-title="${v.title.replace(/"/g,'&quot;')}" onclick="playCT(this)`
-      : '';
+    const logo = v.logo
+      ? `<div class="ct-logo"><img src="${v.logo}" alt="" loading="lazy" decoding="async"></div>`
+      : (v.logoText ? `<div class="ct-logo"><span class="txt">${v.logoText}</span></div>` : '');
     const thumb = `
-      <div class="ct-thumb${playAttrs}">
+      <div class="ct-thumb">
         <img src="${v.thumbnail}" alt="${v.title}" loading="lazy" decoding="async">
         ${badge}
+        ${logo}
         ${v.yt ? `<div class="ct-ov"><div class="ct-play">${playSvg}</div></div>` : ''}
       </div>`;
     const head = `
         <div class="ct-title">${v.title}</div>
         <div class="ct-meta">${v.meta}</div>`;
 
-    // Video card: the thumb swaps itself for an iframe, so the card
-    // can't wrap everything in an <a> — only the CTA links out.
-    if(v.yt){
-      return `
-        <div class="ct-card">
-          ${thumb}
-          <div class="ct-body">${head}
-            <a class="ct-cta" href="${v.href}">Read the full story →</a>
-          </div>
-        </div>`;
-    }
     return `
       <a class="ct-card" href="${v.href}">
         ${thumb}
@@ -686,11 +686,6 @@ function renderCustomerVideos(){
         </div>
       </a>`;
   }).join('');
-}
-function playCT(el){
-  var id = el.getAttribute('data-yt');
-  var title = el.getAttribute('data-title') || 'Rework Customer Spotlight';
-  el.innerHTML = '<iframe style="position:absolute;inset:0;width:100%;height:100%;border:0" src="https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0&playsinline=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="'+title+'"></iframe>';
 }
 
 renderReworkMasters();
