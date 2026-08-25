@@ -270,8 +270,6 @@ footer a:hover{color:var(--white)}
 .ct-card:hover .ct-play{transform:scale(1.1)}
 .ct-play svg{width:22px;height:22px;margin-left:3px}
 .ct-badge{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:6px;background:rgba(10,15,30,.66);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:10.5px;font-weight:700;padding:5px 11px;border-radius:100px;z-index:1}
-.ct-badge .dot{width:6px;height:6px;border-radius:50%;background:#EF4444}
-.ct-badge.alt .dot{background:var(--blue-neon)}
 .ct-body{padding:18px 18px 20px;flex:1;display:flex;flex-direction:column}
 .ct-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:#fff;font-size:17px;line-height:1.28;letter-spacing:-.3px}
 .ct-meta{color:var(--blue-neon);font-size:12.5px;font-weight:600;margin-top:9px;line-height:1.45}
@@ -529,7 +527,7 @@ window.CUSTOMER_VIDEOS = [
   {
     yt: 'lXr9TRmSODA',
     thumbnail: 'https://i.ytimg.com/vi/lXr9TRmSODA/maxresdefault.jpg',
-    badge: 'Full interview',
+    badge: '8:29',
     title: 'From Salesforce to a CRM that actually works',
     meta: 'Goh Thean Howe · Digital Channel Manager · Nilai University',
     href: '/testimonials/stories/nilai/'
@@ -537,7 +535,7 @@ window.CUSTOMER_VIDEOS = [
   {
     yt: 'VsB5c56KvQg',
     thumbnail: 'https://i.ytimg.com/vi/VsB5c56KvQg/maxresdefault.jpg',
-    badge: 'Full interview',
+    badge: '3:56',
     title: 'A client database that tells the truth',
     meta: 'Dr. Adeva Sankuni · CEO · ASK HRD Malaysia',
     href: '/testimonials/stories/askhrd/'
@@ -545,7 +543,7 @@ window.CUSTOMER_VIDEOS = [
   {
     yt: 'ZGEJmLaO6zE',
     thumbnail: 'https://i.ytimg.com/vi/ZGEJmLaO6zE/maxresdefault.jpg',
-    badge: 'Full interview',
+    badge: '3:44',
     title: 'Five channels in, one pipeline out',
     meta: 'Muhammad Afnan · Digital Marketing · Nuh Travel &amp; Tours',
     href: '/testimonials/stories/nuh/'
@@ -553,7 +551,7 @@ window.CUSTOMER_VIDEOS = [
   {
     yt: 'XqGjOyK6mDU',
     thumbnail: 'https://i.ytimg.com/vi/XqGjOyK6mDU/maxresdefault.jpg',
-    badge: 'Full interview',
+    badge: '5:08',
     title: 'From 10-day approvals to work that keeps moving',
     meta: 'Gape Mojanaga · Digital Manager · KLBP Investments',
     href: '/testimonials/stories/klbp/'
@@ -561,7 +559,7 @@ window.CUSTOMER_VIDEOS = [
   {
     yt: 'BiXWbmiOcFg',
     thumbnail: 'https://i.ytimg.com/vi/BiXWbmiOcFg/maxresdefault.jpg',
-    badge: 'Full interview',
+    badge: '4:13',
     title: 'Nearly 3× qualified leads, +44% units sold in 2 months',
     meta: 'Tin Taller · Marketing Manager · TriMotors',
     href: '/testimonials/stories/trimotors/'
@@ -655,7 +653,7 @@ function renderCustomerVideos(){
           </div>
         </div>`;
     }
-    const badge = `<div class="ct-badge${v.yt ? '' : ' alt'}"><span class="dot"></span> ${v.badge || (v.yt ? 'Full interview' : 'Customer story')}</div>`;
+    const badge = v.badge ? `<div class="ct-badge${v.yt ? '' : ' alt'}">${v.badge}</div>` : '';
     const playAttrs = v.yt
       ? ` playable" data-yt="${v.yt}" data-title="${v.title.replace(/"/g,'&quot;')}" onclick="playCT(this)`
       : '';
