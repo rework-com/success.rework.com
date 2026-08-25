@@ -15,3 +15,10 @@ Thumbs.db
 .idea/
 *.log
 .claude/
+
+# Raw interview material and unoptimised source art — working files only.
+# These must never deploy: transcripts carry customer figures we
+# deliberately keep off the published pages.
+testimonials/stories/**/*.txt
+testimonials/stories/**/logo*.png
+testimonials/stories/**/*-logo.png
